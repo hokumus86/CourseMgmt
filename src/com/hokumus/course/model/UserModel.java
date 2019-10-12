@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hokumus.course.model.utils.BaseEntity;
+
 @Entity
 @Table(name = "usr")
 public class UserModel extends BaseEntity {

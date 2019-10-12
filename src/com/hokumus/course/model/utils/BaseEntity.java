@@ -1,4 +1,4 @@
-package com.hokumus.course.model;
+package com.hokumus.course.model.utils;
 
 import java.util.Date;
 
