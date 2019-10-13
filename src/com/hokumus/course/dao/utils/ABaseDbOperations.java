@@ -1,5 +1,8 @@
 package com.hokumus.course.dao.utils;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -38,7 +41,7 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean update(T temp) {
 		try {
@@ -50,6 +53,21 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 			e.printStackTrace();
 			closeSessionForRollback();
 			return false;
+		}
+	}
+
+	@Override
+	public List<T> getAll(T temp) {
+		try {
+			openSession();
+			Criteria cr = ss.createCriteria(temp.getClass());
+			List<T> l = cr.list();
+			closeSession();
+			return l;
+		} catch (Exception e) {
+			e.printStackTrace();
+			closeSessionForRollback();
+			return null;
 		}
 	}
 
