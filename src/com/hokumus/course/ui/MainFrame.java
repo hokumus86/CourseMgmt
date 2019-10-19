@@ -74,6 +74,12 @@ public class MainFrame extends JFrame {
 	private JButton getBtnYnetici() {
 		if (btnManager == null) {
 			btnManager = new JButton("Y\u00F6netici Paneli");
+			btnManager.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					new YoneticiFrame().setVisible(true);
+					
+				}
+			});
 			btnManager.setBounds(335, 26, 227, 125);
 		}
 		return btnManager;

@@ -1,34 +1,63 @@
 package com.hokumus.course.main;
 
-import java.util.Calendar;
-
-import com.hokumus.course.dao.UserModelDao;
-import com.hokumus.course.model.UserModel;
-import com.hokumus.course.model.UserPermission;
 import com.hokumus.course.ui.LoginFrame;
 
 public class Runner {
 
 	public static void main(String[] args) {
-		try {
+	try {
 
-			new LoginFrame().setVisible(true);
-
-//			UserModel  temp = new UserModel();			
-//			temp.setName("ömer faruk");
-//			temp.setUserName("ofaruk");
+ 			new LoginFrame().setVisible(true);
+//
+//			UserModel temp = new UserModel();
+//			temp.setName("kamil koç");
+//			temp.setUserName("kkoc");
 //			temp.setPassword("123");
-//			temp.setCellPhone("5067290000");
-//			temp.setEmail("huseyinokumuss@gmail.com");
-//			temp.setPermission(UserPermission.TEACHER);
-//			temp.setCreaterBy("hokumus");
+//			temp.setCellPhone("5067292222");
+//			temp.setEmail("kkoc@gmail.com");
+//			temp.setPermission(UserPermission.MANAGER);
+//			temp.setCreaterBy("kkoc");
 //			temp.setCreatedTime(Calendar.getInstance().getTime());
 //			UserModelDao dao = new UserModelDao();
 //			dao.save(temp);
-			// dao.update(temp);
+//			dao.update(temp);
+//
+		} catch (Exception e) {
+	}
+
+		try {
+
+//			TeacherModel temp = new TeacherModel();
+//			temp.setName("hüseyin okumuþ");
+//			temp.setUserName("hokumus");
+//			temp.setPassword("123");
+//			temp.setCellPhone("5067293333");
+//			temp.setEmail("hokumus@gmail.com");
+//			temp.setPermission(UserPermission.MANAGER);
+//			temp.setCreaterBy("hokumus");
+//			temp.setCreatedTime(Calendar.getInstance().getTime());
+//			TeacherModelDao dao = new TeacherModelDao();
+//			dao.save(temp);
+//			dao.update(temp);
+
+		} catch (Exception e) {
+	}
+
+		try {
+
+//			CourseModel temp = new CourseModel();
+//			temp.setCourseName("Java");
+//			temp.setCourseTime("180 Saat");
+//			temp.setCourseTeacher("Hüseyin Okumuþ");
+//			temp.setUserName("hokumus");
+//			temp.setCellPhone("050707944444");
+//			temp.setEmail("hokumus@gmail.com");
+//			temp.setCreatedTime(Calendar.getInstance().getTime());
+//			CourseModelDao dao = new CourseModelDao();
+//			dao.save(temp);
+//			dao.update(temp);
 
 		} catch (Exception e) {
 		}
 	}
-
 }

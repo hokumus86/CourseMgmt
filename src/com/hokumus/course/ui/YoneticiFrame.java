@@ -1,0 +1,236 @@
+package com.hokumus.course.ui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+
+import com.hokumus.course.dao.CourseModelDao;
+import com.hokumus.course.dao.TeacherModelDao;
+import com.hokumus.course.model.CourseModel;
+import com.hokumus.course.model.TeacherModel;
+
+public class YoneticiFrame extends JFrame {
+	private JMenuBar menuBar;
+	private JMenu mnogretmenler;
+	private JMenuItem mnýtmHuseyinOkumus;
+	private JMenu mnKurslar;
+	private JMenuItem mnýtmJavaKursu;
+	private JMenuItem mnýtmCKursu;
+	private JMenuItem mnýtmPhpKursu;
+	private JMenuItem mnýtmDreamveawerKursu;
+	private JMenu mnrenciler;
+	private JMenuItem mnýtmJavaKursuOgrencileri;
+	private JMenuItem mnýtmCKursuOgrencileri;
+	private JMenuItem mnýtmPhpKursuOgrencileri;
+	private JMenuItem mnýtmDreamveawerKursuOgrencileri;
+	private JPanel pnlOgrBilgi;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollOgrBilgi;
+	private JTable tblOgrBilgi;
+
+	public YoneticiFrame() {
+
+		initialize();
+	}
+
+	private void initialize() {
+		setTitle("Yönetici Yönetim Paneli");
+		setSize(600, 450);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		getContentPane().setLayout(null);
+		getContentPane().add(getMenuBar_1());
+		getContentPane().add(getPnlOgrBilgi());
+
+	}
+
+	private JMenuBar getMenuBar_1() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			menuBar.setBounds(0, 0, 584, 25);
+			menuBar.add(getMnogretmenler());
+			menuBar.add(getMnKurslar());
+			menuBar.add(getMnrenciler());
+		}
+		return menuBar;
+	}
+
+	private JMenu getMnogretmenler() {
+		if (mnogretmenler == null) {
+			mnogretmenler = new JMenu("\u00D6\u011Fretmenler");
+			mnogretmenler.add(getMnýtmHuseyinOkumus());
+		}
+		return mnogretmenler;
+	}
+
+	private JMenuItem getMnýtmHuseyinOkumus() {
+		if (mnýtmHuseyinOkumus == null) {
+			mnýtmHuseyinOkumus = new JMenuItem("T\u00FCm \u00D6\u011Fretmenler");
+			mnýtmHuseyinOkumus.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					TeacherModelDao dao = new TeacherModelDao();
+					List<TeacherModel> liste = dao.getAll(new TeacherModel());
+					String[] columnNames = { "id", "Adý", "Kullanýcý Adý", "Pasword", "Yetki", "E mail", "Telefon No" };
+					String[][] data = new String[liste.size()][columnNames.length];
+					for (int i = 0; i < liste.size(); i++) {
+						data[i][0] = "" + liste.get(i).getId();
+						data[i][1] = "" + liste.get(i).getName();
+						data[i][2] = "" + liste.get(i).getUserName();
+						data[i][3] = "" + liste.get(i).getPassword();
+						data[i][4] = "" + liste.get(i).getPermission();
+						data[i][5] = "" + liste.get(i).getEmail();
+						data[i][6] = "" + liste.get(i).getCellPhone();
+					}
+					DefaultTableModel model = new DefaultTableModel(data, columnNames);
+					tblOgrBilgi.setModel(model);
+				}
+			});
+		}
+		return mnýtmHuseyinOkumus;
+	}
+
+	private JMenu getMnKurslar() {
+		if (mnKurslar == null) {
+			mnKurslar = new JMenu("Kurslar");
+			mnKurslar.add(getMnýtmJavaKursu());
+			mnKurslar.add(getMnýtmCKursu());
+			mnKurslar.add(getMnýtmPhpKursu());
+			mnKurslar.add(getMnýtmDreamveawerKursu());
+		}
+		return mnKurslar;
+	}
+
+	private JMenuItem getMnýtmJavaKursu() {
+		if (mnýtmJavaKursu == null) {
+			mnýtmJavaKursu = new JMenuItem("Java Kursu");
+			mnýtmJavaKursu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					CourseModelDao dao = new CourseModelDao();
+					List<CourseModel> liste = dao.getAll(new CourseModel());
+					String[] columnNames = { "id", "Adý", "Kullanýcý Adý", "Pasword", "Yetki", "E mail", "Telefon No" };
+					String[][] data = new String[liste.size()][columnNames.length];
+					for (int i = 0; i < liste.size(); i++) {
+						data[i][0] = "" + liste.get(i).getId();
+						data[i][1] = "" + liste.get(i).getCourseName();
+						data[i][2] = "" + liste.get(i).getCourseTime();
+						data[i][3] = "" + liste.get(i).getCourseTeacher();
+						data[i][4] = "" + liste.get(i).getUserName();
+						data[i][5] = "" + liste.get(i).getCellPhone();
+						data[i][6] = "" + liste.get(i).getEmail();
+					}
+					DefaultTableModel model = new DefaultTableModel(data, columnNames);
+					tblOgrBilgi.setModel(model);
+
+				}
+			});
+		}
+		return mnýtmJavaKursu;
+	}
+
+	private JMenuItem getMnýtmCKursu() {
+		if (mnýtmCKursu == null) {
+			mnýtmCKursu = new JMenuItem("C# Kursu");
+		}
+		return mnýtmCKursu;
+	}
+
+	private JMenuItem getMnýtmPhpKursu() {
+		if (mnýtmPhpKursu == null) {
+			mnýtmPhpKursu = new JMenuItem("PHP Kursu");
+		}
+		return mnýtmPhpKursu;
+	}
+
+	private JMenuItem getMnýtmDreamveawerKursu() {
+		if (mnýtmDreamveawerKursu == null) {
+			mnýtmDreamveawerKursu = new JMenuItem("Dreamveawer Kursu");
+		}
+		return mnýtmDreamveawerKursu;
+	}
+
+	private JMenu getMnrenciler() {
+		if (mnrenciler == null) {
+			mnrenciler = new JMenu("Kurs \u00D6\u011Frencileri");
+			mnrenciler.add(getMnýtmJavaKursuOgrencileri());
+			mnrenciler.add(getMnýtmCKursuOgrencileri());
+			mnrenciler.add(getMnýtmPhpKursuOgrencileri());
+			mnrenciler.add(getMnýtmDreamveawerKursuOgrencileri());
+		}
+		return mnrenciler;
+	}
+
+	private JMenuItem getMnýtmJavaKursuOgrencileri() {
+		if (mnýtmJavaKursuOgrencileri == null) {
+			mnýtmJavaKursuOgrencileri = new JMenuItem("Java Kursu \u00D6\u011Frencileri");
+		}
+		return mnýtmJavaKursuOgrencileri;
+	}
+
+	private JMenuItem getMnýtmCKursuOgrencileri() {
+		if (mnýtmCKursuOgrencileri == null) {
+			mnýtmCKursuOgrencileri = new JMenuItem("C# Kursu \u00D6\u011Frencileri");
+		}
+		return mnýtmCKursuOgrencileri;
+	}
+
+	private JMenuItem getMnýtmPhpKursuOgrencileri() {
+		if (mnýtmPhpKursuOgrencileri == null) {
+			mnýtmPhpKursuOgrencileri = new JMenuItem("PHP Kursu \u00D6\u011Frencileri");
+		}
+		return mnýtmPhpKursuOgrencileri;
+	}
+
+	private JMenuItem getMnýtmDreamveawerKursuOgrencileri() {
+		if (mnýtmDreamveawerKursuOgrencileri == null) {
+			mnýtmDreamveawerKursuOgrencileri = new JMenuItem("Dreamveawer Kursu \u00D6\u011Frencileri");
+		}
+		return mnýtmDreamveawerKursuOgrencileri;
+	}
+
+	private JPanel getPnlOgrBilgi() {
+		if (pnlOgrBilgi == null) {
+			pnlOgrBilgi = new JPanel();
+			pnlOgrBilgi.setBorder(new TitledBorder(null, "\u00D6\u011Fretmen Bilgileri", TitledBorder.LEADING,
+					TitledBorder.TOP, null, null));
+			pnlOgrBilgi.setBounds(10, 77, 553, 220);
+			pnlOgrBilgi.setLayout(null);
+			pnlOgrBilgi.add(getScrollOgrBilgi());
+
+		}
+		return pnlOgrBilgi;
+	}
+
+	private JScrollPane getScrollOgrInf() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+
+		}
+		return scrollPane;
+	}
+
+	private JScrollPane getScrollOgrBilgi() {
+		if (scrollOgrBilgi == null) {
+			scrollOgrBilgi = new JScrollPane();
+			scrollOgrBilgi.setBounds(10, 29, 533, 180);
+			scrollOgrBilgi.setViewportView(getTblOgrBilgi());
+		}
+		return scrollOgrBilgi;
+	}
+
+	private JTable getTblOgrBilgi() {
+		if (tblOgrBilgi == null) {
+			tblOgrBilgi = new JTable();
+		}
+		return tblOgrBilgi;
+	}
+}
