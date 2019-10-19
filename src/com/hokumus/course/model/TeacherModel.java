@@ -22,7 +22,15 @@ public class TeacherModel extends BaseEntity{
 	private String password;
 	private String cellPhone;
 	private String email;
+	private CourseNames coursenames;
 	private UserPermission permission;
+	public UserPermission getPermission() {
+		return permission;
+	}
+	public void setPermission(UserPermission permission) {
+		this.permission = permission;
+	}
+	private String egitimdali;
 	
 	@SequenceGenerator(name = "seq_teacher_id",initialValue = 1,allocationSize = 1,sequenceName = "seq_teacher_id")
 	@GeneratedValue(generator = "seq_teacher_id",strategy = GenerationType.SEQUENCE)
@@ -75,12 +83,20 @@ public class TeacherModel extends BaseEntity{
 	}
 	
 	@Enumerated
-	@JoinColumn(name = "permision_type")
-	public UserPermission getPermission() {
-		return permission;
+	@JoinColumn(name = "Course_Names")	
+	public CourseNames getCoursenames() {
+		return coursenames;
 	}
-	public void setPermission(UserPermission permission) {
-		this.permission = permission;
+	public void setCoursenames(CourseNames coursenames) {
+		this.coursenames = coursenames;
+	}
+	
+	@Column(name = "egitim_dali",length = 100)
+	public String getEgitimdali() {
+		return egitimdali;
+	}
+	public void setEgitimdali(String egitimdali) {
+		this.egitimdali = egitimdali;
 	}
 	
 	

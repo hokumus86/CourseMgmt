@@ -275,6 +275,7 @@ public class AdminFrame extends JFrame {
 			
 			cmbPermision.setBounds(477, 71, 116, 24);
 			cmbPermision.setModel(model);
+			
 		}
 		return cmbPermision;
 	}

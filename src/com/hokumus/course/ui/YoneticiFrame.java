@@ -2,12 +2,14 @@ package com.hokumus.course.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,8 +18,20 @@ import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.dao.CourseModelDao;
 import com.hokumus.course.dao.TeacherModelDao;
+import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.CourseModel;
+import com.hokumus.course.model.CourseNames;
 import com.hokumus.course.model.TeacherModel;
+import com.hokumus.course.model.UserModel;
+import com.hokumus.course.model.UserPermission;
+import com.hokumus.course.utils.CourseUtils;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class YoneticiFrame extends JFrame {
 	private JMenuBar menuBar;
@@ -37,6 +51,17 @@ public class YoneticiFrame extends JFrame {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollOgrBilgi;
 	private JTable tblOgrBilgi;
+	private JMenuItem mnitmretmenEkle;
+	private JLabel lblOgrAdi;
+	private JLabel lblOgrSoyadi;
+	private JLabel lblEgitimDali;
+	private JLabel lblTelefonNo;
+	private JTextField txtOgrAdi;
+	private JTextField txtOgrSoyadi;
+	private JTextField txtTelefonNo;
+	private JComboBox cmbEgitimDali;
+	private JButton btnOgrEkle;
+	private JPanel panel;
 
 	public YoneticiFrame() {
 
@@ -45,11 +70,12 @@ public class YoneticiFrame extends JFrame {
 
 	private void initialize() {
 		setTitle("Yönetici Yönetim Paneli");
-		setSize(600, 450);
+		setSize(600, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getMenuBar_1());
 		getContentPane().add(getPnlOgrBilgi());
+		getContentPane().add(getPanel());
 
 	}
 
@@ -67,6 +93,7 @@ public class YoneticiFrame extends JFrame {
 	private JMenu getMnogretmenler() {
 		if (mnogretmenler == null) {
 			mnogretmenler = new JMenu("\u00D6\u011Fretmenler");
+			mnogretmenler.add(getMnitmretmenEkle());
 			mnogretmenler.add(getMnýtmHuseyinOkumus());
 		}
 		return mnogretmenler;
@@ -200,9 +227,9 @@ public class YoneticiFrame extends JFrame {
 	private JPanel getPnlOgrBilgi() {
 		if (pnlOgrBilgi == null) {
 			pnlOgrBilgi = new JPanel();
+			pnlOgrBilgi.setBounds(10, 77, 553, 220);
 			pnlOgrBilgi.setBorder(new TitledBorder(null, "\u00D6\u011Fretmen Bilgileri", TitledBorder.LEADING,
 					TitledBorder.TOP, null, null));
-			pnlOgrBilgi.setBounds(10, 77, 553, 220);
 			pnlOgrBilgi.setLayout(null);
 			pnlOgrBilgi.add(getScrollOgrBilgi());
 
@@ -232,5 +259,134 @@ public class YoneticiFrame extends JFrame {
 			tblOgrBilgi = new JTable();
 		}
 		return tblOgrBilgi;
+	}
+	private JMenuItem getMnitmretmenEkle() {
+		if (mnitmretmenEkle == null) {
+			mnitmretmenEkle = new JMenuItem("\u00D6\u011Fretmen Ekle");
+			mnitmretmenEkle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+				
+				}
+				
+			});
+		}
+		return mnitmretmenEkle;
+	}
+	
+	private JLabel getLblOgrAdi() {
+		if (lblOgrAdi == null) {
+			lblOgrAdi = new JLabel("\u00D6\u011Fretmenin Ad\u0131 :");
+			lblOgrAdi.setBounds(10, 22, 126, 14);
+		}
+		return lblOgrAdi;
+	}
+	private JLabel getLblOgrSoyadi() {
+		if (lblOgrSoyadi == null) {
+			lblOgrSoyadi = new JLabel("\u00D6\u011Fretmenin Soyad\u0131 :");
+			lblOgrSoyadi.setBounds(10, 47, 126, 14);
+		}
+		return lblOgrSoyadi;
+	}
+	private JLabel getLblEgitimDali() {
+		if (lblEgitimDali == null) {
+			lblEgitimDali = new JLabel("E\u011Fitim Dal\u0131 :");
+			lblEgitimDali.setBounds(10, 72, 126, 14);
+		}
+		return lblEgitimDali;
+	}
+	private JLabel getLblTelefonNo() {
+		if (lblTelefonNo == null) {
+			lblTelefonNo = new JLabel("Telefon No :");
+			lblTelefonNo.setBounds(10, 97, 126, 14);
+		}
+		return lblTelefonNo;
+	}
+	private JTextField getTxtOgrAdi() {
+		if (txtOgrAdi == null) {
+			txtOgrAdi = new JTextField();
+			txtOgrAdi.setBounds(155, 22, 111, 20);
+			txtOgrAdi.setColumns(10);
+		}
+		return txtOgrAdi;
+	}
+	private JTextField getTxtOgrSoyadi() {
+		if (txtOgrSoyadi == null) {
+			txtOgrSoyadi = new JTextField();
+			txtOgrSoyadi.setBounds(155, 47, 111, 20);
+			txtOgrSoyadi.setColumns(10);
+		}
+		return txtOgrSoyadi;
+	}
+	private JTextField getTxtTelefonNo() {
+		if (txtTelefonNo == null) {
+			txtTelefonNo = new JTextField();
+			txtTelefonNo.setBounds(155, 97, 111, 20);
+			txtTelefonNo.setColumns(10);
+		}
+		return txtTelefonNo;
+	}
+	private JComboBox getCmbEgitimDali() {
+		if (cmbEgitimDali == null) {
+			cmbEgitimDali = new JComboBox();
+			
+			DefaultComboBoxModel coursenames = new DefaultComboBoxModel(CourseNames.values());
+			
+			cmbEgitimDali.setBounds(155, 72, 111, 20);
+			cmbEgitimDali.setModel(coursenames);
+		}
+		return cmbEgitimDali;
+	}
+	private JButton getBtnOgrEkle() {
+		if (btnOgrEkle == null) {
+			btnOgrEkle = new JButton("Ekle");
+			btnOgrEkle.setBounds(155, 134, 111, 23);
+			btnOgrEkle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					btnSave_Action_PerFormed();
+				}
+			});
+		}
+		return btnOgrEkle;
+	}
+	protected void btnSave_Action_PerFormed() {
+		if(txtOgrAdi.getText().equals("")) {
+			JOptionPane.showMessageDialog(YoneticiFrame.this, "Kullanýcý Adý Boþ Geçilemez!!!");
+			return;
+		}
+		if(txtOgrSoyadi.getText().equals("")) {
+			JOptionPane.showMessageDialog(YoneticiFrame.this, "Sifre Boþ Geçilemez!!!");
+			return;
+		}
+		TeacherModelDao dao = new TeacherModelDao();
+		TeacherModel temp = new TeacherModel();
+		temp.setUserName(txtOgrAdi.getText());
+		temp.setPassword(txtOgrSoyadi.getText());
+		temp.setEgitimdali(cmbEgitimDali.getSelectedItem().toString());
+		temp.setCellPhone(txtTelefonNo.getText());
+		temp.setCreatedTime(Calendar.getInstance().getTime());
+		temp.setCreaterBy(CourseUtils.loginedUser2.getUserName());
+		dao.save(temp);
+		
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.addComponentListener(new ComponentAdapter() {
+				
+				
+			});
+			panel.setBounds(20, 308, 543, 220);
+			panel.setLayout(null);
+			panel.add(getLblOgrAdi());
+			panel.add(getLblOgrSoyadi());
+			panel.add(getLblEgitimDali());
+			panel.add(getLblTelefonNo());
+			panel.add(getTxtOgrAdi());
+			panel.add(getTxtOgrSoyadi());
+			panel.add(getTxtTelefonNo());
+			panel.add(getCmbEgitimDali());
+			panel.add(getBtnOgrEkle());
+		}
+		return panel;
 	}
 }
