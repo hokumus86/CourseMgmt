@@ -70,5 +70,19 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 			return null;
 		}
 	}
+	
+	@Override
+	public boolean delete(T temp) {
+		try {
+			openSession();
+			ss.delete(temp);
+			closeSession();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			closeSessionForRollback();
+			return false;
+		}
+	}
 
 }

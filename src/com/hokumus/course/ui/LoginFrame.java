@@ -5,6 +5,7 @@ import javax.swing.JTextField;
 
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
+import com.hokumus.course.utils.CourseUtils;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -77,8 +78,9 @@ public class LoginFrame extends JFrame {
 				isUserNameValid = true;
 				if (liste.get(i).getPassword().equals(txtSifre.getText())) {
 					UserModel loginedUser= liste.get(i);
-					JOptionPane.showMessageDialog(LoginFrame.this, "Hoþgeldiniz");
-					new MainFrame(loginedUser).setVisible(true);;
+					CourseUtils.loginedUser = loginedUser;
+					//JOptionPane.showMessageDialog(LoginFrame.this, "Hoþgeldiniz");
+					new MainFrame().setVisible(true);;
 					isPasswordValid = true;
 					break;
 				} else {

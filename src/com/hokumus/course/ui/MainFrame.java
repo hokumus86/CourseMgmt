@@ -4,25 +4,25 @@ import javax.swing.JFrame;
 
 import com.hokumus.course.model.UserModel;
 import com.hokumus.course.model.UserPermission;
+import com.hokumus.course.utils.CourseUtils;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MainFrame extends JFrame {
-	private UserModel loginedUser;
 	private JButton btnAdmin;
 	private JButton btnManager;
 	private JButton btnStudent;
 	private JButton btnTeacher;
 
-	public MainFrame(UserModel temp) {
-		this.loginedUser = temp;
+	public MainFrame() {
+		
 		intialize();
 	}
 
 	private void intialize() {
-		setTitle("Course Ana Ekran  :" + loginedUser.getUserName() + " - " + loginedUser.getPermission());
+		setTitle("Course Ana Ekran  :" + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getPermission());
 		setSize(637, 553);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(getBtnYnetici());
 		getContentPane().add(getBtnOgrenci());
 		getContentPane().add(getBtnOgretmen());
-		generateRoolForPermision(loginedUser.getPermission());
+		generateRoolForPermision(CourseUtils.loginedUser.getPermission());
 	}
 
 	private void generateRoolForPermision(UserPermission permission) {
