@@ -11,7 +11,5 @@
 		<property name="hibernate.show_sql">true</property>
 
 		<mapping class="com.hokumus.course.model.UserModel"></mapping>
-		<mapping class="com.hokumus.course.model.TeacherModel"></mapping>
-		<mapping class="com.hokumus.course.model.CourseModel"></mapping>
 	</session-factory>
 </hibernate-configuration>
