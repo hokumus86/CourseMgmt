@@ -15,8 +15,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.hokumus.course.model.humenresources.Employee;
-import com.hokumus.course.model.humenresources.Teacher;
 import com.hokumus.course.model.inventory.Inventory;
+import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.model.utils.BaseEntity;
 
 @Entity

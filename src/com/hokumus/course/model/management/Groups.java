@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.hokumus.course.model.humenresources.Teacher;
+import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.model.utils.BaseEntity;
 
 @Entity

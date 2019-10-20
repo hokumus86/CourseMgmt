@@ -1,4 +1,4 @@
-package com.hokumus.course.model.humenresources;
+package com.hokumus.course.model.teacher;
 
 import java.math.BigDecimal;
 import java.util.Date;
