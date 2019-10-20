@@ -33,7 +33,7 @@ import java.awt.event.MouseEvent;
 public class AdminFrame extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu mnKullanc;
-	private JMenuItem mnýtmEkle;
+	private JMenuItem mnutmEkle;
 	private JPanel pblUserInf;
 	private JPanel pnlUserSettings;
 	private JScrollPane scrollUserInf;
@@ -61,7 +61,7 @@ public class AdminFrame extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("Admin Yöetim Paneli");
+		setTitle("Admin Yï¿½etim Paneli");
 		setSize(678, 801);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -84,16 +84,16 @@ public class AdminFrame extends JFrame {
 	private JMenu getMnKullanc() {
 		if (mnKullanc == null) {
 			mnKullanc = new JMenu("Kullan\u0131c\u0131");
-			mnKullanc.add(getMnýtmEkle());
+			mnKullanc.add(getMnutmEkle());
 		}
 		return mnKullanc;
 	}
 
-	private JMenuItem getMnýtmEkle() {
-		if (mnýtmEkle == null) {
-			mnýtmEkle = new JMenuItem("Ekle");
+	private JMenuItem getMnutmEkle() {
+		if (mnutmEkle == null) {
+			mnutmEkle = new JMenuItem("Ekle");
 		}
-		return mnýtmEkle;
+		return mnutmEkle;
 	}
 
 	private JPanel getPblUserInf() {
@@ -186,7 +186,7 @@ public class AdminFrame extends JFrame {
 	protected void btnGetAllUserInf_ActionPerformed() {
 		UserModelDao dao = new UserModelDao();
 		List<UserModel> liste = dao.getAll(new UserModel());
-		String[] columnNames = { "id", "Adý", "Kullanýcý Adý", "Pasword", "Yetki", "E mail", "Telefon No" };
+		String[] columnNames = { "id", "Adï¿½", "Kullanï¿½cï¿½ Adï¿½", "Pasword", "Yetki", "E mail", "Telefon No" };
 		String[][] data = new String[liste.size()][columnNames.length];
 		for (int i = 0; i < liste.size(); i++) {
 			data[i][0] = "" + liste.get(i).getId();
@@ -293,11 +293,11 @@ public class AdminFrame extends JFrame {
 	}
 	protected void btnSave_Action_PerFormed() {
 		if(txtUserName.getText().equals("")) {
-			JOptionPane.showMessageDialog(AdminFrame.this, "Kullanýcý Adý Boþ Geçilemez!!!");
+			JOptionPane.showMessageDialog(AdminFrame.this, "Kullanï¿½cï¿½ Adï¿½ Boï¿½ Geï¿½ilemez!!!");
 			return;
 		}
 		if(txtPassword.getText().equals("")) {
-			JOptionPane.showMessageDialog(AdminFrame.this, "Sifre Boþ Geçilemez!!!");
+			JOptionPane.showMessageDialog(AdminFrame.this, "Sifre Boï¿½ Geï¿½ilemez!!!");
 			return;
 		}
 		UserModelDao dao = new UserModelDao();

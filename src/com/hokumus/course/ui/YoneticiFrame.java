@@ -2,10 +2,15 @@ package com.hokumus.course.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -13,40 +18,31 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.dao.CourseModelDao;
 import com.hokumus.course.dao.TeacherModelDao;
-import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.CourseModel;
 import com.hokumus.course.model.CourseNames;
 import com.hokumus.course.model.TeacherModel;
-import com.hokumus.course.model.UserModel;
-import com.hokumus.course.model.UserPermission;
 import com.hokumus.course.utils.CourseUtils;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class YoneticiFrame extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu mnogretmenler;
-	private JMenuItem mnýtmHuseyinOkumus;
+	private JMenuItem mntmHuseyinOkumus;
 	private JMenu mnKurslar;
-	private JMenuItem mnýtmJavaKursu;
-	private JMenuItem mnýtmCKursu;
-	private JMenuItem mnýtmPhpKursu;
-	private JMenuItem mnýtmDreamveawerKursu;
+	private JMenuItem mntmJavaKursu;
+	private JMenuItem mntmCKursu;
+	private JMenuItem mntmPhpKursu;
+	private JMenuItem mntmDreamveawerKursu;
 	private JMenu mnrenciler;
-	private JMenuItem mnýtmJavaKursuOgrencileri;
-	private JMenuItem mnýtmCKursuOgrencileri;
-	private JMenuItem mnýtmPhpKursuOgrencileri;
-	private JMenuItem mnýtmDreamveawerKursuOgrencileri;
+	private JMenuItem mntmJavaKursuOgrencileri;
+	private JMenuItem mntmCKursuOgrencileri;
+	private JMenuItem mntmPhpKursuOgrencileri;
+	private JMenuItem mntmDreamveawerKursuOgrencileri;
 	private JPanel pnlOgrBilgi;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollOgrBilgi;
@@ -69,7 +65,7 @@ public class YoneticiFrame extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("Yönetici Yönetim Paneli");
+		setTitle("Ynetici Ynetim Paneli");
 		setSize(600, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -94,19 +90,19 @@ public class YoneticiFrame extends JFrame {
 		if (mnogretmenler == null) {
 			mnogretmenler = new JMenu("\u00D6\u011Fretmenler");
 			mnogretmenler.add(getMnitmretmenEkle());
-			mnogretmenler.add(getMnýtmHuseyinOkumus());
+			mnogretmenler.add(getMntmHuseyinOkumus());
 		}
 		return mnogretmenler;
 	}
 
-	private JMenuItem getMnýtmHuseyinOkumus() {
-		if (mnýtmHuseyinOkumus == null) {
-			mnýtmHuseyinOkumus = new JMenuItem("T\u00FCm \u00D6\u011Fretmenler");
-			mnýtmHuseyinOkumus.addActionListener(new ActionListener() {
+	private JMenuItem getMntmHuseyinOkumus() {
+		if (mntmHuseyinOkumus == null) {
+			mntmHuseyinOkumus = new JMenuItem("T\u00FCm \u00D6\u011Fretmenler");
+			mntmHuseyinOkumus.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					TeacherModelDao dao = new TeacherModelDao();
 					List<TeacherModel> liste = dao.getAll(new TeacherModel());
-					String[] columnNames = { "id", "Adý", "Kullanýcý Adý", "Pasword", "Yetki", "E mail", "Telefon No" };
+					String[] columnNames = { "id", "Ad", "Kullanc Ad", "Pasword", "Yetki", "E mail", "Telefon No" };
 					String[][] data = new String[liste.size()][columnNames.length];
 					for (int i = 0; i < liste.size(); i++) {
 						data[i][0] = "" + liste.get(i).getId();
@@ -122,29 +118,29 @@ public class YoneticiFrame extends JFrame {
 				}
 			});
 		}
-		return mnýtmHuseyinOkumus;
+		return mntmHuseyinOkumus;
 	}
 
 	private JMenu getMnKurslar() {
 		if (mnKurslar == null) {
 			mnKurslar = new JMenu("Kurslar");
-			mnKurslar.add(getMnýtmJavaKursu());
-			mnKurslar.add(getMnýtmCKursu());
-			mnKurslar.add(getMnýtmPhpKursu());
-			mnKurslar.add(getMnýtmDreamveawerKursu());
+			mnKurslar.add(getmntmJavaKursu());
+			mnKurslar.add(getMntmCKursu());
+			mnKurslar.add(getMntmPhpKursu());
+			mnKurslar.add(getMntmDreamveawerKursu());
 		}
 		return mnKurslar;
 	}
 
-	private JMenuItem getMnýtmJavaKursu() {
-		if (mnýtmJavaKursu == null) {
-			mnýtmJavaKursu = new JMenuItem("Java Kursu");
-			mnýtmJavaKursu.addActionListener(new ActionListener() {
+	private JMenuItem getmntmJavaKursu() {
+		if (mntmJavaKursu == null) {
+			mntmJavaKursu = new JMenuItem("Java Kursu");
+			mntmJavaKursu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
 					CourseModelDao dao = new CourseModelDao();
 					List<CourseModel> liste = dao.getAll(new CourseModel());
-					String[] columnNames = { "id", "Adý", "Kullanýcý Adý", "Pasword", "Yetki", "E mail", "Telefon No" };
+					String[] columnNames = { "id", "Ad", "Kullanc Ad", "Pasword", "Yetki", "E mail", "Telefon No" };
 					String[][] data = new String[liste.size()][columnNames.length];
 					for (int i = 0; i < liste.size(); i++) {
 						data[i][0] = "" + liste.get(i).getId();
@@ -161,67 +157,67 @@ public class YoneticiFrame extends JFrame {
 				}
 			});
 		}
-		return mnýtmJavaKursu;
+		return mntmJavaKursu;
 	}
 
-	private JMenuItem getMnýtmCKursu() {
-		if (mnýtmCKursu == null) {
-			mnýtmCKursu = new JMenuItem("C# Kursu");
+	private JMenuItem getMntmCKursu() {
+		if (mntmCKursu == null) {
+			mntmCKursu = new JMenuItem("C# Kursu");
 		}
-		return mnýtmCKursu;
+		return mntmCKursu;
 	}
 
-	private JMenuItem getMnýtmPhpKursu() {
-		if (mnýtmPhpKursu == null) {
-			mnýtmPhpKursu = new JMenuItem("PHP Kursu");
+	private JMenuItem getMntmPhpKursu() {
+		if (mntmPhpKursu == null) {
+			mntmPhpKursu = new JMenuItem("PHP Kursu");
 		}
-		return mnýtmPhpKursu;
+		return mntmPhpKursu;
 	}
 
-	private JMenuItem getMnýtmDreamveawerKursu() {
-		if (mnýtmDreamveawerKursu == null) {
-			mnýtmDreamveawerKursu = new JMenuItem("Dreamveawer Kursu");
+	private JMenuItem getMntmDreamveawerKursu() {
+		if (mntmDreamveawerKursu == null) {
+			mntmDreamveawerKursu = new JMenuItem("Dreamveawer Kursu");
 		}
-		return mnýtmDreamveawerKursu;
+		return mntmDreamveawerKursu;
 	}
 
 	private JMenu getMnrenciler() {
 		if (mnrenciler == null) {
 			mnrenciler = new JMenu("Kurs \u00D6\u011Frencileri");
-			mnrenciler.add(getMnýtmJavaKursuOgrencileri());
-			mnrenciler.add(getMnýtmCKursuOgrencileri());
-			mnrenciler.add(getMnýtmPhpKursuOgrencileri());
-			mnrenciler.add(getMnýtmDreamveawerKursuOgrencileri());
+			mnrenciler.add(getmntmJavaKursuOgrencileri());
+			mnrenciler.add(getMntmCKursuOgrencileri());
+			mnrenciler.add(getMntmPhpKursuOgrencileri());
+			mnrenciler.add(getMntmDreamveawerKursuOgrencileri());
 		}
 		return mnrenciler;
 	}
 
-	private JMenuItem getMnýtmJavaKursuOgrencileri() {
-		if (mnýtmJavaKursuOgrencileri == null) {
-			mnýtmJavaKursuOgrencileri = new JMenuItem("Java Kursu \u00D6\u011Frencileri");
+	private JMenuItem getmntmJavaKursuOgrencileri() {
+		if (mntmJavaKursuOgrencileri == null) {
+			mntmJavaKursuOgrencileri = new JMenuItem("Java Kursu \u00D6\u011Frencileri");
 		}
-		return mnýtmJavaKursuOgrencileri;
+		return mntmJavaKursuOgrencileri;
 	}
 
-	private JMenuItem getMnýtmCKursuOgrencileri() {
-		if (mnýtmCKursuOgrencileri == null) {
-			mnýtmCKursuOgrencileri = new JMenuItem("C# Kursu \u00D6\u011Frencileri");
+	private JMenuItem getMntmCKursuOgrencileri() {
+		if (mntmCKursuOgrencileri == null) {
+			mntmCKursuOgrencileri = new JMenuItem("C# Kursu \u00D6\u011Frencileri");
 		}
-		return mnýtmCKursuOgrencileri;
+		return mntmCKursuOgrencileri;
 	}
 
-	private JMenuItem getMnýtmPhpKursuOgrencileri() {
-		if (mnýtmPhpKursuOgrencileri == null) {
-			mnýtmPhpKursuOgrencileri = new JMenuItem("PHP Kursu \u00D6\u011Frencileri");
+	private JMenuItem getMntmPhpKursuOgrencileri() {
+		if (mntmPhpKursuOgrencileri == null) {
+			mntmPhpKursuOgrencileri = new JMenuItem("PHP Kursu \u00D6\u011Frencileri");
 		}
-		return mnýtmPhpKursuOgrencileri;
+		return mntmPhpKursuOgrencileri;
 	}
 
-	private JMenuItem getMnýtmDreamveawerKursuOgrencileri() {
-		if (mnýtmDreamveawerKursuOgrencileri == null) {
-			mnýtmDreamveawerKursuOgrencileri = new JMenuItem("Dreamveawer Kursu \u00D6\u011Frencileri");
+	private JMenuItem getMntmDreamveawerKursuOgrencileri() {
+		if (mntmDreamveawerKursuOgrencileri == null) {
+			mntmDreamveawerKursuOgrencileri = new JMenuItem("Dreamveawer Kursu \u00D6\u011Frencileri");
 		}
-		return mnýtmDreamveawerKursuOgrencileri;
+		return mntmDreamveawerKursuOgrencileri;
 	}
 
 	private JPanel getPnlOgrBilgi() {
@@ -260,19 +256,20 @@ public class YoneticiFrame extends JFrame {
 		}
 		return tblOgrBilgi;
 	}
+
 	private JMenuItem getMnitmretmenEkle() {
 		if (mnitmretmenEkle == null) {
 			mnitmretmenEkle = new JMenuItem("\u00D6\u011Fretmen Ekle");
 			mnitmretmenEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-				
+
 				}
-				
+
 			});
 		}
 		return mnitmretmenEkle;
 	}
-	
+
 	private JLabel getLblOgrAdi() {
 		if (lblOgrAdi == null) {
 			lblOgrAdi = new JLabel("\u00D6\u011Fretmenin Ad\u0131 :");
@@ -280,6 +277,7 @@ public class YoneticiFrame extends JFrame {
 		}
 		return lblOgrAdi;
 	}
+
 	private JLabel getLblOgrSoyadi() {
 		if (lblOgrSoyadi == null) {
 			lblOgrSoyadi = new JLabel("\u00D6\u011Fretmenin Soyad\u0131 :");
@@ -287,6 +285,7 @@ public class YoneticiFrame extends JFrame {
 		}
 		return lblOgrSoyadi;
 	}
+
 	private JLabel getLblEgitimDali() {
 		if (lblEgitimDali == null) {
 			lblEgitimDali = new JLabel("E\u011Fitim Dal\u0131 :");
@@ -294,6 +293,7 @@ public class YoneticiFrame extends JFrame {
 		}
 		return lblEgitimDali;
 	}
+
 	private JLabel getLblTelefonNo() {
 		if (lblTelefonNo == null) {
 			lblTelefonNo = new JLabel("Telefon No :");
@@ -301,6 +301,7 @@ public class YoneticiFrame extends JFrame {
 		}
 		return lblTelefonNo;
 	}
+
 	private JTextField getTxtOgrAdi() {
 		if (txtOgrAdi == null) {
 			txtOgrAdi = new JTextField();
@@ -309,6 +310,7 @@ public class YoneticiFrame extends JFrame {
 		}
 		return txtOgrAdi;
 	}
+
 	private JTextField getTxtOgrSoyadi() {
 		if (txtOgrSoyadi == null) {
 			txtOgrSoyadi = new JTextField();
@@ -317,6 +319,7 @@ public class YoneticiFrame extends JFrame {
 		}
 		return txtOgrSoyadi;
 	}
+
 	private JTextField getTxtTelefonNo() {
 		if (txtTelefonNo == null) {
 			txtTelefonNo = new JTextField();
@@ -325,17 +328,19 @@ public class YoneticiFrame extends JFrame {
 		}
 		return txtTelefonNo;
 	}
+
 	private JComboBox getCmbEgitimDali() {
 		if (cmbEgitimDali == null) {
 			cmbEgitimDali = new JComboBox();
-			
+
 			DefaultComboBoxModel coursenames = new DefaultComboBoxModel(CourseNames.values());
-			
+
 			cmbEgitimDali.setBounds(155, 72, 111, 20);
 			cmbEgitimDali.setModel(coursenames);
 		}
 		return cmbEgitimDali;
 	}
+
 	private JButton getBtnOgrEkle() {
 		if (btnOgrEkle == null) {
 			btnOgrEkle = new JButton("Ekle");
@@ -348,13 +353,14 @@ public class YoneticiFrame extends JFrame {
 		}
 		return btnOgrEkle;
 	}
+
 	protected void btnSave_Action_PerFormed() {
-		if(txtOgrAdi.getText().equals("")) {
-			JOptionPane.showMessageDialog(YoneticiFrame.this, "Kullanýcý Adý Boþ Geçilemez!!!");
+		if (txtOgrAdi.getText().equals("")) {
+			JOptionPane.showMessageDialog(YoneticiFrame.this, "Kullanc Ad Bo Geilemez!!!");
 			return;
 		}
-		if(txtOgrSoyadi.getText().equals("")) {
-			JOptionPane.showMessageDialog(YoneticiFrame.this, "Sifre Boþ Geçilemez!!!");
+		if (txtOgrSoyadi.getText().equals("")) {
+			JOptionPane.showMessageDialog(YoneticiFrame.this, "Sifre Bo Geilemez!!!");
 			return;
 		}
 		TeacherModelDao dao = new TeacherModelDao();
@@ -366,14 +372,14 @@ public class YoneticiFrame extends JFrame {
 		temp.setCreatedTime(Calendar.getInstance().getTime());
 		temp.setCreaterBy(CourseUtils.loginedUser2.getUserName());
 		dao.save(temp);
-		
+
 	}
+
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.addComponentListener(new ComponentAdapter() {
-				
-				
+
 			});
 			panel.setBounds(20, 308, 543, 220);
 			panel.setLayout(null);
