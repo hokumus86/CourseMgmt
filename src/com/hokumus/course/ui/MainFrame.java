@@ -15,14 +15,17 @@ public class MainFrame extends JFrame {
 	private JButton btnManager;
 	private JButton btnStudent;
 	private JButton btnTeacher;
+	
 
 	public MainFrame() {
-		
+
 		intialize();
+		
 	}
 
 	private void intialize() {
-		setTitle("Course Ana Ekran  :" + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getPermission());
+		setTitle("Course Ana Ekran  :" + CourseUtils.loginedUser.getUserName() + " - "
+				+ CourseUtils.loginedUser.getPermission());
 		setSize(637, 553);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -32,7 +35,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(getBtnOgretmen());
 		generateRoolForPermision(CourseUtils.loginedUser.getPermission());
 	}
-
+	
 	private void generateRoolForPermision(UserPermission permission) {
 		switch (permission) {
 		case ADMIN:
@@ -77,6 +80,7 @@ public class MainFrame extends JFrame {
 			btnManager.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					new ManagementFrame().setVisible(true);
+
 				}
 			});
 			btnManager.setBounds(335, 26, 227, 125);

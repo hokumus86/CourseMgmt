@@ -5,12 +5,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hokumus.course.model.UserPermission;
 import com.hokumus.course.model.utils.BaseEntity;
 
 @Entity
@@ -25,8 +28,10 @@ public class Teacher extends BaseEntity{
     private String mail;
     private BigDecimal ucret;
     private Date kayitTarihi;
+  
 
-    @Id
+
+	@Id
     @SequenceGenerator(name = "seq_teacher", allocationSize = 1, sequenceName = "seq_teacher")
     @GeneratedValue(generator = "seq_teacher", strategy = GenerationType.SEQUENCE)
     public Long getId() {

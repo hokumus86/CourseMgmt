@@ -18,12 +18,19 @@ import com.hokumus.course.utils.CourseUtils;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Calendar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ManagementFrame extends JFrame{
 	private JMenuBar menuBar;
@@ -51,6 +58,12 @@ public class ManagementFrame extends JFrame{
 	private JButton btnKaydet;
 	private JButton btnGuncelle;
 	private JButton btnSil;
+	private int selectedRowId;
+	private JScrollPane scrollTeacher;
+	private JTable tblTeacher;
+	private JButton btnHepsiniGetir;
+	
+	
 	
 	public ManagementFrame() {
 
@@ -59,9 +72,12 @@ public class ManagementFrame extends JFrame{
 	
 	private void initialize() {
 		getContentPane().setLayout(null);
-		setSize(500,500);
+		setSize(500,635);
 		getContentPane().add(getMenuBar_1());
 		getContentPane().add(getPnlGirisEkrani());
+		getContentPane().add(getScrollTeacher());
+		getContentPane().add(getBtnHepsiniGetir());
+		setVisible(false);
 	}
 	
 	private JMenuBar getMenuBar_1() {
@@ -92,6 +108,11 @@ public class ManagementFrame extends JFrame{
 	private JMenuItem getMnitmOgrKGS() {
 		if (mnitmOgrKGS == null) {
 			mnitmOgrKGS = new JMenuItem("Öğretmen K-G-S");
+			mnitmOgrKGS.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					pnlGirisEkrani.setVisible(true);
+				}
+			});
 		}
 		return mnitmOgrKGS;
 	}
@@ -117,6 +138,7 @@ public class ManagementFrame extends JFrame{
 		if (pnlGirisEkrani == null) {
 			pnlGirisEkrani = new JPanel();
 			pnlGirisEkrani.addComponentListener(new ComponentAdapter() {
+			
 			});
 			pnlGirisEkrani.setBorder(new TitledBorder(null, "\u00D6\u011Fretmen Bilgileri Giri\u015F Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			pnlGirisEkrani.setBounds(10, 32, 464, 318);
@@ -138,6 +160,7 @@ public class ManagementFrame extends JFrame{
 			pnlGirisEkrani.add(getBtnKaydet());
 			pnlGirisEkrani.add(getBtnGuncelle());
 			pnlGirisEkrani.add(getBtnSil());
+
 		}
 		return pnlGirisEkrani;
 	}
@@ -252,11 +275,11 @@ public class ManagementFrame extends JFrame{
 				public void actionPerformed(ActionEvent arg0) {
 					
 					if(txtOgrAdi.getText().equals("")) {
-						JOptionPane.showMessageDialog(ManagementFrame.this, "Kullan�c� Ad� Bo� Ge�ilemez!!!");
+						JOptionPane.showMessageDialog(ManagementFrame.this, "Kullanıcı Adı Boş Geçilemez!!!");
 						return;
 					}
 					if(txtOgrSoyadi.getText().equals("")) {
-						JOptionPane.showMessageDialog(ManagementFrame.this, "Sifre Bo� Ge�ilemez!!!");
+						JOptionPane.showMessageDialog(ManagementFrame.this, "Sifre Boş Geçilemez!!!");
 						return;
 					}
 					ManagementModelDao dao = new ManagementModelDao();
@@ -278,15 +301,91 @@ public class ManagementFrame extends JFrame{
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
 			btnGuncelle = new JButton("Güncelle");
+			btnGuncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					btnUpdate_Action_Performed();
+				}
+			});
 			btnGuncelle.setBounds(333, 77, 89, 23);
 		}
 		return btnGuncelle;
 	}
+	
+	protected void btnUpdate_Action_Performed() {
+		ManagementModelDao dao = new ManagementModelDao();
+		Teacher temp = new Teacher();
+		temp.setAd(txtOgrAdi.getText());
+		temp.setSoyad(txtOgrSoyadi.getText());
+		temp.setMail(txtEmail.getText());
+		temp.setTel(txtTelefonNo.getText());
+		temp.setCreatedTime(Calendar.getInstance().getTime());
+		temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
+		dao.update(temp);
+		
+	}
+	
 	private JButton getBtnSil() {
 		if (btnSil == null) {
 			btnSil = new JButton("Sil");
-			btnSil.setBounds(333, 129, 89, 23);
+			btnSil.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					btnDelete_ActionPerformed();
+				}
+			});
+			btnSil.setBounds(333, 121, 89, 23);
 		}
 		return btnSil;
+		
+	}
+	protected void btnDelete_ActionPerformed() {
+		UserModelDao dao = new UserModelDao();
+		UserModel temp = new UserModel();
+		temp.setId(selectedRowId);
+		dao.delete(temp);
+}
+	private JScrollPane getScrollTeacher() {
+		if (scrollTeacher == null) {
+			scrollTeacher = new JScrollPane();
+			scrollTeacher.setBounds(20, 361, 442, 189);
+			scrollTeacher.setViewportView(getTblTeacher());
+		}
+		return scrollTeacher;
+	}
+	private JTable getTblTeacher() {
+		if (tblTeacher == null) {
+			tblTeacher = new JTable();
+			tblTeacher.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					tblTeacher_Row_Selected();
+				}
+			});
+			tblTeacher.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+				}
+			));
+		}
+		return tblTeacher;
+	}
+	protected void tblTeacher_Row_Selected() {
+		int row = tblTeacher.getSelectedRow();
+		selectedRowId = Integer.parseInt(tblTeacher.getModel().getValueAt(row, 0).toString());
+		txtOgrAdi.setText(tblTeacher.getModel().getValueAt(row, 1).toString());
+		txtOgrSoyadi.setText(tblTeacher.getModel().getValueAt(row, 2).toString());
+		txtpOgrAdres.setText(tblTeacher.getModel().getValueAt(row, 3).toString());
+		txtTelefonNo.setText(tblTeacher.getModel().getValueAt(row, 4).toString());
+		txtEmail.setText(tblTeacher.getModel().getValueAt(row, 5).toString());
+		txtOgrUcreti.setText(tblTeacher.getModel().getValueAt(row, 6).toString());
+		txtKayitTarihi.setText(tblTeacher.getModel().getValueAt(row, 7).toString());
+}
+	private JButton getBtnHepsiniGetir() {
+		if (btnHepsiniGetir == null) {
+			btnHepsiniGetir = new JButton("Hepsini Getir");
+			btnHepsiniGetir.setBounds(143, 562, 139, 23);
+		}
+		return btnHepsiniGetir;
 	}
 }
+
