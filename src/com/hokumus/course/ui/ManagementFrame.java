@@ -12,6 +12,7 @@ import com.hokumus.course.dao.ManagementModelDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
 import com.hokumus.course.model.UserPermission;
+import com.hokumus.course.model.management.Days;
 import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
 
@@ -32,6 +33,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.UIManager;
+import java.awt.Color;
 
 public class ManagementFrame extends JFrame{
 	private JMenuBar menuBar;
@@ -63,28 +66,47 @@ public class ManagementFrame extends JFrame{
 	private JScrollPane scrollTeacher;
 	private JTable tblTeacher;
 	private JButton btnHepsiniGetir;
+	private JPanel pnlKursEklemeEkrani;
+	private JLabel lblKursAdi;
+	private JLabel lblKursOgr;
+	private JLabel lblBasTarihi;
+	private JLabel lblSinifAdi;
+	private JLabel lblKursGunleri;
+	private JLabel lblrenciSays;
+	private JTextField txtKursAdi;
+	private JTextField txtKursOgr;
+	private JTextField txtBasTarihi;
+	private JTextField txtSinifAdi;
+	private JLabel lblBitTarihi;
+	private JTextField txtBitTarihi;
+	private JButton btnKaydetKurs;
+	private JButton btnGuncelleKurs;
+	private JButton btnSilKurs;
+	private JTextField txtOgrenciSayisi;
+	private JComboBox cmbKursGunleri;
 	
 	
 	
 	public ManagementFrame() {
 
 		initialize();
+		pnlGirisEkrani.setVisible(false);
+		pnlKursEklemeEkrani.setVisible(false);
 	}
 	
 	private void initialize() {
 		getContentPane().setLayout(null);
-		setSize(500,635);
+		setSize(600,700);
 		getContentPane().add(getMenuBar_1());
 		getContentPane().add(getPnlGirisEkrani());
-		getContentPane().add(getScrollTeacher());
-		getContentPane().add(getBtnHepsiniGetir());
+		getContentPane().add(getPnlKursEklemeEkrani());
 		setVisible(false);
 	}
 	
 	private JMenuBar getMenuBar_1() {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
-			menuBar.setBounds(0, 0, 484, 21);
+			menuBar.setBounds(0, 0, 584, 21);
 			menuBar.add(getMnDuzenle());
 			menuBar.add(getMnKursGruplari());
 		}
@@ -111,7 +133,9 @@ public class ManagementFrame extends JFrame{
 			mnitmOgrKGS = new JMenuItem("Öğretmen K-G-S");
 			mnitmOgrKGS.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+				//	pnlGirisEkrani.setVisible(false);
 					pnlGirisEkrani.setVisible(true);
+					pnlKursEklemeEkrani.setVisible(false);
 				}
 			});
 		}
@@ -120,6 +144,12 @@ public class ManagementFrame extends JFrame{
 	private JMenuItem getMnitmKursKGS() {
 		if (mnitmKursKGS == null) {
 			mnitmKursKGS = new JMenuItem("Kurs K-G-S");
+			mnitmKursKGS.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					pnlKursEklemeEkrani.setVisible(true);
+					pnlGirisEkrani.setVisible(false);
+				}
+			});
 		}
 		return mnitmKursKGS;
 	}
@@ -140,9 +170,13 @@ public class ManagementFrame extends JFrame{
 			pnlGirisEkrani = new JPanel();
 			pnlGirisEkrani.addComponentListener(new ComponentAdapter() {
 			
+				@Override
+				public void componentHidden(ComponentEvent arg0) {
+					pnlGirisEkrani.setVisible(false);
+				}
 			});
-			pnlGirisEkrani.setBorder(new TitledBorder(null, "\u00D6\u011Fretmen Bilgileri Giri\u015F Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			pnlGirisEkrani.setBounds(10, 32, 464, 318);
+			pnlGirisEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u00D6\u011Fretmen Bilgileri Kay\u0131t Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			pnlGirisEkrani.setBounds(10, 32, 564, 343);
 			pnlGirisEkrani.setLayout(null);
 			pnlGirisEkrani.add(getLblOgrAdi());
 			pnlGirisEkrani.add(getLblOgrSoyadi());
@@ -161,6 +195,8 @@ public class ManagementFrame extends JFrame{
 			pnlGirisEkrani.add(getBtnKaydet());
 			pnlGirisEkrani.add(getBtnGuncelle());
 			pnlGirisEkrani.add(getBtnSil());
+			pnlGirisEkrani.add(getBtnHepsiniGetir());
+			pnlGirisEkrani.add(getScrollTeacher());
 
 		}
 		return pnlGirisEkrani;
@@ -168,49 +204,49 @@ public class ManagementFrame extends JFrame{
 	private JLabel getLblOgrAdi() {
 		if (lblOgrAdi == null) {
 			lblOgrAdi = new JLabel("Öğretmen Adı :");
-			lblOgrAdi.setBounds(10, 31, 103, 14);
+			lblOgrAdi.setBounds(10, 31, 133, 14);
 		}
 		return lblOgrAdi;
 	}
 	private JLabel getLblOgrSoyadi() {
 		if (lblOgrSoyadi == null) {
 			lblOgrSoyadi = new JLabel("Öğretmen Soyadı :");
-			lblOgrSoyadi.setBounds(10, 56, 103, 14);
+			lblOgrSoyadi.setBounds(10, 56, 133, 14);
 		}
 		return lblOgrSoyadi;
 	}
 	private JLabel getLblOgrUcret() {
 		if (lblOgrUcret == null) {
 			lblOgrUcret = new JLabel("Öğretmen Ücreti :");
-			lblOgrUcret.setBounds(10, 251, 103, 14);
+			lblOgrUcret.setBounds(296, 90, 103, 14);
 		}
 		return lblOgrUcret;
 	}
 	private JLabel getLblTelefonNo() {
 		if (lblTelefonNo == null) {
 			lblTelefonNo = new JLabel("Telefon No :");
-			lblTelefonNo.setBounds(10, 195, 103, 14);
+			lblTelefonNo.setBounds(296, 31, 103, 14);
 		}
 		return lblTelefonNo;
 	}
 	private JLabel getLblEmail() {
 		if (lblEmail == null) {
 			lblEmail = new JLabel("Email :");
-			lblEmail.setBounds(10, 223, 103, 14);
+			lblEmail.setBounds(296, 62, 103, 14);
 		}
 		return lblEmail;
 	}
 	private JLabel getLblOgrAdres() {
 		if (lblOgrAdres == null) {
 			lblOgrAdres = new JLabel("Öğretmen Adres :");
-			lblOgrAdres.setBounds(10, 81, 103, 14);
+			lblOgrAdres.setBounds(10, 81, 133, 14);
 		}
 		return lblOgrAdres;
 	}
 	private JTextField getTxtOgrAdi() {
 		if (txtOgrAdi == null) {
 			txtOgrAdi = new JTextField();
-			txtOgrAdi.setBounds(123, 28, 133, 20);
+			txtOgrAdi.setBounds(153, 31, 133, 20);
 			txtOgrAdi.setColumns(10);
 		}
 		return txtOgrAdi;
@@ -219,7 +255,7 @@ public class ManagementFrame extends JFrame{
 		if (txtOgrSoyadi == null) {
 			txtOgrSoyadi = new JTextField();
 			txtOgrSoyadi.setColumns(10);
-			txtOgrSoyadi.setBounds(123, 53, 133, 20);
+			txtOgrSoyadi.setBounds(153, 56, 133, 20);
 		}
 		return txtOgrSoyadi;
 	}
@@ -227,7 +263,7 @@ public class ManagementFrame extends JFrame{
 		if (txtOgrUcreti == null) {
 			txtOgrUcreti = new JTextField();
 			txtOgrUcreti.setColumns(10);
-			txtOgrUcreti.setBounds(123, 248, 133, 20);
+			txtOgrUcreti.setBounds(409, 87, 133, 20);
 		}
 		return txtOgrUcreti;
 	}
@@ -235,7 +271,7 @@ public class ManagementFrame extends JFrame{
 		if (txtTelefonNo == null) {
 			txtTelefonNo = new JTextField();
 			txtTelefonNo.setColumns(10);
-			txtTelefonNo.setBounds(123, 192, 133, 20);
+			txtTelefonNo.setBounds(409, 28, 133, 20);
 		}
 		return txtTelefonNo;
 	}
@@ -243,21 +279,21 @@ public class ManagementFrame extends JFrame{
 		if (txtEmail == null) {
 			txtEmail = new JTextField();
 			txtEmail.setColumns(10);
-			txtEmail.setBounds(123, 220, 133, 20);
+			txtEmail.setBounds(409, 59, 133, 20);
 		}
 		return txtEmail;
 	}
 	private JTextPane getTxtpOgrAdres() {
 		if (txtpOgrAdres == null) {
 			txtpOgrAdres = new JTextPane();
-			txtpOgrAdres.setBounds(123, 81, 133, 100);
+			txtpOgrAdres.setBounds(153, 84, 133, 100);
 		}
 		return txtpOgrAdres;
 	}
 	private JLabel getLblKayitTarihi() {
 		if (lblKayitTarihi == null) {
 			lblKayitTarihi = new JLabel("Kayıt Tarihi :");
-			lblKayitTarihi.setBounds(10, 279, 103, 14);
+			lblKayitTarihi.setBounds(296, 118, 103, 14);
 		}
 		return lblKayitTarihi;
 	}
@@ -265,7 +301,7 @@ public class ManagementFrame extends JFrame{
 		if (txtKayitTarihi == null) {
 			txtKayitTarihi = new JTextField();
 			txtKayitTarihi.setColumns(10);
-			txtKayitTarihi.setBounds(123, 276, 133, 20);
+			txtKayitTarihi.setBounds(409, 115, 133, 20);
 		}
 		return txtKayitTarihi;
 	}
@@ -295,7 +331,7 @@ public class ManagementFrame extends JFrame{
 					
 				}
 			});
-			btnKaydet.setBounds(333, 27, 89, 23);
+			btnKaydet.setBounds(135, 208, 89, 23);
 		}
 		return btnKaydet;
 	}
@@ -307,7 +343,7 @@ public class ManagementFrame extends JFrame{
 					btnUpdate_Action_Performed();
 				}
 			});
-			btnGuncelle.setBounds(333, 77, 89, 23);
+			btnGuncelle.setBounds(234, 208, 89, 23);
 		}
 		return btnGuncelle;
 	}
@@ -317,8 +353,11 @@ public class ManagementFrame extends JFrame{
 		Teacher temp = new Teacher();
 		temp.setAd(txtOgrAdi.getText());
 		temp.setSoyad(txtOgrSoyadi.getText());
-		temp.setMail(txtEmail.getText());
+		temp.setAdres(txtpOgrAdres.getText());
 		temp.setTel(txtTelefonNo.getText());
+		temp.setMail(txtEmail.getText());
+//		temp.setUcret(txtOgrUcreti.getText());
+//		temp.setKayitTarihi(txtKayitTarihi.getText());
 		temp.setCreatedTime(Calendar.getInstance().getTime());
 		temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
 		dao.update(temp);
@@ -333,21 +372,21 @@ public class ManagementFrame extends JFrame{
 					btnDelete_ActionPerformed();
 				}
 			});
-			btnSil.setBounds(333, 121, 89, 23);
+			btnSil.setBounds(333, 208, 89, 23);
 		}
 		return btnSil;
 		
 	}
 	protected void btnDelete_ActionPerformed() {
-		UserModelDao dao = new UserModelDao();
-		UserModel temp = new UserModel();
-		temp.setId(selectedRowId);
+		ManagementModelDao dao = new ManagementModelDao();
+		Teacher temp = new Teacher();
+		temp.setId((long) selectedRowId);
 		dao.delete(temp);
 }
 	private JScrollPane getScrollTeacher() {
 		if (scrollTeacher == null) {
 			scrollTeacher = new JScrollPane();
-			scrollTeacher.setBounds(20, 361, 442, 189);
+			scrollTeacher.setBounds(10, 233, 543, 73);
 			scrollTeacher.setViewportView(getTblTeacher());
 		}
 		return scrollTeacher;
@@ -384,12 +423,12 @@ public class ManagementFrame extends JFrame{
 	private JButton getBtnHepsiniGetir() {
 		if (btnHepsiniGetir == null) {
 			btnHepsiniGetir = new JButton("Hepsini Getir");
+			btnHepsiniGetir.setBounds(214, 309, 139, 23);
 			btnHepsiniGetir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					btnGetAllUserInf_ActionPerformed();
 				}
 			});
-			btnHepsiniGetir.setBounds(143, 562, 139, 23);
 		}
 		return btnHepsiniGetir;
 	}
@@ -412,6 +451,161 @@ public class ManagementFrame extends JFrame{
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		tblTeacher.setModel(model);
 
+	}
+	private JPanel getPnlKursEklemeEkrani() {
+		if (pnlKursEklemeEkrani == null) {
+			pnlKursEklemeEkrani = new JPanel();
+			pnlKursEklemeEkrani.setBounds(10, 386, 564, 264);
+			pnlKursEklemeEkrani.setLayout(null);
+			pnlKursEklemeEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			pnlKursEklemeEkrani.add(getLblKursAdi());
+			pnlKursEklemeEkrani.add(getLblKursOgr());
+			pnlKursEklemeEkrani.add(getLblBasTarihi());
+			pnlKursEklemeEkrani.add(getLblSinifAdi());
+			pnlKursEklemeEkrani.add(getLblKursGunleri());
+			pnlKursEklemeEkrani.add(getLblrenciSays());
+			pnlKursEklemeEkrani.add(getTxtKursAdi());
+			pnlKursEklemeEkrani.add(getTxtKursOgr());
+			pnlKursEklemeEkrani.add(getTxtBasTarihi());
+			pnlKursEklemeEkrani.add(getTxtSinifAdi());
+			pnlKursEklemeEkrani.add(getLblBitTarihi());
+			pnlKursEklemeEkrani.add(getTxtBitTarihi());
+			pnlKursEklemeEkrani.add(getBtnKaydetKurs());
+			pnlKursEklemeEkrani.add(getBtnGuncelleKurs());
+			pnlKursEklemeEkrani.add(getBtnSilKurs());
+			pnlKursEklemeEkrani.add(getTxtOgrenciSayisi());
+			pnlKursEklemeEkrani.add(getCmbKursGunleri());
+
+		}
+		return pnlKursEklemeEkrani;
+	}
+	private JLabel getLblKursAdi() {
+		if (lblKursAdi == null) {
+			lblKursAdi = new JLabel("Kurs Adı :");
+			lblKursAdi.setBounds(10, 31, 133, 14);
+		}
+		return lblKursAdi;
+	}
+	private JLabel getLblKursOgr() {
+		if (lblKursOgr == null) {
+			lblKursOgr = new JLabel("Kurs Öğretmeni :");
+			lblKursOgr.setBounds(10, 56, 133, 14);
+		}
+		return lblKursOgr;
+	}
+	private JLabel getLblBasTarihi() {
+		if (lblBasTarihi == null) {
+			lblBasTarihi = new JLabel("Başlama Tarihi :");
+			lblBasTarihi.setBounds(296, 81, 103, 14);
+		}
+		return lblBasTarihi;
+	}
+	private JLabel getLblSinifAdi() {
+		if (lblSinifAdi == null) {
+			lblSinifAdi = new JLabel("Sınıf Adı :");
+			lblSinifAdi.setBounds(296, 31, 103, 14);
+		}
+		return lblSinifAdi;
+	}
+	private JLabel getLblKursGunleri() {
+		if (lblKursGunleri == null) {
+			lblKursGunleri = new JLabel("Kurs Günleri :");
+			lblKursGunleri.setBounds(296, 56, 103, 14);
+		}
+		return lblKursGunleri;
+	}
+	private JLabel getLblrenciSays() {
+		if (lblrenciSays == null) {
+			lblrenciSays = new JLabel("Öğrenci Sayısı :");
+			lblrenciSays.setBounds(10, 81, 133, 14);
+		}
+		return lblrenciSays;
+	}
+	private JTextField getTxtKursAdi() {
+		if (txtKursAdi == null) {
+			txtKursAdi = new JTextField();
+			txtKursAdi.setColumns(10);
+			txtKursAdi.setBounds(153, 28, 133, 20);
+		}
+		return txtKursAdi;
+	}
+	private JTextField getTxtKursOgr() {
+		if (txtKursOgr == null) {
+			txtKursOgr = new JTextField();
+			txtKursOgr.setColumns(10);
+			txtKursOgr.setBounds(153, 53, 133, 20);
+		}
+		return txtKursOgr;
+	}
+	private JTextField getTxtBasTarihi() {
+		if (txtBasTarihi == null) {
+			txtBasTarihi = new JTextField();
+			txtBasTarihi.setColumns(10);
+			txtBasTarihi.setBounds(409, 78, 133, 20);
+		}
+		return txtBasTarihi;
+	}
+	private JTextField getTxtSinifAdi() {
+		if (txtSinifAdi == null) {
+			txtSinifAdi = new JTextField();
+			txtSinifAdi.setColumns(10);
+			txtSinifAdi.setBounds(409, 28, 133, 20);
+		}
+		return txtSinifAdi;
+	}
+	private JLabel getLblBitTarihi() {
+		if (lblBitTarihi == null) {
+			lblBitTarihi = new JLabel("Bitiş Tarihi :");
+			lblBitTarihi.setBounds(296, 106, 103, 14);
+		}
+		return lblBitTarihi;
+	}
+	private JTextField getTxtBitTarihi() {
+		if (txtBitTarihi == null) {
+			txtBitTarihi = new JTextField();
+			txtBitTarihi.setColumns(10);
+			txtBitTarihi.setBounds(409, 103, 133, 20);
+		}
+		return txtBitTarihi;
+	}
+	private JButton getBtnKaydetKurs() {
+		if (btnKaydetKurs == null) {
+			btnKaydetKurs = new JButton("Kaydet");
+			btnKaydetKurs.setBounds(137, 142, 89, 23);
+		}
+		return btnKaydetKurs;
+	}
+	private JButton getBtnGuncelleKurs() {
+		if (btnGuncelleKurs == null) {
+			btnGuncelleKurs = new JButton("Güncelle");
+			btnGuncelleKurs.setBounds(236, 142, 89, 23);
+		}
+		return btnGuncelleKurs;
+	}
+	private JButton getBtnSilKurs() {
+		if (btnSilKurs == null) {
+			btnSilKurs = new JButton("Sil");
+			btnSilKurs.setBounds(335, 142, 89, 23);
+		}
+		return btnSilKurs;
+	}
+	private JTextField getTxtOgrenciSayisi() {
+		if (txtOgrenciSayisi == null) {
+			txtOgrenciSayisi = new JTextField();
+			txtOgrenciSayisi.setColumns(10);
+			txtOgrenciSayisi.setBounds(153, 78, 133, 20);
+		}
+		return txtOgrenciSayisi;
+	}
+	
+	private JComboBox getCmbKursGunleri() {
+		if (cmbKursGunleri == null) {
+			cmbKursGunleri = new JComboBox();
+			cmbKursGunleri.setBounds(409, 53, 133, 20);
+			
+			
+		}
+		return cmbKursGunleri;
 	}
 }
 
