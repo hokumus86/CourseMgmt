@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Calendar;
+import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
@@ -383,9 +384,34 @@ public class ManagementFrame extends JFrame{
 	private JButton getBtnHepsiniGetir() {
 		if (btnHepsiniGetir == null) {
 			btnHepsiniGetir = new JButton("Hepsini Getir");
+			btnHepsiniGetir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					btnGetAllUserInf_ActionPerformed();
+				}
+			});
 			btnHepsiniGetir.setBounds(143, 562, 139, 23);
 		}
 		return btnHepsiniGetir;
+	}
+	
+	protected void btnGetAllUserInf_ActionPerformed() {
+		ManagementModelDao dao = new ManagementModelDao();
+		List<Teacher> liste = dao.getAll(new Teacher());
+		String[] columnNames = { "id", "Adı", "Soyadı", "Adres", "Telefon", "E mail", "Ücret", "Kayıt Tarihi" };
+		String[][] data = new String[liste.size()][columnNames.length];
+		for (int i = 0; i < liste.size(); i++) {
+			data[i][0] = "" + liste.get(i).getId();
+			data[i][1] = "" + liste.get(i).getAd();
+			data[i][2] = "" + liste.get(i).getSoyad();
+			data[i][3] = "" + liste.get(i).getAdres();
+			data[i][4] = "" + liste.get(i).getTel();
+			data[i][5] = "" + liste.get(i).getMail();
+			data[i][6] = "" + liste.get(i).getUcret();
+			data[i][7] = "" + liste.get(i).getKayitTarihi();
+		}
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		tblTeacher.setModel(model);
+
 	}
 }
 
