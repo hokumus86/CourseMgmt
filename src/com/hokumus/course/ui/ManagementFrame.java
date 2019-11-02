@@ -8,13 +8,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import com.hokumus.course.dao.CoursesDao;
 import com.hokumus.course.dao.ManagementModelDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
 import com.hokumus.course.model.UserPermission;
+import com.hokumus.course.model.management.Courses;
 import com.hokumus.course.model.management.Days;
 import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
+
+import antlr.Utils;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -30,6 +34,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
@@ -74,7 +80,6 @@ public class ManagementFrame extends JFrame{
 	private JLabel lblKursGunleri;
 	private JLabel lblrenciSays;
 	private JTextField txtKursAdi;
-	private JTextField txtKursOgr;
 	private JTextField txtBasTarihi;
 	private JTextField txtSinifAdi;
 	private JLabel lblBitTarihi;
@@ -84,6 +89,7 @@ public class ManagementFrame extends JFrame{
 	private JButton btnSilKurs;
 	private JTextField txtOgrenciSayisi;
 	private JComboBox cmbKursGunleri;
+	private JComboBox cmbTeacher;
 	
 	
 	
@@ -101,6 +107,17 @@ public class ManagementFrame extends JFrame{
 		getContentPane().add(getPnlGirisEkrani());
 		getContentPane().add(getPnlKursEklemeEkrani());
 		setVisible(false);
+		
+		ManagementModelDao dao = new ManagementModelDao();
+		List<Teacher> liste  = dao.getAll(new Teacher());
+		Teacher [] data = new Teacher[liste.size()];
+		for (int i = 0; i < data.length; i++) {
+			data[i] = liste.get(i);
+		}
+		DefaultComboBoxModel model = new DefaultComboBoxModel(data);
+		cmbTeacher.setModel(model);
+		
+		
 	}
 	
 	private JMenuBar getMenuBar_1() {
@@ -465,7 +482,6 @@ public class ManagementFrame extends JFrame{
 			pnlKursEklemeEkrani.add(getLblKursGunleri());
 			pnlKursEklemeEkrani.add(getLblrenciSays());
 			pnlKursEklemeEkrani.add(getTxtKursAdi());
-			pnlKursEklemeEkrani.add(getTxtKursOgr());
 			pnlKursEklemeEkrani.add(getTxtBasTarihi());
 			pnlKursEklemeEkrani.add(getTxtSinifAdi());
 			pnlKursEklemeEkrani.add(getLblBitTarihi());
@@ -475,6 +491,7 @@ public class ManagementFrame extends JFrame{
 			pnlKursEklemeEkrani.add(getBtnSilKurs());
 			pnlKursEklemeEkrani.add(getTxtOgrenciSayisi());
 			pnlKursEklemeEkrani.add(getCmbKursGunleri());
+			pnlKursEklemeEkrani.add(getCmbTeacher());
 
 		}
 		return pnlKursEklemeEkrani;
@@ -529,14 +546,6 @@ public class ManagementFrame extends JFrame{
 		}
 		return txtKursAdi;
 	}
-	private JTextField getTxtKursOgr() {
-		if (txtKursOgr == null) {
-			txtKursOgr = new JTextField();
-			txtKursOgr.setColumns(10);
-			txtKursOgr.setBounds(153, 53, 133, 20);
-		}
-		return txtKursOgr;
-	}
 	private JTextField getTxtBasTarihi() {
 		if (txtBasTarihi == null) {
 			txtBasTarihi = new JTextField();
@@ -571,6 +580,19 @@ public class ManagementFrame extends JFrame{
 	private JButton getBtnKaydetKurs() {
 		if (btnKaydetKurs == null) {
 			btnKaydetKurs = new JButton("Kaydet");
+			btnKaydetKurs.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CoursesDao dao = new CoursesDao();
+					Courses temp = new Courses();
+					temp.setAdi(txtKursAdi.getText());
+					temp.setbaslamaTarihi(Calendar.getInstance().getTime());
+					temp.setCreatedTime(Calendar.getInstance().getTime());
+					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
+					temp.setDurum("Aktif");
+					temp.setFiyat(new BigDecimal(Integer.parseInt(txtOgrUcreti.getText())));
+					dao.save(temp);
+				}
+			});
 			btnKaydetKurs.setBounds(137, 142, 89, 23);
 		}
 		return btnKaydetKurs;
@@ -606,6 +628,13 @@ public class ManagementFrame extends JFrame{
 			
 		}
 		return cmbKursGunleri;
+	}
+	private JComboBox getCmbTeacher() {
+		if (cmbTeacher == null) {
+			cmbTeacher = new JComboBox();
+			cmbTeacher.setBounds(153, 51, 131, 24);
+		}
+		return cmbTeacher;
 	}
 }
 

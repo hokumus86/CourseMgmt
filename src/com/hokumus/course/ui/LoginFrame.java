@@ -24,12 +24,12 @@ public class LoginFrame extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("Dersane Projesi Giriþ Ekraný");
+		setTitle("Dersane Projesi Giriï¿½ Ekranï¿½");
 		setSize(444, 456);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		txtUserName = new JTextField();
+		txtUserName = new JTextField("hokumus");
 		txtUserName.setBounds(143, 112, 133, 22);
 		getContentPane().add(txtUserName);
 		txtUserName.setColumns(10);
@@ -42,7 +42,7 @@ public class LoginFrame extends JFrame {
 		lblNewLabel_1.setBounds(23, 163, 108, 16);
 		getContentPane().add(lblNewLabel_1);
 
-		txtSifre = new JPasswordField();
+		txtSifre = new JPasswordField("123");
 		txtSifre.setBounds(143, 160, 133, 22);
 		getContentPane().add(txtSifre);
 
@@ -79,7 +79,7 @@ public class LoginFrame extends JFrame {
 				if (liste.get(i).getPassword().equals(txtSifre.getText())) {
 					UserModel loginedUser= liste.get(i);
 					CourseUtils.loginedUser = loginedUser;
-					//JOptionPane.showMessageDialog(LoginFrame.this, "Hoþgeldiniz");
+					//JOptionPane.showMessageDialog(LoginFrame.this, "Hoï¿½geldiniz");
 					new MainFrame().setVisible(true);;
 					isPasswordValid = true;
 					break;
@@ -93,9 +93,9 @@ public class LoginFrame extends JFrame {
 		}
 
 		if (!isUserNameValid) {
-			JOptionPane.showMessageDialog(LoginFrame.this, "Kullanýcý Bulunamadý");
+			JOptionPane.showMessageDialog(LoginFrame.this, "Kullanï¿½cï¿½ Bulunamadï¿½");
 		} else if (!isPasswordValid) {
-			JOptionPane.showMessageDialog(LoginFrame.this, "Þifre Yanlýþ");
+			JOptionPane.showMessageDialog(LoginFrame.this, "ï¿½ifre Yanlï¿½ï¿½");
 		}
 	}
 }

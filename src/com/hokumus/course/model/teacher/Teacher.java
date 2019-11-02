@@ -107,7 +107,7 @@ public class Teacher extends BaseEntity{
 
     @Override
     public String toString() {
-        return  "adi = "+ad+ " soyadý = "+soyad+ " id = "+id;
+        return ad +" " + soyad;
     }
 
    
