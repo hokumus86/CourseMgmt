@@ -31,10 +31,8 @@ public class AccountingFrame extends JFrame{
 	private JPanel pnl_KayitSorgula;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
 	private JTextField txt_isim;
 	private JTextField txt_soyisim;
-	private JTextField txt_tcno;
 	private JLabel lblKursKodu;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
@@ -43,10 +41,6 @@ public class AccountingFrame extends JFrame{
 	private JTextField txt_tutarOdenecek;
 	private JButton btnSorgula;
 	private JButton btnNewButton;
-	private JLabel lblDogumTarihi;
-	private JTextField txt_dogumtarihi;
-	private JLabel lblNewLabel_5;
-	private JTextField txt_tutarOdenen;
 	private JPanel pnl_TamamlananKayitlar;
 	private JLabel lblTamamlananKayitlar;
 	private JPanel pnl_OdemeBekleyen;
@@ -71,9 +65,9 @@ public class AccountingFrame extends JFrame{
 		setSize(957,507);
 		setJMenuBar(getMenuBar_1());
 		getContentPane().setLayout(null);
-		getContentPane().add(getPnl_TamamlananKayitlar());
-		getContentPane().add(getPnl_OdemeBekleyen());
 		getContentPane().add(getPnl_KayitSorgula());
+		getContentPane().add(getPnl_OdemeBekleyen());
+		getContentPane().add(getPnl_TamamlananKayitlar());
 		
 	}
 
@@ -178,10 +172,8 @@ public class AccountingFrame extends JFrame{
 			pnl_KayitSorgula.setLayout(null);
 			pnl_KayitSorgula.add(getLblNewLabel());
 			pnl_KayitSorgula.add(getLblNewLabel_1());
-			pnl_KayitSorgula.add(getLblNewLabel_2());
 			pnl_KayitSorgula.add(getTxt_isim());
 			pnl_KayitSorgula.add(getTxt_soyisim());
-			pnl_KayitSorgula.add(getTxt_tcno());
 			pnl_KayitSorgula.add(getLblKursKodu());
 			pnl_KayitSorgula.add(getLblNewLabel_3());
 			pnl_KayitSorgula.add(getLblNewLabel_4());
@@ -190,10 +182,6 @@ public class AccountingFrame extends JFrame{
 			pnl_KayitSorgula.add(getTxt_tutarOdenecek());
 			pnl_KayitSorgula.add(getBtnSorgula());
 			pnl_KayitSorgula.add(getBtnNewButton());
-			pnl_KayitSorgula.add(getLblDogumTarihi());
-			pnl_KayitSorgula.add(getTxt_dogumtarihi());
-			pnl_KayitSorgula.add(getLblNewLabel_5());
-			pnl_KayitSorgula.add(getTxt_tutarOdenen());
 			pnl_KayitSorgula.add(getScrollPane_1());
 		}
 		return pnl_KayitSorgula;
@@ -212,17 +200,10 @@ public class AccountingFrame extends JFrame{
 		}
 		return lblNewLabel_1;
 	}
-	private JLabel getLblNewLabel_2() {
-		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("T.C No");
-			lblNewLabel_2.setBounds(44, 80, 61, 16);
-		}
-		return lblNewLabel_2;
-	}
 	private JTextField getTxt_isim() {
 		if (txt_isim == null) {
 			txt_isim = new JTextField();
-			txt_isim.setBounds(117, 19, 202, 26);
+			txt_isim.setBounds(120, 19, 202, 26);
 			txt_isim.setColumns(10);
 		}
 		return txt_isim;
@@ -230,18 +211,10 @@ public class AccountingFrame extends JFrame{
 	private JTextField getTxt_soyisim() {
 		if (txt_soyisim == null) {
 			txt_soyisim = new JTextField();
-			txt_soyisim.setBounds(117, 47, 202, 26);
+			txt_soyisim.setBounds(120, 47, 202, 26);
 			txt_soyisim.setColumns(10);
 		}
 		return txt_soyisim;
-	}
-	private JTextField getTxt_tcno() {
-		if (txt_tcno == null) {
-			txt_tcno = new JTextField();
-			txt_tcno.setBounds(117, 75, 202, 26);
-			txt_tcno.setColumns(10);
-		}
-		return txt_tcno;
 	}
 	private JLabel getLblKursKodu() {
 		if (lblKursKodu == null) {
@@ -260,14 +233,14 @@ public class AccountingFrame extends JFrame{
 	private JLabel getLblNewLabel_4() {
 		if (lblNewLabel_4 == null) {
 			lblNewLabel_4 = new JLabel("Odenecek Tutar");
-			lblNewLabel_4.setBounds(365, 78, 107, 16);
+			lblNewLabel_4.setBounds(365, 79, 107, 16);
 		}
 		return lblNewLabel_4;
 	}
 	private JTextField getTxt_sinifkodu() {
 		if (txt_sinifkodu == null) {
 			txt_sinifkodu = new JTextField();
-			txt_sinifkodu.setBounds(479, 19, 202, 26);
+			txt_sinifkodu.setBounds(455, 20, 202, 26);
 			txt_sinifkodu.setColumns(10);
 		}
 		return txt_sinifkodu;
@@ -275,7 +248,7 @@ public class AccountingFrame extends JFrame{
 	private JTextField getTxt_kursadi() {
 		if (txt_kursadi == null) {
 			txt_kursadi = new JTextField();
-			txt_kursadi.setBounds(479, 47, 202, 26);
+			txt_kursadi.setBounds(455, 48, 202, 26);
 			txt_kursadi.setColumns(10);
 		}
 		return txt_kursadi;
@@ -283,7 +256,7 @@ public class AccountingFrame extends JFrame{
 	private JTextField getTxt_tutarOdenecek() {
 		if (txt_tutarOdenecek == null) {
 			txt_tutarOdenecek = new JTextField();
-			txt_tutarOdenecek.setBounds(479, 75, 202, 26);
+			txt_tutarOdenecek.setBounds(455, 75, 202, 26);
 			txt_tutarOdenecek.setColumns(10);
 		}
 		return txt_tutarOdenecek;
@@ -306,36 +279,6 @@ public class AccountingFrame extends JFrame{
 			btnNewButton.setBounds(741, 61, 161, 35);
 		}
 		return btnNewButton;
-	}
-	private JLabel getLblDogumTarihi() {
-		if (lblDogumTarihi == null) {
-			lblDogumTarihi = new JLabel("Dogum Tarihi");
-			lblDogumTarihi.setBounds(44, 108, 99, 16);
-		}
-		return lblDogumTarihi;
-	}
-	private JTextField getTxt_dogumtarihi() {
-		if (txt_dogumtarihi == null) {
-			txt_dogumtarihi = new JTextField();
-			txt_dogumtarihi.setBounds(152, 103, 167, 26);
-			txt_dogumtarihi.setColumns(10);
-		}
-		return txt_dogumtarihi;
-	}
-	private JLabel getLblNewLabel_5() {
-		if (lblNewLabel_5 == null) {
-			lblNewLabel_5 = new JLabel("Odenen Tutar");
-			lblNewLabel_5.setBounds(365, 106, 107, 16);
-		}
-		return lblNewLabel_5;
-	}
-	private JTextField getTxt_tutarOdenen() {
-		if (txt_tutarOdenen == null) {
-			txt_tutarOdenen = new JTextField();
-			txt_tutarOdenen.setBounds(479, 103, 202, 26);
-			txt_tutarOdenen.setColumns(10);
-		}
-		return txt_tutarOdenen;
 	}
 	private JPanel getPnl_TamamlananKayitlar() {
 		if (pnl_TamamlananKayitlar == null) {

@@ -15,6 +15,7 @@ public class MainFrame extends JFrame {
 	private JButton btnManager;
 	private JButton btnStudent;
 	private JButton btnTeacher;
+	private JButton btnMuhasebe;
 	
 
 	public MainFrame() {
@@ -33,6 +34,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(getBtnYnetici());
 		getContentPane().add(getBtnOgrenci());
 		getContentPane().add(getBtnOgretmen());
+		getContentPane().add(getBtnMuhasebe());
 		generateRoolForPermision(CourseUtils.loginedUser.getPermission());
 	}
 	
@@ -102,5 +104,17 @@ public class MainFrame extends JFrame {
 			btnTeacher.setBounds(335, 182, 227, 118);
 		}
 		return btnTeacher;
+	}
+	private JButton getBtnMuhasebe() {
+		if (btnMuhasebe == null) {
+			btnMuhasebe = new JButton("Muhasebe");
+			btnMuhasebe.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new AccountingFrame().setVisible(true);
+				}
+			});
+			btnMuhasebe.setBounds(74, 321, 227, 125);
+		}
+		return btnMuhasebe;
 	}
 }
