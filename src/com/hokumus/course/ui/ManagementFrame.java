@@ -9,12 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.hokumus.course.dao.CoursesDao;
-import com.hokumus.course.dao.ManagementModelDao;
+import com.hokumus.course.dao.DaysDao;
+import com.hokumus.course.dao.GroupsDao;
+import com.hokumus.course.dao.TeacherDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
 import com.hokumus.course.model.UserPermission;
 import com.hokumus.course.model.management.Courses;
 import com.hokumus.course.model.management.Days;
+import com.hokumus.course.model.management.Groups;
 import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
 
@@ -71,8 +74,8 @@ public class ManagementFrame extends JFrame{
 	private int selectedRowId;
 	private JScrollPane scrollTeacher;
 	private JTable tblTeacher;
-	private JButton btnHepsiniGetir;
-	private JPanel pnlKursEklemeEkrani;
+	private JButton btnOgrHepsiniGetir;
+	private JPanel pnlGrupKursEklemeEkrani;
 	private JLabel lblKursAdi;
 	private JLabel lblKursOgr;
 	private JLabel lblBasTarihi;
@@ -90,25 +93,28 @@ public class ManagementFrame extends JFrame{
 	private JTextField txtOgrenciSayisi;
 	private JComboBox cmbKursGunleri;
 	private JComboBox cmbTeacher;
+	private JScrollPane scrollGrupKurs;
+	private JTable tblGrupKurs;
+	private JButton btnGrupHepsiniGetir;
 	
 	
 	
 	public ManagementFrame() {
 
 		initialize();
-		pnlGirisEkrani.setVisible(false);
-		pnlKursEklemeEkrani.setVisible(false);
+		//pnlGirisEkrani.setVisible(false);
+		//pnlKursEklemeEkrani.setVisible(false);
 	}
 	
 	private void initialize() {
 		getContentPane().setLayout(null);
-		setSize(600,700);
+		setSize(600,735);
 		getContentPane().add(getMenuBar_1());
 		getContentPane().add(getPnlGirisEkrani());
-		getContentPane().add(getPnlKursEklemeEkrani());
+		getContentPane().add(getPnlGrupKursEklemeEkrani());
 		setVisible(false);
 		
-		ManagementModelDao dao = new ManagementModelDao();
+		TeacherDao dao = new TeacherDao();
 		List<Teacher> liste  = dao.getAll(new Teacher());
 		Teacher [] data = new Teacher[liste.size()];
 		for (int i = 0; i < data.length; i++) {
@@ -117,7 +123,15 @@ public class ManagementFrame extends JFrame{
 		DefaultComboBoxModel model = new DefaultComboBoxModel(data);
 		cmbTeacher.setModel(model);
 		
+		DaysDao ddao= new DaysDao();
+		List<Days> dliste = ddao.getAll(new Days());
+		Days [] ddata = new Days[dliste.size()];
+		for (int i = 0; i < ddata.length; i++) {
+			ddata[i] = dliste.get(i);
+		}
 		
+		DefaultComboBoxModel cmodel = new DefaultComboBoxModel(ddata);
+		cmbKursGunleri.setModel(cmodel);
 	}
 	
 	private JMenuBar getMenuBar_1() {
@@ -152,7 +166,7 @@ public class ManagementFrame extends JFrame{
 				public void actionPerformed(ActionEvent e) {
 				//	pnlGirisEkrani.setVisible(false);
 					pnlGirisEkrani.setVisible(true);
-					pnlKursEklemeEkrani.setVisible(false);
+				
 				}
 			});
 		}
@@ -163,8 +177,8 @@ public class ManagementFrame extends JFrame{
 			mnitmKursKGS = new JMenuItem("Kurs K-G-S");
 			mnitmKursKGS.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					pnlKursEklemeEkrani.setVisible(true);
-					pnlGirisEkrani.setVisible(false);
+					pnlGrupKursEklemeEkrani.setVisible(true);
+					
 				}
 			});
 		}
@@ -189,7 +203,7 @@ public class ManagementFrame extends JFrame{
 			
 				@Override
 				public void componentHidden(ComponentEvent arg0) {
-					pnlGirisEkrani.setVisible(false);
+					pnlGirisEkrani.setVisible(true);
 				}
 			});
 			pnlGirisEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u00D6\u011Fretmen Bilgileri Kay\u0131t Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -212,7 +226,7 @@ public class ManagementFrame extends JFrame{
 			pnlGirisEkrani.add(getBtnKaydet());
 			pnlGirisEkrani.add(getBtnGuncelle());
 			pnlGirisEkrani.add(getBtnSil());
-			pnlGirisEkrani.add(getBtnHepsiniGetir());
+			pnlGirisEkrani.add(getBtnOgrHepsiniGetir());
 			pnlGirisEkrani.add(getScrollTeacher());
 
 		}
@@ -336,7 +350,7 @@ public class ManagementFrame extends JFrame{
 						JOptionPane.showMessageDialog(ManagementFrame.this, "Sifre Boş Geçilemez!!!");
 						return;
 					}
-					ManagementModelDao dao = new ManagementModelDao();
+					TeacherDao dao = new TeacherDao();
 					Teacher temp = new Teacher();
 					temp.setAd(txtOgrAdi.getText());
 					temp.setSoyad(txtOgrSoyadi.getText());
@@ -366,7 +380,7 @@ public class ManagementFrame extends JFrame{
 	}
 	
 	protected void btnUpdate_Action_Performed() {
-		ManagementModelDao dao = new ManagementModelDao();
+		TeacherDao dao = new TeacherDao();
 		Teacher temp = new Teacher();
 		temp.setAd(txtOgrAdi.getText());
 		temp.setSoyad(txtOgrSoyadi.getText());
@@ -395,7 +409,7 @@ public class ManagementFrame extends JFrame{
 		
 	}
 	protected void btnDelete_ActionPerformed() {
-		ManagementModelDao dao = new ManagementModelDao();
+		TeacherDao dao = new TeacherDao();
 		Teacher temp = new Teacher();
 		temp.setId((long) selectedRowId);
 		dao.delete(temp);
@@ -437,21 +451,21 @@ public class ManagementFrame extends JFrame{
 		txtOgrUcreti.setText(tblTeacher.getModel().getValueAt(row, 6).toString());
 		txtKayitTarihi.setText(tblTeacher.getModel().getValueAt(row, 7).toString());
 }
-	private JButton getBtnHepsiniGetir() {
-		if (btnHepsiniGetir == null) {
-			btnHepsiniGetir = new JButton("Hepsini Getir");
-			btnHepsiniGetir.setBounds(214, 309, 139, 23);
-			btnHepsiniGetir.addActionListener(new ActionListener() {
+	private JButton getBtnOgrHepsiniGetir() {
+		if (btnOgrHepsiniGetir == null) {
+			btnOgrHepsiniGetir = new JButton("Hepsini Getir");
+			btnOgrHepsiniGetir.setBounds(214, 309, 139, 23);
+			btnOgrHepsiniGetir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					btnGetAllUserInf_ActionPerformed();
 				}
 			});
 		}
-		return btnHepsiniGetir;
+		return btnOgrHepsiniGetir;
 	}
 	
 	protected void btnGetAllUserInf_ActionPerformed() {
-		ManagementModelDao dao = new ManagementModelDao();
+		TeacherDao dao = new TeacherDao();
 		List<Teacher> liste = dao.getAll(new Teacher());
 		String[] columnNames = { "id", "Adı", "Soyadı", "Adres", "Telefon", "E mail", "Ücret", "Kayıt Tarihi" };
 		String[][] data = new String[liste.size()][columnNames.length];
@@ -469,32 +483,34 @@ public class ManagementFrame extends JFrame{
 		tblTeacher.setModel(model);
 
 	}
-	private JPanel getPnlKursEklemeEkrani() {
-		if (pnlKursEklemeEkrani == null) {
-			pnlKursEklemeEkrani = new JPanel();
-			pnlKursEklemeEkrani.setBounds(10, 386, 564, 264);
-			pnlKursEklemeEkrani.setLayout(null);
-			pnlKursEklemeEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			pnlKursEklemeEkrani.add(getLblKursAdi());
-			pnlKursEklemeEkrani.add(getLblKursOgr());
-			pnlKursEklemeEkrani.add(getLblBasTarihi());
-			pnlKursEklemeEkrani.add(getLblSinifAdi());
-			pnlKursEklemeEkrani.add(getLblKursGunleri());
-			pnlKursEklemeEkrani.add(getLblrenciSays());
-			pnlKursEklemeEkrani.add(getTxtKursAdi());
-			pnlKursEklemeEkrani.add(getTxtBasTarihi());
-			pnlKursEklemeEkrani.add(getTxtSinifAdi());
-			pnlKursEklemeEkrani.add(getLblBitTarihi());
-			pnlKursEklemeEkrani.add(getTxtBitTarihi());
-			pnlKursEklemeEkrani.add(getBtnKaydetKurs());
-			pnlKursEklemeEkrani.add(getBtnGuncelleKurs());
-			pnlKursEklemeEkrani.add(getBtnSilKurs());
-			pnlKursEklemeEkrani.add(getTxtOgrenciSayisi());
-			pnlKursEklemeEkrani.add(getCmbKursGunleri());
-			pnlKursEklemeEkrani.add(getCmbTeacher());
+	private JPanel getPnlGrupKursEklemeEkrani() {
+		if (pnlGrupKursEklemeEkrani == null) {
+			pnlGrupKursEklemeEkrani = new JPanel();
+			pnlGrupKursEklemeEkrani.setBounds(10, 386, 564, 291);
+			pnlGrupKursEklemeEkrani.setLayout(null);
+			pnlGrupKursEklemeEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Grup Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			pnlGrupKursEklemeEkrani.add(getLblKursAdi());
+			pnlGrupKursEklemeEkrani.add(getLblKursOgr());
+			pnlGrupKursEklemeEkrani.add(getLblBasTarihi());
+			pnlGrupKursEklemeEkrani.add(getLblSinifAdi());
+			pnlGrupKursEklemeEkrani.add(getLblKursGunleri());
+			pnlGrupKursEklemeEkrani.add(getLblrenciSays());
+			pnlGrupKursEklemeEkrani.add(getTxtKursAdi());
+			pnlGrupKursEklemeEkrani.add(getTxtBasTarihi());
+			pnlGrupKursEklemeEkrani.add(getTxtSinifAdi());
+			pnlGrupKursEklemeEkrani.add(getLblBitTarihi());
+			pnlGrupKursEklemeEkrani.add(getTxtBitTarihi());
+			pnlGrupKursEklemeEkrani.add(getBtnKaydetKurs());
+			pnlGrupKursEklemeEkrani.add(getBtnGuncelleKurs());
+			pnlGrupKursEklemeEkrani.add(getBtnSilKurs());
+			pnlGrupKursEklemeEkrani.add(getTxtOgrenciSayisi());
+			pnlGrupKursEklemeEkrani.add(getCmbKursGunleri());
+			pnlGrupKursEklemeEkrani.add(getCmbTeacher());
+			pnlGrupKursEklemeEkrani.add(getScrollGrupKurs());
+			pnlGrupKursEklemeEkrani.add(getBtnGrupHepsiniGetir());
 
 		}
-		return pnlKursEklemeEkrani;
+		return pnlGrupKursEklemeEkrani;
 	}
 	private JLabel getLblKursAdi() {
 		if (lblKursAdi == null) {
@@ -635,6 +651,70 @@ public class ManagementFrame extends JFrame{
 			cmbTeacher.setBounds(153, 51, 131, 24);
 		}
 		return cmbTeacher;
+	}
+	private JScrollPane getScrollGrupKurs() {
+		if (scrollGrupKurs == null) {
+			scrollGrupKurs = new JScrollPane();
+			scrollGrupKurs.setBounds(10, 178, 543, 73);
+			scrollGrupKurs.setColumnHeaderView(getTblGrupKurs());
+		}
+		return scrollGrupKurs;
+	}
+	private JTable getTblGrupKurs() {
+		if (tblGrupKurs == null) {
+			tblGrupKurs = new JTable();
+			tblGrupKurs.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					tblGrupKurs_Row_Selected();
+				}
+			});
+		}
+		return tblGrupKurs;
+	}
+	
+	protected void tblGrupKurs_Row_Selected() {
+		int row = tblGrupKurs.getSelectedRow();
+		selectedRowId = Integer.parseInt(tblGrupKurs.getModel().getValueAt(row, 0).toString());
+		txtOgrAdi.setText(tblGrupKurs.getModel().getValueAt(row, 1).toString());
+		txtOgrSoyadi.setText(tblGrupKurs.getModel().getValueAt(row, 2).toString());
+		txtpOgrAdres.setText(tblGrupKurs.getModel().getValueAt(row, 3).toString());
+		txtTelefonNo.setText(tblGrupKurs.getModel().getValueAt(row, 4).toString());
+		txtEmail.setText(tblGrupKurs.getModel().getValueAt(row, 5).toString());
+		txtOgrUcreti.setText(tblGrupKurs.getModel().getValueAt(row, 6).toString());
+		txtKayitTarihi.setText(tblGrupKurs.getModel().getValueAt(row, 7).toString());
+}
+	private JButton getBtnGrupHepsiniGetir() {
+		if (btnGrupHepsiniGetir == null) {
+			btnGrupHepsiniGetir = new JButton("Hepsini Getir");
+			btnGrupHepsiniGetir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+			btnGrupHepsiniGetir.setBounds(222, 255, 139, 23);
+		}
+		return btnGrupHepsiniGetir;
+	}
+	
+	protected void btnGetAllGroups_ActionPerformed() {
+		GroupsDao dao = new GroupsDao();
+		List<Groups> liste = dao.getAll(new Groups());
+		String[] columnNames = { "id", "Adı", "Soyadı", "Adres", "Telefon", "E mail", "Ücret", "Kayıt Tarihi" };
+		String[][] data = new String[liste.size()][columnNames.length];
+		for (int i = 0; i < liste.size(); i++) {
+			data[i][0] = "" + liste.get(i).getId();
+			data[i][1] = "" + liste.get(i).getAdi();
+			data[i][2] = "" + liste.get(i).getOgrenciSayisi();
+			data[i][3] = "" + liste.get(i).getBaslamaTarihi();
+			data[i][4] = "" + liste.get(i).getBitisTarihi();
+			data[i][5] = "" + liste.get(i).getDays();
+			data[i][6] = "" + liste.get(i).getLessonClass();
+			data[i][7] = "" + liste.get(i).getTeacher();
+		}
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		tblGrupKurs.setModel(model);
+
 	}
 }
 
