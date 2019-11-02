@@ -12,5 +12,11 @@
 		<mapping class="com.hokumus.course.model.UserModel"></mapping>
 		<mapping class="com.hokumus.course.model.teacher.Teacher"></mapping>
 		<mapping class="com.hokumus.course.model.management.Courses"></mapping>
+		<mapping class="com.hokumus.course.model.management.Days"></mapping>
+		<mapping class="com.hokumus.course.model.management.LessonClass"></mapping>
+		<mapping class="com.hokumus.course.model.ogrenci.Student"></mapping>
+		<mapping class="com.hokumus.course.model.management.Groups"></mapping>
+		
+		
 	</session-factory>
 </hibernate-configuration>

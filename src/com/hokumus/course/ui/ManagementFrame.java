@@ -1,49 +1,45 @@
 package com.hokumus.course.ui;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.dao.CoursesDao;
 import com.hokumus.course.dao.DaysDao;
 import com.hokumus.course.dao.GroupsDao;
+import com.hokumus.course.dao.LessonsClassDao;
 import com.hokumus.course.dao.TeacherDao;
-import com.hokumus.course.dao.UserModelDao;
-import com.hokumus.course.model.UserModel;
-import com.hokumus.course.model.UserPermission;
 import com.hokumus.course.model.management.Courses;
 import com.hokumus.course.model.management.Days;
 import com.hokumus.course.model.management.Groups;
+import com.hokumus.course.model.management.LessonClass;
 import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
-
-import antlr.Utils;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.Calendar;
-import java.util.List;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
-
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.UIManager;
-import java.awt.Color;
 
 public class ManagementFrame extends JFrame{
 	private JMenuBar menuBar;
@@ -598,15 +594,47 @@ public class ManagementFrame extends JFrame{
 			btnKaydetKurs = new JButton("Kaydet");
 			btnKaydetKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					CoursesDao dao = new CoursesDao();
+					LessonClass lc = new LessonClass();
+					lc.setAdi("Lab 2");
+					lc.setKapasite(15);
+					lc.setKod("LAB2");
+					lc.setCreaterBy(CourseUtils.loginedUser.getUserName());
+					lc.setCreatedTime(Calendar.getInstance().getTime());
+					
+					LessonsClassDao lcdao = new LessonsClassDao();
+					lcdao.save(lc);
+					
+					Days d = new Days();
+					d.setGun1(6);
+					d.setGun2(7);
+					d.setSaat(4);
+					DaysDao dd = new DaysDao();
+					dd.save(d);
+					
+					CoursesDao daoc = new CoursesDao();
 					Courses temp = new Courses();
 					temp.setAdi(txtKursAdi.getText());
 					temp.setbaslamaTarihi(Calendar.getInstance().getTime());
 					temp.setCreatedTime(Calendar.getInstance().getTime());
 					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
 					temp.setDurum("Aktif");
-					temp.setFiyat(new BigDecimal(Integer.parseInt(txtOgrUcreti.getText())));
-					dao.save(temp);
+					temp.setFiyat(new BigDecimal(Integer.parseInt("5000")));
+					daoc.save(temp);
+					
+					
+					
+					Groups g = new  Groups();
+					g.setAdi("Java 44");
+					g.setBaslamaTarihi(Calendar.getInstance().getTime());
+					g.setBitisTarihi(Calendar.getInstance().getTime());
+					g.setCourses(temp);
+					g.setDays(d);
+					g.setLessonClass(lc);
+					g.setOgrenciSayisi(Integer.parseInt(txtOgrenciSayisi.getText()));
+					g.setTeacher((Teacher)cmbTeacher.getSelectedItem());
+					GroupsDao dao = new GroupsDao();
+					dao.save(g);
+					
 				}
 			});
 			btnKaydetKurs.setBounds(137, 142, 89, 23);

@@ -106,4 +106,10 @@ public class Days extends BaseEntity{
     public void setSaat(int saat) {
         this.saat = saat;
     }
+    
+    @Override
+    public String toString() {
+    	
+    	return gun1+ "";
+    }
 }
