@@ -1,4 +1,4 @@
-package com.hokumus.course.model.ogrenci;
+package com.hokumus.course.model.student;
 
 import java.math.BigDecimal;
 import java.util.Date;

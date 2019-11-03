@@ -14,7 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.hokumus.course.model.inventory.Inventory;
-import com.hokumus.course.model.ogrenci.StudentPayments;
+import com.hokumus.course.model.student.StudentPayments;
 import com.hokumus.course.model.utils.BaseEntity;
 
 @Entity

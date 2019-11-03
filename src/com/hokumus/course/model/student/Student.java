@@ -1,4 +1,4 @@
-package com.hokumus.course.model.ogrenci;
+package com.hokumus.course.model.student;
 
 import java.util.Date;
 

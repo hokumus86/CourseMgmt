@@ -23,8 +23,8 @@ import com.hokumus.course.dao.StudentPaymentsDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
 import com.hokumus.course.model.accounting.IncomeType;
-import com.hokumus.course.model.ogrenci.Student;
-import com.hokumus.course.model.ogrenci.StudentPayments;
+import com.hokumus.course.model.student.Student;
+import com.hokumus.course.model.student.StudentPayments;
 import com.hokumus.course.utils.CourseUtils;
 
 import javax.swing.JScrollPane;

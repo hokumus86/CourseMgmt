@@ -103,7 +103,7 @@ public class ManagementFrame extends JFrame{
 	private void initialize() {
 		setTitle("Yönetici Paneli Ekranı");
 		getContentPane().setLayout(null);
-		setSize(607,830);
+		setSize(746,830);
 		getContentPane().add(getPnlOgrEkleEkrani());
 		getContentPane().add(getPnlGrupKursEklemeEkrani());
 		setVisible(false);
@@ -139,7 +139,7 @@ public class ManagementFrame extends JFrame{
 			
 			});
 			pnlOgrEkleEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u00D6\u011Fretmen Bilgileri Kay\u0131t Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			pnlOgrEkleEkrani.setBounds(10, 127, 564, 343);
+			pnlOgrEkleEkrani.setBounds(10, 127, 671, 343);
 			pnlOgrEkleEkrani.setLayout(null);
 			pnlOgrEkleEkrani.add(getLblOgrAdi());
 			pnlOgrEkleEkrani.add(getLblOgrSoyadi());
@@ -418,7 +418,7 @@ public class ManagementFrame extends JFrame{
 	private JPanel getPnlGrupKursEklemeEkrani() {
 		if (pnlGrupKursEklemeEkrani == null) {
 			pnlGrupKursEklemeEkrani = new JPanel();
-			pnlGrupKursEklemeEkrani.setBounds(10, 481, 564, 291);
+			pnlGrupKursEklemeEkrani.setBounds(10, 481, 671, 291);
 			pnlGrupKursEklemeEkrani.setLayout(null);
 			pnlGrupKursEklemeEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Grup Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			pnlGrupKursEklemeEkrani.add(getLblKursAdi());
