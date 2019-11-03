@@ -56,6 +56,11 @@ public class LessonClass extends BaseEntity{
     public void setKod(String kod) {
         this.kod = kod;
     }
+    
+    @Override
+    public String toString() {
+    	return "" + adi;
+    }
 
 }
 

@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -33,6 +34,7 @@ import com.hokumus.course.model.management.Groups;
 import com.hokumus.course.model.management.LessonClass;
 import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
+import com.toedter.calendar.JDateChooser;
 
 public class ManagementFrame extends JFrame {
 	private int selectedRowId;
@@ -44,10 +46,8 @@ public class ManagementFrame extends JFrame {
 	private JLabel lblKursGunleri;
 	private JLabel lblrenciSays;
 	private JTextField txtKursAdi;
-	private JTextField dateBasTarihi;
 	private JTextField txtSinifAdi;
 	private JLabel lblBitTarihi;
-	private JTextField dateBitTarihi;
 	private JButton btnKaydetKurs;
 	private JButton btnGuncelleKurs;
 	private JButton btnSilKurs;
@@ -62,6 +62,8 @@ public class ManagementFrame extends JFrame {
 	private JButton btnKursEkle;
 	private JButton btnAddTeacher;
 	private JButton btnAddDays;
+	private JDateChooser dateBasTarihi;
+	private JDateChooser dateBitTarihi;
 
 	public ManagementFrame() {
 
@@ -72,7 +74,7 @@ public class ManagementFrame extends JFrame {
 	private void initialize() {
 		setTitle("Yönetici Paneli Ekranı");
 		getContentPane().setLayout(null);
-		setSize(746, 484);
+		setSize(746, 709);
 		getContentPane().add(getPnlGrupKursEklemeEkrani());
 		setVisible(false);
 
@@ -109,7 +111,7 @@ public class ManagementFrame extends JFrame {
 	private JPanel getPnlGrupKursEklemeEkrani() {
 		if (pnlGrupKursEklemeEkrani == null) {
 			pnlGrupKursEklemeEkrani = new JPanel();
-			pnlGrupKursEklemeEkrani.setBounds(12, 82, 671, 291);
+			pnlGrupKursEklemeEkrani.setBounds(12, 82, 671, 482);
 			pnlGrupKursEklemeEkrani.setLayout(null);
 			pnlGrupKursEklemeEkrani.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
 					"Grup Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -120,10 +122,8 @@ public class ManagementFrame extends JFrame {
 			pnlGrupKursEklemeEkrani.add(getLblKursGunleri());
 			pnlGrupKursEklemeEkrani.add(getLblrenciSays());
 			pnlGrupKursEklemeEkrani.add(getTxtKursAdi());
-			pnlGrupKursEklemeEkrani.add(getDateBasTarihi());
 			pnlGrupKursEklemeEkrani.add(getTxtSinifAdi());
 			pnlGrupKursEklemeEkrani.add(getLblBitTarihi());
-			pnlGrupKursEklemeEkrani.add(getDateBitTarihi());
 			pnlGrupKursEklemeEkrani.add(getBtnKaydetKurs());
 			pnlGrupKursEklemeEkrani.add(getBtnGuncelleKurs());
 			pnlGrupKursEklemeEkrani.add(getBtnSilKurs());
@@ -134,6 +134,8 @@ public class ManagementFrame extends JFrame {
 			pnlGrupKursEklemeEkrani.add(getBtnGrupHepsiniGetir());
 			pnlGrupKursEklemeEkrani.add(getBtnAddTeacher());
 			pnlGrupKursEklemeEkrani.add(getBtnAddDays());
+			pnlGrupKursEklemeEkrani.add(getDateBasTarihi());
+			pnlGrupKursEklemeEkrani.add(getDateBitTarihi());
 
 		}
 		return pnlGrupKursEklemeEkrani;
@@ -196,15 +198,6 @@ public class ManagementFrame extends JFrame {
 		return txtKursAdi;
 	}
 
-	private JTextField getDateBasTarihi() {
-		if (dateBasTarihi == null) {
-			dateBasTarihi = new JTextField();
-			dateBasTarihi.setColumns(10);
-			dateBasTarihi.setBounds(461, 81, 133, 20);
-		}
-		return dateBasTarihi;
-	}
-
 	private JTextField getTxtSinifAdi() {
 		if (txtSinifAdi == null) {
 			txtSinifAdi = new JTextField();
@@ -220,15 +213,6 @@ public class ManagementFrame extends JFrame {
 			lblBitTarihi.setBounds(348, 109, 103, 14);
 		}
 		return lblBitTarihi;
-	}
-
-	private JTextField getDateBitTarihi() {
-		if (dateBitTarihi == null) {
-			dateBitTarihi = new JTextField();
-			dateBitTarihi.setColumns(10);
-			dateBitTarihi.setBounds(461, 106, 133, 20);
-		}
-		return dateBitTarihi;
 	}
 
 	private JButton getBtnKaydetKurs() {
@@ -315,7 +299,7 @@ public class ManagementFrame extends JFrame {
 	private JComboBox getCmbKursGunleri() {
 		if (cmbKursGunleri == null) {
 			cmbKursGunleri = new JComboBox();
-			cmbKursGunleri.setBounds(461, 56, 133, 20);
+			cmbKursGunleri.setBounds(461, 53, 133, 20);
 
 		}
 		return cmbKursGunleri;
@@ -332,8 +316,8 @@ public class ManagementFrame extends JFrame {
 	private JScrollPane getScrollGrupKurs() {
 		if (scrollGrupKurs == null) {
 			scrollGrupKurs = new JScrollPane();
-			scrollGrupKurs.setBounds(10, 178, 543, 73);
-			scrollGrupKurs.setColumnHeaderView(getTblGrupKurs());
+			scrollGrupKurs.setBounds(12, 178, 543, 255);
+			scrollGrupKurs.setViewportView(getTblGrupKurs());
 		}
 		return scrollGrupKurs;
 	}
@@ -355,12 +339,16 @@ public class ManagementFrame extends JFrame {
 		int row = tblGrupKurs.getSelectedRow();
 		selectedRowId = Integer.parseInt(tblGrupKurs.getModel().getValueAt(row, 0).toString());
 		txtKursAdi.setText(tblGrupKurs.getModel().getValueAt(row, 1).toString());
-		cmbTeacher.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 2).toString());
-		txtOgrenciSayisi.setText(tblGrupKurs.getModel().getValueAt(row, 3).toString());
-		txtSinifAdi.setText(tblGrupKurs.getModel().getValueAt(row, 4).toString());
+		txtOgrenciSayisi.setText(tblGrupKurs.getModel().getValueAt(row, 2).toString());
+		//dateBasTarihi.setDate(new Date(tblGrupKurs.getModel().getValueAt(row, 3).toString()));
+		//dateBitTarihi.setDate(new Date( tblGrupKurs.getModel().getValueAt(row, 4).toString()));
 		cmbKursGunleri.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 5).toString());
-		dateBasTarihi.setText(tblGrupKurs.getModel().getValueAt(row, 6).toString());
-		dateBitTarihi.setText(tblGrupKurs.getModel().getValueAt(row, 7).toString());
+		txtSinifAdi.setText(tblGrupKurs.getModel().getValueAt(row, 6).toString());
+		cmbTeacher.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 7).toString());
+		
+		
+		
+		
 	}
 
 	private JButton getBtnGrupHepsiniGetir() {
@@ -368,10 +356,11 @@ public class ManagementFrame extends JFrame {
 			btnGrupHepsiniGetir = new JButton("Hepsini Getir");
 			btnGrupHepsiniGetir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					btnGetAllGroups_ActionPerformed();
 
 				}
 			});
-			btnGrupHepsiniGetir.setBounds(222, 255, 139, 23);
+			btnGrupHepsiniGetir.setBounds(209, 446, 139, 23);
 		}
 		return btnGrupHepsiniGetir;
 	}
@@ -379,7 +368,7 @@ public class ManagementFrame extends JFrame {
 	protected void btnGetAllGroups_ActionPerformed() {
 		GroupsDao dao = new GroupsDao();
 		List<Groups> liste = dao.getAll(new Groups());
-		String[] columnNames = { "id", "Adı", "Soyadı", "Adres", "Telefon", "E mail", "Ücret", "Kayıt Tarihi" };
+		String[] columnNames = { "id", "Kurs Adı", "Öğrenci Sayısı", "Başlama Tarihi", "Bitiş Tarihi", "Günler", "Sınıf adı", "Öğretmen Adı" };
 		String[][] data = new String[liste.size()][columnNames.length];
 		for (int i = 0; i < liste.size(); i++) {
 			data[i][0] = "" + liste.get(i).getId();
@@ -464,5 +453,19 @@ public class ManagementFrame extends JFrame {
 			btnAddDays.setBounds(607, 51, 52, 25);
 		}
 		return btnAddDays;
+	}
+	private JDateChooser getDateBasTarihi() {
+		if (dateBasTarihi == null) {
+			dateBasTarihi = new JDateChooser();
+			dateBasTarihi.setBounds(461, 84, 131, 22);
+		}
+		return dateBasTarihi;
+	}
+	private JDateChooser getDateBitTarihi() {
+		if (dateBitTarihi == null) {
+			dateBitTarihi = new JDateChooser();
+			dateBitTarihi.setBounds(461, 109, 133, 22);
+		}
+		return dateBitTarihi;
 	}
 }
