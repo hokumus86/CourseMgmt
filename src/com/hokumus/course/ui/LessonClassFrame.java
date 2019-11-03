@@ -18,8 +18,11 @@ public class LessonClassFrame extends JFrame {
 	private JButton btnKaydet;
 
 	public LessonClassFrame() {
+		setTitle("Sınıf Ekleme Ekranı");
+		setSize(399, 404);
 		getContentPane().setLayout(null);
 		getContentPane().add(getPnlSinifEkleEkrani());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initialize();
 		
 	}
@@ -31,7 +34,7 @@ public class LessonClassFrame extends JFrame {
 		if (pnlSinifEkleEkrani == null) {
 			pnlSinifEkleEkrani = new JPanel();
 			pnlSinifEkleEkrani.setBorder(new TitledBorder(null, "S\u0131n\u0131f Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			pnlSinifEkleEkrani.setBounds(10, 11, 288, 298);
+			pnlSinifEkleEkrani.setBounds(10, 11, 359, 335);
 			pnlSinifEkleEkrani.setLayout(null);
 			pnlSinifEkleEkrani.add(getTxtSinifAdi());
 			pnlSinifEkleEkrani.add(getTxtSinifKodu());
