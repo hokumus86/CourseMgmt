@@ -21,6 +21,7 @@ import com.hokumus.course.dao.ExpensesDao;
 import com.hokumus.course.dao.IncomingsDao;
 import com.hokumus.course.dao.StudentDao;
 import com.hokumus.course.dao.StudentPaymentsDao;
+import com.hokumus.course.dao.TeacherDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
 import com.hokumus.course.model.accounting.Expenses;
@@ -28,6 +29,7 @@ import com.hokumus.course.model.accounting.ExpensesType;
 import com.hokumus.course.model.accounting.IncomeType;
 import com.hokumus.course.model.student.Student;
 import com.hokumus.course.model.student.StudentPayments;
+import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
 
 import javax.swing.JScrollPane;
@@ -35,8 +37,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 
 public class AccountingFrame extends JFrame{
@@ -87,15 +87,11 @@ public class AccountingFrame extends JFrame{
 	private JTable table_gider;
 	private JLabel lblSorgulanacakTur;
 	private JComboBox cmb_srgEnum;
+	private JLabel lblTaraf;
+	private JComboBox cmb_taraf;
 	
 	public AccountingFrame() {
 		initialize ();
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				new MainFrame().setVisible(true);
-			}
-		});
 		pnl_GelirKaydi.setVisible(false);
 		pnl_GiderKaydi.setVisible(false);
 		pnl_OdemeBekleyen.setVisible(false);
@@ -524,6 +520,8 @@ public class AccountingFrame extends JFrame{
 			pnl_GiderKaydi.add(getScrollPane_3());
 			pnl_GiderKaydi.add(getLblSorgulanacakTur());
 			pnl_GiderKaydi.add(getCmb_srgEnum());
+			pnl_GiderKaydi.add(getLblTaraf());
+			pnl_GiderKaydi.add(getCmb_taraf());
 		}
 		return pnl_GiderKaydi;
 	}
@@ -545,7 +543,7 @@ public class AccountingFrame extends JFrame{
 		if (txt_aciklamaGider == null) {
 			txt_aciklamaGider = new JTextField();
 			txt_aciklamaGider.setColumns(10);
-			txt_aciklamaGider.setBounds(129, 49, 537, 54);
+			txt_aciklamaGider.setBounds(129, 49, 202, 54);
 		}
 		return txt_aciklamaGider;
 	}
@@ -562,7 +560,7 @@ public class AccountingFrame extends JFrame{
 	private JLabel getLblOdenecekTutar() {
 		if (lblOdenecekTutar == null) {
 			lblOdenecekTutar = new JLabel("Odenecek Tutar");
-			lblOdenecekTutar.setBounds(374, 24, 85, 16);
+			lblOdenecekTutar.setBounds(359, 26, 102, 16);
 		}
 		return lblOdenecekTutar;
 	}
@@ -664,5 +662,30 @@ public class AccountingFrame extends JFrame{
 			cmb_srgEnum.setModel(srgenum);
 		}
 		return cmb_srgEnum;
+	}
+	private JLabel getLblTaraf() {
+		if (lblTaraf == null) {
+			lblTaraf = new JLabel("Taraf");
+			lblTaraf.setBounds(359, 55, 46, 14);
+		}
+		return lblTaraf;
+	}
+	private JComboBox getCmb_taraf() {
+		if (cmb_taraf == null) {
+			cmb_taraf = new JComboBox();
+			cmb_taraf.setBounds(464, 54, 202, 22);
+			
+			TeacherDao dao = new TeacherDao();
+			List<Teacher> liste = dao.getAll(new Teacher());
+			Teacher[] data = new Teacher[liste.size()];
+			for (int i = 0; i < data.length; i++) {
+				data[i] = liste.get(i);
+			}
+			DefaultComboBoxModel model = new DefaultComboBoxModel(data);
+			cmb_taraf.setModel(model);
+			
+			
+		}
+		return cmb_taraf;
 	}
 }
