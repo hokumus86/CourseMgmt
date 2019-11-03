@@ -22,11 +22,10 @@ import com.hokumus.course.model.utils.BaseEntity;
 public class Incomings extends BaseEntity{
 
     private Long id;
-    private String konu;
+    private IncomeType tanim;
     private BigDecimal miktar;
     private Date tarih;
-    private StudentPayments StudentPayments;
-    private Inventory Inventory;
+//    private StudentPayments StudentPayments;
 
     @Id
     @SequenceGenerator(name = "seq_income", allocationSize = 1, sequenceName = "seq_income")
@@ -40,20 +39,21 @@ public class Incomings extends BaseEntity{
     }
 
     @Column(name = "subject",length = 100)
-    public String getKonu() {
-        return konu;
-    }
+    public IncomeType getTanim() {
+		return tanim;
+	}
 
-    public void setKonu(String konu) {
-        this.konu = konu;
-    }
-
+	public void setTanim(IncomeType tanim) {
+		this.tanim = tanim;
+	}
+    
+    
     @Column(name = "quantity",precision = 14,scale = 2)
     public BigDecimal getMiktar() {
         return miktar;
     }
 
-    public void setMiktar(BigDecimal miktar) {
+	public void setMiktar(BigDecimal miktar) {
         this.miktar = miktar;
     }
 
@@ -66,25 +66,16 @@ public class Incomings extends BaseEntity{
         this.tarih = tarih;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "student_payment_id")
-    public StudentPayments getStudentPayments() {
-        return StudentPayments;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "student_payment_id")
+//    public StudentPayments getStudentPayments() {
+//        return StudentPayments;
+//    }
+//
+//    public void setStudentPayments(StudentPayments StudentPayments) {
+//        this.StudentPayments = StudentPayments;
+//    }
 
-    public void setStudentPayments(StudentPayments StudentPayments) {
-        this.StudentPayments = StudentPayments;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "inventory_id")
-    public Inventory getInventory() {
-        return Inventory;
-    }
-
-    public void setInventory(Inventory Inventory) {
-        this.Inventory = Inventory;
-    }
 
     @Override
     public String toString() {

@@ -10,15 +10,29 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import com.hokumus.course.dao.IncomingsDao;
+import com.hokumus.course.dao.StudentDao;
+import com.hokumus.course.dao.StudentPaymentsDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
+import com.hokumus.course.model.accounting.IncomeType;
+import com.hokumus.course.model.ogrenci.Student;
+import com.hokumus.course.model.ogrenci.StudentPayments;
+import com.hokumus.course.utils.CourseUtils;
+
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 
 public class AccountingFrame extends JFrame{
 	private JMenuBar menuBar;
@@ -52,6 +66,8 @@ public class AccountingFrame extends JFrame{
 	private JScrollPane scrollPane_2;
 	private JTable tbl_tamamlanan;
 	
+	private int selectedRowId;
+	
 	public AccountingFrame() {
 		initialize ();
 		pnl_KayitSorgula.setVisible(false);
@@ -62,7 +78,7 @@ public class AccountingFrame extends JFrame{
 	private void initialize() {
 		
 		setTitle("Muhasebe");
-		setSize(957,507);
+		setSize(975,526);
 		setJMenuBar(getMenuBar_1());
 		getContentPane().setLayout(null);
 		getContentPane().add(getPnl_KayitSorgula());
@@ -130,7 +146,7 @@ public class AccountingFrame extends JFrame{
 					
 					UserModelDao dao = new UserModelDao();
 					List<UserModel> liste = dao.getAll(new UserModel());
-					String[] columnNames = { "ID", "Isim", "Soyisim", "T.C.No", "DogumTarihi", "Kurs Kodu", "Kurs Adi", "Odenecek Tutar", "Odenen Tutar" };
+					String[] columnNames = { "id", "Isim", "Soyisim", "Odeme Turu", "Sinif Kodu", "Kurs Adi", "Odenen Tutar"};
 					String[][] data = new String[liste.size()][columnNames.length];
 					for (int i = 0; i < liste.size(); i++) {
 						
@@ -153,7 +169,7 @@ public class AccountingFrame extends JFrame{
 					
 					UserModelDao dao = new UserModelDao();
 					List<UserModel> liste = dao.getAll(new UserModel());
-					String[] columnNames = { "ID", "Isim", "Soyisim", "T.C.No", "DogumTarihi", "Kurs Kodu", "Kurs Adi", "Odenecek Tutar", "Odenen Tutar" };
+					String[] columnNames = { "id", "Isim", "Soyisim", "Odeme Turu", "Sinif Kodu", "Kurs Adi", "Odenen Tutar"};
 					String[][] data = new String[liste.size()][columnNames.length];
 					for (int i = 0; i < liste.size(); i++) {
 						
@@ -183,6 +199,31 @@ public class AccountingFrame extends JFrame{
 			pnl_KayitSorgula.add(getBtnSorgula());
 			pnl_KayitSorgula.add(getBtnNewButton());
 			pnl_KayitSorgula.add(getScrollPane_1());
+			
+			JLabel lblNewLabel_2 = new JLabel("Odeme Turu");
+			lblNewLabel_2.setBounds(44, 79, 72, 16);
+			pnl_KayitSorgula.add(lblNewLabel_2);
+			
+			JComboBox cmbOdemeTuru = new JComboBox();
+			cmbOdemeTuru.setBounds(120, 76, 202, 22);
+			DefaultComboBoxModel odemeTuru = new DefaultComboBoxModel(IncomeType.values());
+			cmbOdemeTuru.setModel(odemeTuru);
+			pnl_KayitSorgula.add(cmbOdemeTuru);
+			
+			JButton btnYeniKayit = new JButton("Yeni Kayit");
+			btnYeniKayit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					StudentPayments temp_SP = new StudentPayments();
+		 			temp_SP.setAciklama("JAVA");
+		 			temp_SP.setOdemeMiktari(new BigDecimal(txt_tutarOdenecek.getText()));
+		 			StudentPaymentsDao dao_sp = new StudentPaymentsDao();
+		 			dao_sp.save(temp_SP);
+					
+				}
+			});
+			btnYeniKayit.setBounds(721, 47, 161, 26);
+			pnl_KayitSorgula.add(btnYeniKayit);
 		}
 		return pnl_KayitSorgula;
 	}
@@ -266,17 +307,45 @@ public class AccountingFrame extends JFrame{
 			btnSorgula = new JButton("Sorgula");
 			btnSorgula.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					getUpdateTable();
+					StudentDao dao_student = new StudentDao();
+					List<Student> list_student = dao_student.getAll(new Student());
+					
+					StudentPaymentsDao dao = new StudentPaymentsDao();
+					List<StudentPayments> list_sp = dao.getAll(new StudentPayments());
+					String[] columnNames = { "id", "Isim", "Soyisim", "Odeme Turu", "Sinif Kodu", "Kurs Adi", "Odenen Tutar"};
+					String [] [] data = new String[list_sp.size()][columnNames.length];
+					for (int i = 0; i < list_sp.size(); i++) {
+						data[i][0] = "" + list_sp.get(i).getId();
+						data[i][1] = "" + list_student.get(i).getAd();
+						data[i][2] = "" + list_student.get(i).getSoyad();
+						data[i][3] = "";
+						data[i][4] = "";
+						data[i][5] = "";
+						data[i][6] = "" + list_sp.get(i).getOdemeMiktari();
+					}
+					DefaultTableModel model = new DefaultTableModel(data, columnNames);
+					tbl_sorgula.setModel(model);
+					
 				}
 			});
-			btnSorgula.setBounds(742, 24, 161, 35);
+			btnSorgula.setBounds(721, 19, 161, 26);
 		}
 		return btnSorgula;
 	}
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("Guncelle");
-			btnNewButton.setBounds(741, 61, 161, 35);
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					StudentPayments temp_SP = new StudentPayments();
+					temp_SP.setUpdaterBy(CourseUtils.loginedUser.getUserName());
+					temp_SP.setOdemeTarihi(Calendar.getInstance().getTime());
+					//temp_SP.setOdemeMiktari(new BigDecimal(getTxt_tutarOdenecek()));
+					
+				}
+			});
+			btnNewButton.setBounds(721, 74, 161, 26);
 		}
 		return btnNewButton;
 	}
@@ -320,17 +389,17 @@ public class AccountingFrame extends JFrame{
 	}
 	
 	
-	protected void getUpdateTable () {
-		UserModelDao dao = new UserModelDao();
-		List<UserModel> liste = dao.getAll(new UserModel());
-		String[] columnNames = { "ID", "Isim", "Soyisim", "T.C.No", "DogumTarihi", "Kurs Kodu", "Kurs Adi", "Odenecek Tutar", "Odenen Tutar" };
-		String[][] data = new String[liste.size()][columnNames.length];
-		for (int i = 0; i < liste.size(); i++) {
-			
-		}
-		DefaultTableModel model = new DefaultTableModel(data, columnNames);
-		tbl_sorgula.setModel(model);
-	}
+//	protected void getUpdateTable () {
+//		UserModelDao dao = new UserModelDao();
+//		List<UserModel> liste = dao.getAll(new UserModel());
+//		String[] columnNames = { "ID", "Isim", "Soyisim", "T.C.No", "DogumTarihi", "Kurs Kodu", "Kurs Adi", "Odenecek Tutar", "Odenen Tutar" };
+//		String[][] data = new String[liste.size()][columnNames.length];
+//		for (int i = 0; i < liste.size(); i++) {
+//			
+//		}
+//		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+//		tbl_sorgula.setModel(model);
+//	}
 	private JScrollPane getScrollPane_1() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
@@ -342,9 +411,29 @@ public class AccountingFrame extends JFrame{
 	private JTable getTbl_sorgula() {
 		if (tbl_sorgula == null) {
 			tbl_sorgula = new JTable();
+			tbl_sorgula.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					tbl_sorgula_Row_Selected();
+				}
+
+				
+			});
 		}
 		return tbl_sorgula;
 	}
+	
+	protected void tbl_sorgula_Row_Selected() {
+		int row = tbl_sorgula.getSelectedRow();
+		selectedRowId = Integer.parseInt(tbl_sorgula.getModel().getValueAt(row, 0).toString());
+		txt_isim.setText(tbl_sorgula.getModel().getValueAt(row, 1).toString());
+		txt_soyisim.setText(tbl_sorgula.getModel().getValueAt(row, 2).toString());
+		
+		txt_sinifkodu.setText(tbl_sorgula.getModel().getValueAt(row, 4).toString());
+		txt_kursadi.setText(tbl_sorgula.getModel().getValueAt(row, 5).toString());
+		
+	}
+	
 	private JScrollPane getScrollPane_1_1() {
 		if (scrollPane_1 == null) {
 			scrollPane_1 = new JScrollPane();

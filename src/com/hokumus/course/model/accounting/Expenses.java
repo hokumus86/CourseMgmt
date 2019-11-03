@@ -27,19 +27,19 @@ public class Expenses extends BaseEntity{
     private String konu;
     private BigDecimal miktar;
     private Date tarih;
-    private Teacher ogretmen;
-    private Employee personel;
-    private Inventory envanter;
-    private OtherExpense OtherExpense;
+//    private Teacher ogretmen;
+//    private Employee personel;
+//    private Inventory envanter;
+//    private OtherExpense OtherExpense;
     
-    @Embedded
-    public OtherExpense getOtherExpense() {
-		return OtherExpense;
-	}
-
-	public void setOtherExpense(OtherExpense OtherExpense) {
-		this.OtherExpense = OtherExpense;
-	}
+//    @Embedded
+//    public OtherExpense getOtherExpense() {
+//		return OtherExpense;
+//	}
+//
+//	public void setOtherExpense(OtherExpense OtherExpense) {
+//		this.OtherExpense = OtherExpense;
+//	}
 
 	@Id
     @SequenceGenerator(name = "seq_expense", allocationSize = 1, sequenceName = "seq_expense")
@@ -79,40 +79,40 @@ public class Expenses extends BaseEntity{
         this.tarih = tarih;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    public Teacher getOgretmen() {
-        return ogretmen;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "teacher_id")
+//    public Teacher getOgretmen() {
+//        return ogretmen;
+//    }
+//
+//    public void setOgretmen(Teacher ogretmen) {
+//        this.ogretmen = ogretmen;
+//    }
+//
+//    @ManyToOne
+//    @JoinColumn(name = "employee_id")
+//    public Employee getPersonel() {
+//        return personel;
+//    }
+//
+//    public void setPersonel(Employee personel) {
+//        this.personel = personel;
+//    }
+//
+//    @ManyToOne
+//    @JoinColumn(name = "inventory_id")
+//    public Inventory getEnvanter() {
+//        return envanter;
+//    }
 
-    public void setOgretmen(Teacher ogretmen) {
-        this.ogretmen = ogretmen;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    public Employee getPersonel() {
-        return personel;
-    }
-
-    public void setPersonel(Employee personel) {
-        this.personel = personel;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "inventory_id")
-    public Inventory getEnvanter() {
-        return envanter;
-    }
-
-    public void setEnvanter(Inventory envanter) {
-        this.envanter = envanter;
-    }
-
-    @Override
-    public String toString() {
-        return   "Gider Id = " +id+" Personel id = "+personel+ " Envanter id = "+envanter+ " Ogretmen id = "+ogretmen;
-    }
+//    public void setEnvanter(Inventory envanter) {
+//        this.envanter = envanter;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return   "Gider Id = " +id+" Personel id = "+personel+ " Envanter id = "+envanter+ " Ogretmen id = "+ogretmen;
+//    }
  
 
 }
