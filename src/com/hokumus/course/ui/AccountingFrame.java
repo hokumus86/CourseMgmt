@@ -35,6 +35,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 
 public class AccountingFrame extends JFrame{
@@ -88,6 +90,12 @@ public class AccountingFrame extends JFrame{
 	
 	public AccountingFrame() {
 		initialize ();
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				new MainFrame().setVisible(true);
+			}
+		});
 		pnl_GelirKaydi.setVisible(false);
 		pnl_GiderKaydi.setVisible(false);
 		pnl_OdemeBekleyen.setVisible(false);

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.hokumus.course.model.utils.BaseEntity;
 
 @Entity
-@Table(name = "lessons")
+@Table(name = "days")
 public class Days extends BaseEntity{
 
     private Long id;

@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,7 +68,12 @@ public class ManagementFrame extends JFrame {
 	private JDateChooser dateBitTarihi;
 
 	public ManagementFrame() {
-
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				new MainFrame().setVisible(true);
+			}
+		});
 		initialize();
 		pnlGrupKursEklemeEkrani.setVisible(false);
 	}

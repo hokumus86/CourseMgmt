@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AdminFrame extends JFrame {
 	private JMenuBar menuBar;
@@ -57,6 +59,12 @@ public class AdminFrame extends JFrame {
 	private int selectedRowId;
 
 	public AdminFrame() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				new MainFrame().setVisible(true);
+			}
+		});
 		initialize();
 	}
 

@@ -9,6 +9,8 @@ import com.hokumus.course.utils.CourseUtils;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 	private JButton btnAdmin;
@@ -19,6 +21,12 @@ public class MainFrame extends JFrame {
 	
 
 	public MainFrame() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				new LoginFrame().setVisible(true);
+			}
+		});
 
 		intialize();
 		
@@ -69,6 +77,7 @@ public class MainFrame extends JFrame {
 			btnAdmin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new AdminFrame().setVisible(true);
+					MainFrame.this.dispose();
 				}
 			});
 			btnAdmin.setBounds(74, 26, 227, 125);
@@ -82,12 +91,27 @@ public class MainFrame extends JFrame {
 			btnManager.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					new ManagementFrame().setVisible(true);
+					MainFrame.this.dispose();
 
 				}
 			});
 			btnManager.setBounds(335, 26, 227, 125);
 		}
 		return btnManager;
+	}
+	
+	private JButton getBtnMuhasebe() {
+		if (btnMuhasebe == null) {
+			btnMuhasebe = new JButton("Muhasebe");
+			btnMuhasebe.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new AccountingFrame().setVisible(true);
+					MainFrame.this.dispose();
+				}
+			});
+			btnMuhasebe.setBounds(74, 321, 227, 125);
+		}
+		return btnMuhasebe;
 	}
 
 	private JButton getBtnOgrenci() {
@@ -105,16 +129,5 @@ public class MainFrame extends JFrame {
 		}
 		return btnTeacher;
 	}
-	private JButton getBtnMuhasebe() {
-		if (btnMuhasebe == null) {
-			btnMuhasebe = new JButton("Muhasebe");
-			btnMuhasebe.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					new AccountingFrame().setVisible(true);
-				}
-			});
-			btnMuhasebe.setBounds(74, 321, 227, 125);
-		}
-		return btnMuhasebe;
-	}
+	
 }

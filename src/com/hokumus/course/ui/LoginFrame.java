@@ -14,19 +14,27 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LoginFrame extends JFrame {
 	private JTextField txtUserName;
 	private JPasswordField txtSifre;
 
 	public LoginFrame() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 		initialize();
 	}
 
 	private void initialize() {
 		setTitle("Dersane Projesi Giri� Ekran�");
 		setSize(444, 456);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
 		txtUserName = new JTextField("hokumus");
@@ -80,7 +88,8 @@ public class LoginFrame extends JFrame {
 					UserModel loginedUser= liste.get(i);
 					CourseUtils.loginedUser = loginedUser;
 					//JOptionPane.showMessageDialog(LoginFrame.this, "Ho�geldiniz");
-					new MainFrame().setVisible(true);;
+					new MainFrame().setVisible(true);
+					LoginFrame.this.dispose();
 					isPasswordValid = true;
 					break;
 				} else {
