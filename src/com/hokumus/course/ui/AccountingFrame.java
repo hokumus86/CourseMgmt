@@ -17,11 +17,14 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import com.hokumus.course.dao.ExpensesDao;
 import com.hokumus.course.dao.IncomingsDao;
 import com.hokumus.course.dao.StudentDao;
 import com.hokumus.course.dao.StudentPaymentsDao;
 import com.hokumus.course.dao.UserModelDao;
 import com.hokumus.course.model.UserModel;
+import com.hokumus.course.model.accounting.Expenses;
+import com.hokumus.course.model.accounting.ExpensesType;
 import com.hokumus.course.model.accounting.IncomeType;
 import com.hokumus.course.model.student.Student;
 import com.hokumus.course.model.student.StudentPayments;
@@ -42,7 +45,7 @@ public class AccountingFrame extends JFrame{
 	private JMenu mnRaporlar;
 	private JMenuItem mntmTamamlananKayitlar;
 	private JMenuItem mntmOdemeBekleyenKayitler;
-	private JPanel pnl_KayitSorgula;
+	private JPanel pnl_GelirKaydi;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JTextField txt_isim;
@@ -67,10 +70,26 @@ public class AccountingFrame extends JFrame{
 	private JTable tbl_tamamlanan;
 	
 	private int selectedRowId;
+	private JMenuItem mnıtmGiderKaydiYarat;
+	private JPanel pnl_GiderKaydi;
+	private JLabel lblAciklama;
+	private JLabel lblOdemeTuru;
+	private JTextField txt_aciklamaGider;
+	private JComboBox cmb_OdemeTuruGider;
+	private JLabel lblOdenecekTutar;
+	private JTextField txt_odenecekTutarGider;
+	private JButton btn_SorgulaGider;
+	private JButton btn_kayitEkleGider;
+	private JButton btn_kayitGuncelleGider;
+	private JScrollPane scrollPane_3;
+	private JTable table_gider;
+	private JLabel lblSorgulanacakTur;
+	private JComboBox cmb_srgEnum;
 	
 	public AccountingFrame() {
 		initialize ();
-		pnl_KayitSorgula.setVisible(false);
+		pnl_GelirKaydi.setVisible(false);
+		pnl_GiderKaydi.setVisible(false);
 		pnl_OdemeBekleyen.setVisible(false);
 		pnl_TamamlananKayitlar.setVisible(false);
 	}
@@ -81,7 +100,8 @@ public class AccountingFrame extends JFrame{
 		setSize(975,526);
 		setJMenuBar(getMenuBar_1());
 		getContentPane().setLayout(null);
-		getContentPane().add(getPnl_KayitSorgula());
+		getContentPane().add(getPnl_GiderKaydi());
+		getContentPane().add(getPnl_GelirKaydi());
 		getContentPane().add(getPnl_OdemeBekleyen());
 		getContentPane().add(getPnl_TamamlananKayitlar());
 		
@@ -99,16 +119,17 @@ public class AccountingFrame extends JFrame{
 		if (mnIslemler == null) {
 			mnIslemler = new JMenu("Islemler");
 			mnIslemler.add(getMntmKayitSorgula());
+			mnIslemler.add(getMnıtmGiderKaydiYarat());
 			mnIslemler.add(getMntmCikis());
 		}
 		return mnIslemler;
 	}
 	private JMenuItem getMntmKayitSorgula() {
 		if (mntmKayitSorgula == null) {
-			mntmKayitSorgula = new JMenuItem("Guncelle");
+			mntmKayitSorgula = new JMenuItem("Gelir Kaydi Yarat");
 			mntmKayitSorgula.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					pnl_KayitSorgula.setVisible(true);
+					pnl_GelirKaydi.setVisible(true);
 					pnl_TamamlananKayitlar.setVisible(false);
 					pnl_OdemeBekleyen.setVisible(false);
 				}
@@ -141,7 +162,7 @@ public class AccountingFrame extends JFrame{
 			mntmTamamlananKayitlar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					pnl_OdemeBekleyen.setVisible(false);
-					pnl_KayitSorgula.setVisible(false);
+					pnl_GelirKaydi.setVisible(false);
 					pnl_TamamlananKayitlar.setVisible(true);
 					
 					UserModelDao dao = new UserModelDao();
@@ -163,7 +184,7 @@ public class AccountingFrame extends JFrame{
 			mntmOdemeBekleyenKayitler = new JMenuItem("Odeme Bekleyen Kayitlar");
 			mntmOdemeBekleyenKayitler.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					pnl_KayitSorgula.setVisible(false);
+					pnl_GelirKaydi.setVisible(false);
 					pnl_TamamlananKayitlar.setVisible(false);
 					pnl_OdemeBekleyen.setVisible(true);
 					
@@ -181,34 +202,34 @@ public class AccountingFrame extends JFrame{
 		}
 		return mntmOdemeBekleyenKayitler;
 	}
-	private JPanel getPnl_KayitSorgula() {
-		if (pnl_KayitSorgula == null) {
-			pnl_KayitSorgula = new JPanel();
-			pnl_KayitSorgula.setBounds(6, 6, 945, 451);
-			pnl_KayitSorgula.setLayout(null);
-			pnl_KayitSorgula.add(getLblNewLabel());
-			pnl_KayitSorgula.add(getLblNewLabel_1());
-			pnl_KayitSorgula.add(getTxt_isim());
-			pnl_KayitSorgula.add(getTxt_soyisim());
-			pnl_KayitSorgula.add(getLblKursKodu());
-			pnl_KayitSorgula.add(getLblNewLabel_3());
-			pnl_KayitSorgula.add(getLblNewLabel_4());
-			pnl_KayitSorgula.add(getTxt_sinifkodu());
-			pnl_KayitSorgula.add(getTxt_kursadi());
-			pnl_KayitSorgula.add(getTxt_tutarOdenecek());
-			pnl_KayitSorgula.add(getBtnSorgula());
-			pnl_KayitSorgula.add(getBtnNewButton());
-			pnl_KayitSorgula.add(getScrollPane_1());
+	private JPanel getPnl_GelirKaydi() {
+		if (pnl_GelirKaydi == null) {
+			pnl_GelirKaydi = new JPanel();
+			pnl_GelirKaydi.setBounds(6, 6, 945, 451);
+			pnl_GelirKaydi.setLayout(null);
+			pnl_GelirKaydi.add(getLblNewLabel());
+			pnl_GelirKaydi.add(getLblNewLabel_1());
+			pnl_GelirKaydi.add(getTxt_isim());
+			pnl_GelirKaydi.add(getTxt_soyisim());
+			pnl_GelirKaydi.add(getLblKursKodu());
+			pnl_GelirKaydi.add(getLblNewLabel_3());
+			pnl_GelirKaydi.add(getLblNewLabel_4());
+			pnl_GelirKaydi.add(getTxt_sinifkodu());
+			pnl_GelirKaydi.add(getTxt_kursadi());
+			pnl_GelirKaydi.add(getTxt_tutarOdenecek());
+			pnl_GelirKaydi.add(getBtnSorgula());
+			pnl_GelirKaydi.add(getBtnNewButton());
+			pnl_GelirKaydi.add(getScrollPane_1());
 			
 			JLabel lblNewLabel_2 = new JLabel("Odeme Turu");
 			lblNewLabel_2.setBounds(44, 79, 72, 16);
-			pnl_KayitSorgula.add(lblNewLabel_2);
+			pnl_GelirKaydi.add(lblNewLabel_2);
 			
 			JComboBox cmbOdemeTuru = new JComboBox();
 			cmbOdemeTuru.setBounds(120, 76, 202, 22);
 			DefaultComboBoxModel odemeTuru = new DefaultComboBoxModel(IncomeType.values());
 			cmbOdemeTuru.setModel(odemeTuru);
-			pnl_KayitSorgula.add(cmbOdemeTuru);
+			pnl_GelirKaydi.add(cmbOdemeTuru);
 			
 			JButton btnYeniKayit = new JButton("Yeni Kayit");
 			btnYeniKayit.addActionListener(new ActionListener() {
@@ -223,9 +244,9 @@ public class AccountingFrame extends JFrame{
 				}
 			});
 			btnYeniKayit.setBounds(721, 47, 161, 26);
-			pnl_KayitSorgula.add(btnYeniKayit);
+			pnl_GelirKaydi.add(btnYeniKayit);
 		}
-		return pnl_KayitSorgula;
+		return pnl_GelirKaydi;
 	}
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
@@ -338,10 +359,12 @@ public class AccountingFrame extends JFrame{
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
+					StudentPaymentsDao dao_sp = new StudentPaymentsDao();
 					StudentPayments temp_SP = new StudentPayments();
 					temp_SP.setUpdaterBy(CourseUtils.loginedUser.getUserName());
 					temp_SP.setOdemeTarihi(Calendar.getInstance().getTime());
 					//temp_SP.setOdemeMiktari(new BigDecimal(getTxt_tutarOdenecek()));
+					dao_sp.update(temp_SP);
 					
 				}
 			});
@@ -461,5 +484,177 @@ public class AccountingFrame extends JFrame{
 			tbl_tamamlanan = new JTable();
 		}
 		return tbl_tamamlanan;
+	}
+	private JMenuItem getMnıtmGiderKaydiYarat() {
+		if (mnıtmGiderKaydiYarat == null) {
+			mnıtmGiderKaydiYarat = new JMenuItem("Gider Kaydi Yarat");
+			mnıtmGiderKaydiYarat.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					pnl_GiderKaydi.setVisible(true);
+					pnl_GelirKaydi.setVisible(false);
+					pnl_OdemeBekleyen.setVisible(false);
+					pnl_TamamlananKayitlar.setVisible(false);
+				}
+			});
+		}
+		return mnıtmGiderKaydiYarat;
+	}
+	private JPanel getPnl_GiderKaydi() {
+		if (pnl_GiderKaydi == null) {
+			pnl_GiderKaydi = new JPanel();
+			pnl_GiderKaydi.setBounds(0, 0, 967, 478);
+			pnl_GiderKaydi.setLayout(null);
+			pnl_GiderKaydi.add(getLblAciklama());
+			pnl_GiderKaydi.add(getLblOdemeTuru());
+			pnl_GiderKaydi.add(getTxt_aciklamaGider());
+			pnl_GiderKaydi.add(getCmb_OdemeTuruGider());
+			pnl_GiderKaydi.add(getLblOdenecekTutar());
+			pnl_GiderKaydi.add(getTxt_odenecekTutarGider());
+			pnl_GiderKaydi.add(getBtn_SorgulaGider());
+			pnl_GiderKaydi.add(getBtn_kayitEkleGider());
+			pnl_GiderKaydi.add(getBtn_kayitGuncelleGider());
+			pnl_GiderKaydi.add(getScrollPane_3());
+			pnl_GiderKaydi.add(getLblSorgulanacakTur());
+			pnl_GiderKaydi.add(getCmb_srgEnum());
+		}
+		return pnl_GiderKaydi;
+	}
+	private JLabel getLblAciklama() {
+		if (lblAciklama == null) {
+			lblAciklama = new JLabel("Aciklama");
+			lblAciklama.setBounds(53, 54, 61, 16);
+		}
+		return lblAciklama;
+	}
+	private JLabel getLblOdemeTuru() {
+		if (lblOdemeTuru == null) {
+			lblOdemeTuru = new JLabel("Odeme Turu");
+			lblOdemeTuru.setBounds(53, 26, 72, 16);
+		}
+		return lblOdemeTuru;
+	}
+	private JTextField getTxt_aciklamaGider() {
+		if (txt_aciklamaGider == null) {
+			txt_aciklamaGider = new JTextField();
+			txt_aciklamaGider.setColumns(10);
+			txt_aciklamaGider.setBounds(129, 49, 537, 54);
+		}
+		return txt_aciklamaGider;
+	}
+	private JComboBox getCmb_OdemeTuruGider() {
+		if (cmb_OdemeTuruGider == null) {
+			cmb_OdemeTuruGider = new JComboBox();
+			cmb_OdemeTuruGider.setBounds(129, 23, 202, 22);
+			
+			DefaultComboBoxModel odemeTuruGider = new DefaultComboBoxModel(ExpensesType.values());
+			cmb_OdemeTuruGider.setModel(odemeTuruGider);
+		}
+		return cmb_OdemeTuruGider;
+	}
+	private JLabel getLblOdenecekTutar() {
+		if (lblOdenecekTutar == null) {
+			lblOdenecekTutar = new JLabel("Odenecek Tutar");
+			lblOdenecekTutar.setBounds(374, 24, 85, 16);
+		}
+		return lblOdenecekTutar;
+	}
+	private JTextField getTxt_odenecekTutarGider() {
+		if (txt_odenecekTutarGider == null) {
+			txt_odenecekTutarGider = new JTextField();
+			txt_odenecekTutarGider.setColumns(10);
+			txt_odenecekTutarGider.setBounds(464, 22, 202, 26);
+		}
+		return txt_odenecekTutarGider;
+	}
+	private JButton getBtn_SorgulaGider() {
+		if (btn_SorgulaGider == null) {
+			btn_SorgulaGider = new JButton("Sorgula");
+			btn_SorgulaGider.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					ExpensesDao dao_expenses = new ExpensesDao();
+					
+					
+//					StudentDao dao_student = new StudentDao();
+//					List<Student> list_student = dao_student.getAll(new Student());
+//					
+//					StudentPaymentsDao dao = new StudentPaymentsDao();
+//					List<StudentPayments> list_sp = dao.getAll(new StudentPayments());
+//					String[] columnNames = { "id", "Isim", "Soyisim", "Odeme Turu", "Sinif Kodu", "Kurs Adi", "Odenen Tutar"};
+//					String [] [] data = new String[list_sp.size()][columnNames.length];
+//					for (int i = 0; i < list_sp.size(); i++) {
+//						data[i][0] = "" + list_sp.get(i).getId();
+//						data[i][1] = "" + list_student.get(i).getAd();
+//						data[i][2] = "" + list_student.get(i).getSoyad();
+//						data[i][3] = "";
+//						data[i][4] = "";
+//						data[i][5] = "";
+//						data[i][6] = "" + list_sp.get(i).getOdemeMiktari();
+//					}
+//					DefaultTableModel model = new DefaultTableModel(data, columnNames);
+//					tbl_sorgula.setModel(model);
+				}
+			});
+			btn_SorgulaGider.setBounds(719, 84, 161, 26);
+		}
+		return btn_SorgulaGider;
+	}
+	private JButton getBtn_kayitEkleGider() {
+		if (btn_kayitEkleGider == null) {
+			btn_kayitEkleGider = new JButton("Yeni Kayit");
+			btn_kayitEkleGider.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					Expenses temp_expenses = new Expenses();
+					//temp_expenses.setTanim(getCmbOdemeTuruGider().getSelectedItem());
+					temp_expenses.setAciklama(txt_aciklamaGider.getText());
+					temp_expenses.setCreatedTime(Calendar.getInstance().getTime());
+					temp_expenses.setCreaterBy(CourseUtils.loginedUser.getUserName());
+					ExpensesDao dao_expenses = new ExpensesDao();
+					dao_expenses.save(temp_expenses);
+					
+				}
+			});
+			btn_kayitEkleGider.setBounds(129, 114, 161, 26);
+		}
+		return btn_kayitEkleGider;
+	}
+	private JButton getBtn_kayitGuncelleGider() {
+		if (btn_kayitGuncelleGider == null) {
+			btn_kayitGuncelleGider = new JButton("Guncelle");
+			btn_kayitGuncelleGider.setBounds(300, 114, 161, 26);
+		}
+		return btn_kayitGuncelleGider;
+	}
+	private JScrollPane getScrollPane_3() {
+		if (scrollPane_3 == null) {
+			scrollPane_3 = new JScrollPane();
+			scrollPane_3.setBounds(10, 150, 933, 281);
+			scrollPane_3.setViewportView(getTable_gider());
+		}
+		return scrollPane_3;
+	}
+	private JTable getTable_gider() {
+		if (table_gider == null) {
+			table_gider = new JTable();
+		}
+		return table_gider;
+	}
+	private JLabel getLblSorgulanacakTur() {
+		if (lblSorgulanacakTur == null) {
+			lblSorgulanacakTur = new JLabel("Sorgulanacak Tur");
+			lblSorgulanacakTur.setBounds(719, 27, 132, 15);
+		}
+		return lblSorgulanacakTur;
+	}
+	private JComboBox getCmb_srgEnum() {
+		if (cmb_srgEnum == null) {
+			cmb_srgEnum = new JComboBox();
+			cmb_srgEnum.setBounds(719, 51, 202, 22);
+			
+			DefaultComboBoxModel srgenum = new DefaultComboBoxModel(ExpensesType.values());
+			cmb_srgEnum.setModel(srgenum);
+		}
+		return cmb_srgEnum;
 	}
 }

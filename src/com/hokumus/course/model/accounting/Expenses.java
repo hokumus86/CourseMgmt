@@ -24,12 +24,12 @@ import com.hokumus.course.model.utils.BaseEntity;
 public class Expenses extends BaseEntity{
 
     private Long id;
-    private String konu;
-    private BigDecimal miktar;
+    private ExpensesType tanim;
+    private String aciklama;
+	private BigDecimal miktar;
     private Date tarih;
 //    private Teacher ogretmen;
 //    private Employee personel;
-//    private Inventory envanter;
 //    private OtherExpense OtherExpense;
     
 //    @Embedded
@@ -53,20 +53,29 @@ public class Expenses extends BaseEntity{
     }
 
     @Column(name = "subject", length = 100)
-    public String getKonu() {
-        return konu;
-    }
+    public ExpensesType getTanim() {
+		return tanim;
+	}
 
-    public void setKonu(String konu) {
-        this.konu = konu;
-    }
+	public void setTanim(ExpensesType tanim) {
+		this.tanim = tanim;
+	}
+    
+	@Column(name = "description", length = 150)
+	public String getAciklama() {
+		return aciklama;
+	}
 
+	public void setAciklama(String aciklama) {
+		this.aciklama = aciklama;
+	}
+	
     @Column(name = "quantity", precision = 14, scale = 2)
     public BigDecimal getMiktar() {
         return miktar;
     }
 
-    public void setMiktar(BigDecimal miktar) {
+	public void setMiktar(BigDecimal miktar) {
         this.miktar = miktar;
     }
 
