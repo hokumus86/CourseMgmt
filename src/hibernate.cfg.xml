@@ -14,7 +14,6 @@
 		<mapping class="com.hokumus.course.model.management.Courses"></mapping>
 		<mapping class="com.hokumus.course.model.management.Days"></mapping>
 		<mapping class="com.hokumus.course.model.management.LessonClass"></mapping>
-		<mapping class="com.hokumus.course.model.ogrenci.Student"></mapping>
 		<mapping class="com.hokumus.course.model.management.Groups"></mapping>
 		<mapping class="com.hokumus.course.model.accounting.Incomings"></mapping>
 		<mapping class="com.hokumus.course.model.accounting.Expenses"></mapping>
