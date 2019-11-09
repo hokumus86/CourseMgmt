@@ -1,29 +1,26 @@
 package com.hokumus.course.ui;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.border.TitledBorder;
-
-import com.hokumus.course.dao.CoursesDao;
-import com.hokumus.course.model.accounting.ExpensesType;
-import com.hokumus.course.model.management.Courses;
-import com.hokumus.course.model.management.Durum;
-import com.hokumus.course.utils.CourseUtils;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.awt.event.ActionEvent;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+
+import com.hokumus.course.dao.CoursesDao;
+import com.hokumus.course.model.management.Courses;
+import com.hokumus.course.model.management.Durum;
+import com.hokumus.course.utils.CourseUtils;
 import com.toedter.calendar.JDateChooser;
 
-import net.bytebuddy.agent.builder.AgentBuilder.CircularityLock.Default;
-
-public class CoursesFrame extends JFrame{
+public class CoursesFrame extends JFrame {
 	private JPanel panel;
 	private JLabel lblKursunAdi;
 	private JTextField txtKursAdi;
@@ -33,24 +30,27 @@ public class CoursesFrame extends JFrame{
 	private JLabel lblDurum;
 	private JComboBox cmbDurum;
 	private JButton btnEkle;
-	
-	public CoursesFrame() {
-		getContentPane().setLayout(null);
-		setTitle("Kurs Ekleme Ekranı");
-		setSize(500, 500);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		getContentPane().add(getPanel());
+
+	public CoursesFrame() {	
 		initialize();
 	}
 
 	private void initialize() {
-		
-		
+		getContentPane().setLayout(null);
+		setTitle("Kurs Ekleme Ekranı");
+		setSize(499, 446);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		getContentPane().add(getPanel());
+		DefaultComboBoxModel durum = new DefaultComboBoxModel(Durum.values());
+		cmbDurum.setModel(durum);
+
 	}
+
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel.setBorder(new TitledBorder(null, "Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP,
+					null, null));
 			panel.setBounds(12, 13, 462, 366);
 			panel.setLayout(null);
 			panel.add(getLblKursunAdi());
@@ -61,13 +61,14 @@ public class CoursesFrame extends JFrame{
 			panel.add(getLblDurum());
 			panel.add(getCmbDurum());
 			panel.add(getBtnEkle());
-			
+
 			JDateChooser dateBaslamaTarihi = new JDateChooser();
 			dateBaslamaTarihi.setBounds(152, 86, 141, 20);
 			panel.add(dateBaslamaTarihi);
 		}
 		return panel;
 	}
+
 	private JLabel getLblKursunAdi() {
 		if (lblKursunAdi == null) {
 			lblKursunAdi = new JLabel("Kursun Adı :");
@@ -75,6 +76,7 @@ public class CoursesFrame extends JFrame{
 		}
 		return lblKursunAdi;
 	}
+
 	private JTextField getTxtKursAdi() {
 		if (txtKursAdi == null) {
 			txtKursAdi = new JTextField();
@@ -83,6 +85,7 @@ public class CoursesFrame extends JFrame{
 		}
 		return txtKursAdi;
 	}
+
 	private JLabel getLblBaslamaTarihi() {
 		if (lblBaslamaTarihi == null) {
 			lblBaslamaTarihi = new JLabel("Başlama Tarihi :");
@@ -90,6 +93,7 @@ public class CoursesFrame extends JFrame{
 		}
 		return lblBaslamaTarihi;
 	}
+
 	private JLabel getLblKursFiyati() {
 		if (lblKursFiyati == null) {
 			lblKursFiyati = new JLabel("Kurs Fiyatı :");
@@ -97,6 +101,7 @@ public class CoursesFrame extends JFrame{
 		}
 		return lblKursFiyati;
 	}
+
 	private JTextField getTxtKursFiyati() {
 		if (txtKursFiyati == null) {
 			txtKursFiyati = new JTextField();
@@ -105,6 +110,7 @@ public class CoursesFrame extends JFrame{
 		}
 		return txtKursFiyati;
 	}
+
 	private JLabel getLblDurum() {
 		if (lblDurum == null) {
 			lblDurum = new JLabel("Durum :");
@@ -112,38 +118,31 @@ public class CoursesFrame extends JFrame{
 		}
 		return lblDurum;
 	}
+
 	private JComboBox getCmbDurum() {
 		if (cmbDurum == null) {
 			cmbDurum = new JComboBox();
-			cmbDurum.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					
-					
-					
-					DefaultComboBoxModel durum = new DefaultComboBoxModel(Durum.values());
-					cmbDurum.setModel(durum);
-				}
-			});
 			cmbDurum.setBounds(152, 184, 141, 22);
 		}
 		return cmbDurum;
 	}
+
 	private JButton getBtnEkle() {
 		if (btnEkle == null) {
 			btnEkle = new JButton("Ekle");
 			btnEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					
+
 					CoursesDao daoc = new CoursesDao();
 					Courses temp = new Courses();
 					temp.setAdi(txtKursAdi.getText());
 					temp.setbaslamaTarihi(Calendar.getInstance().getTime());
 					temp.setCreatedTime(Calendar.getInstance().getTime());
 					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
-					//temp.setDurum(cmbDurum.getActionCommand());
+					// temp.setDurum(cmbDurum.getActionCommand());
 					temp.setFiyat(new BigDecimal(Integer.parseInt(txtKursFiyati.getText())));
 					daoc.save(temp);
-					
+
 				}
 			});
 			btnEkle.setBounds(152, 255, 141, 25);

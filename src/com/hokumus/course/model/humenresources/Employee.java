@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.hokumus.course.model.utils.BaseEntity;
 
+
 @Entity
 @Table(name = "employee")
 public class Employee  extends BaseEntity{

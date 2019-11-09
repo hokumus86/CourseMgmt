@@ -7,6 +7,7 @@ public interface IBaseDbOperation<T> {
 	public boolean update(T temp);
 	public boolean delete(T temp);
 	public List<T> getAll(T temp);
+	
 	public List<T> findSavedId(T temp);
 	public T findUserOthers(T temp);
 	public T findUser(T temp);

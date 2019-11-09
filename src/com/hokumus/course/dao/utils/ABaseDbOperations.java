@@ -134,7 +134,6 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 				if (fl[i].get(temp) != null && !fl[i].get(temp).toString().equals("0")) {
 
 					cr.add(Restrictions.ilike(fl[i].getName(), "%" + fl[i].get(temp) + "%"));
-
 				}
 			}
 			listem = cr.list();
@@ -151,7 +150,7 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 	public T findUser(T temp) {
 		try {
 			Class cl = temp.getClass();
-			if (cl.getName().equals("com.hokumus.course.management.model.kullanici.Users")) {
+			if (cl.getName().equals("com.hokumus.course.model.UserModel")) {
 				Field[] fl = cl.getDeclaredFields();
 				openSession();
 				Criteria cr = ss.createCriteria(temp.getClass());
@@ -160,10 +159,8 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 					if (fl[i].getName().equals("userName") || fl[i].getName().equals("password")) {
 						if (fl[i].get(temp) != null && !fl[i].get(temp).toString().equals("0")) {
 							cr.add(Restrictions.eq(fl[i].getName(), fl[i].get(temp)));
-
 						}
 					}
-
 				}
 				return (T) cr.uniqueResult();
 
@@ -175,7 +172,6 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 			closeSessionForRollback();
 			return null;
 		}
-
 	}
 	
 	@Override
@@ -190,10 +186,8 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 				if (fl[i].getName().equals("ad") || fl[i].getName().equals("soyad")) {
 					if (fl[i].get(temp) != null && !fl[i].get(temp).toString().equals("0")) {
 						cr.add(Restrictions.eq(fl[i].getName(), fl[i].get(temp)));
-
 					}
 				}
-
 			}
 			return (T) cr.uniqueResult();
 		} catch (Exception e) {
@@ -218,7 +212,6 @@ public abstract class ABaseDbOperations<T> implements IBaseDbOperation<T> {
 				fl[i].setAccessible(true);
 				if (fl[i].get(temp) != null && !fl[i].get(temp).toString().equals("0")) {
 					cr.add(Restrictions.eq(fl[i].getName(), fl[i].get(temp)));
-
 				}
 			}
 			listem = cr.list();
