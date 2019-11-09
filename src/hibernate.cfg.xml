@@ -20,6 +20,7 @@
 		<mapping class="com.hokumus.course.model.student.Student"></mapping>
 		<mapping class="com.hokumus.course.model.student.StudentPayments"></mapping>
 		<mapping class="com.hokumus.course.model.humenresources.Employee"></mapping>
-		
+		 
+		 
 	</session-factory>
 </hibernate-configuration>
