@@ -34,6 +34,7 @@ public class CoursesFrame extends JFrame {
 	public CoursesFrame() {	
 		initialize();
 	}
+	
 
 	private void initialize() {
 		getContentPane().setLayout(null);
