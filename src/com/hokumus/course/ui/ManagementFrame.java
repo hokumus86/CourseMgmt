@@ -108,7 +108,13 @@ public class ManagementFrame extends JFrame {
 		getContentPane().add(getBtnSinifEkle());
 		getContentPane().add(getBtnKursEkle());
 		
-		DefaultComboBoxModel kursgunleri = new DefaultComboBoxModel(KursGunleri.values());
+		DaysDao daodays = new  DaysDao();
+		List<Days> gunler = daodays.getAll(new Days());
+		Days[] g = new Days[gunler.size()];
+		for (int i = 0; i < gunler.size(); i++) {
+			g[i] = gunler.get(i);			
+		}
+		DefaultComboBoxModel kursgunleri = new DefaultComboBoxModel(g);
 		cmbKursGunleri.setModel(kursgunleri);
 	}
 
@@ -241,17 +247,7 @@ public class ManagementFrame extends JFrame {
 					LessonsClassDao lcdao = new LessonsClassDao();
 					lcdao.save(lc);
 
-					Days d = new Days();
-					d.setGun1(1);
-					d.setGun2(2);
-					d.setGun3(3);
-					d.setGun4(4);
-					d.setGun5(5);
-					d.setGun6(6);
-					d.setGun7(7);
-					d.setSaat(4);
-					DaysDao dd = new DaysDao();
-					dd.save(d);
+					
 
 					CoursesDao daoc = new CoursesDao();
 					Courses temp = new Courses();
@@ -268,7 +264,7 @@ public class ManagementFrame extends JFrame {
 					g.setBaslamaTarihi(Calendar.getInstance().getTime());
 					g.setBitisTarihi(Calendar.getInstance().getTime());
 					g.setCourses(temp);
-					g.setDays(d);
+					g.setDays((Days)cmbKursGunleri.getSelectedItem());
 					g.setLessonClass(lc);
 					g.setOgrenciSayisi(Integer.parseInt(txtOgrenciSayisi.getText()));
 					g.setTeacher((Teacher) cmbTeacher.getSelectedItem());

@@ -712,7 +712,7 @@ public class AccountingFrame extends JFrame{
 			cmb_tarafGelir = new JComboBox();
 			cmb_tarafGelir.setBounds(120, 102, 202, 22);
 			
-			if (getCmb_OdemeTuruGelir().getSelectedItem().equals("OGRENCI_ODEME")) {
+			if ((IncomeType)getCmb_OdemeTuruGelir().getSelectedItem() == IncomeType.OGRENCI_ODEME) {
 				StudentDao dao_student = new StudentDao();
 				List<Student> liste_student = dao_student.getAll(new Student());
 				Student[] data_student = new Student[liste_student.size()];

@@ -15,8 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
-public class DaysFrame extends JFrame{
+public class DaysFrame extends JFrame {
 	private JPanel panel;
 	private JLabel lblKursGunuSec;
 	private JLabel lblKursSaatiSec;
@@ -29,9 +30,11 @@ public class DaysFrame extends JFrame{
 	private JCheckBox chckbxCumartesi;
 	private JCheckBox chckbxCuma;
 	private JCheckBox chckbxPazar;
-	
+	private JLabel lblKursGnIsmi;
+	private JTextField txtDaysName;
+
 	public DaysFrame() {
-	
+
 		initialize();
 	}
 
@@ -41,16 +44,17 @@ public class DaysFrame extends JFrame{
 		setTitle("Kurs Günleri Ekleme Ekranı");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().add(getPanel());
-		
+
 		DefaultComboBoxModel kurssaatleri = new DefaultComboBoxModel(KursSaatleri.values());
 		cmbKursSaatiSec.setModel(kurssaatleri);
 	}
-	
+
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "Kurs G\u00FCnleri", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(12, 13, 380, 315);
+			panel.setBorder(
+					new TitledBorder(null, "Kurs G\u00FCnleri", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel.setBounds(12, 13, 380, 409);
 			panel.setLayout(null);
 			panel.add(getLblKursGunuSec());
 			panel.add(getLblKursSaatiSec());
@@ -63,9 +67,12 @@ public class DaysFrame extends JFrame{
 			panel.add(getChckbxCumartesi());
 			panel.add(getChckbxCuma());
 			panel.add(getChckbxPazar());
+			panel.add(getLblKursGnIsmi());
+			panel.add(getTxtDaysName());
 		}
 		return panel;
 	}
+
 	private JLabel getLblKursGunuSec() {
 		if (lblKursGunuSec == null) {
 			lblKursGunuSec = new JLabel("Kurs Günü Seç :");
@@ -73,6 +80,7 @@ public class DaysFrame extends JFrame{
 		}
 		return lblKursGunuSec;
 	}
+
 	private JLabel getLblKursSaatiSec() {
 		if (lblKursSaatiSec == null) {
 			lblKursSaatiSec = new JLabel("Kurs Saati Seç :");
@@ -80,33 +88,30 @@ public class DaysFrame extends JFrame{
 		}
 		return lblKursSaatiSec;
 	}
+
 	private JComboBox getCmbKursSaatiSec() {
 		if (cmbKursSaatiSec == null) {
 			cmbKursSaatiSec = new JComboBox();
-			cmbKursSaatiSec.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					Days gun = new Days();
-					gun.setSaat(cmbKursSaatiSec.getSelectedIndex());
-				}
-			});
 			cmbKursSaatiSec.setBounds(143, 242, 136, 22);
 		}
 		return cmbKursSaatiSec;
 	}
+
 	private JButton getBtnEkle() {
 		if (btnEkle == null) {
 			btnEkle = new JButton("Ekle");
 			btnEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Days d = new Days();
-					d.setGun1(chckbxPazartesi.isSelected()==true?1:0);
-					d.setGun2(chckbxSali.isSelected()==true?1:0);
-					d.setGun3(chckbxCarsamba.isSelected()==true?1:0);
-					d.setGun4(chckbxPersembe.isSelected()==true?1:0);
-					d.setGun5(chckbxCuma.isSelected()==true?1:0);
-					d.setGun6(chckbxCumartesi.isSelected()==true?1:0);
-					d.setGun7(chckbxPazar.isSelected()==true?1:0);
-					
+					d.setGun1(chckbxPazartesi.isSelected() == true ? 1 : 0);
+					d.setGun2(chckbxSali.isSelected() == true ? 1 : 0);
+					d.setGun3(chckbxCarsamba.isSelected() == true ? 1 : 0);
+					d.setGun4(chckbxPersembe.isSelected() == true ? 1 : 0);
+					d.setGun5(chckbxCuma.isSelected() == true ? 1 : 0);
+					d.setGun6(chckbxCumartesi.isSelected() == true ? 1 : 0);
+					d.setGun7(chckbxPazar.isSelected() == true ? 1 : 0);
+					d.setName(txtDaysName.getText());
+					d.setSaat(((KursSaatleri) cmbKursSaatiSec.getSelectedItem()));
 					DaysDao dd = new DaysDao();
 					dd.save(d);
 				}
@@ -115,6 +120,7 @@ public class DaysFrame extends JFrame{
 		}
 		return btnEkle;
 	}
+
 	private JCheckBox getChckbxPazartesi() {
 		if (chckbxPazartesi == null) {
 			chckbxPazartesi = new JCheckBox("Pazartesi");
@@ -122,6 +128,7 @@ public class DaysFrame extends JFrame{
 		}
 		return chckbxPazartesi;
 	}
+
 	private JCheckBox getChckbxSali() {
 		if (chckbxSali == null) {
 			chckbxSali = new JCheckBox("Salı");
@@ -129,6 +136,7 @@ public class DaysFrame extends JFrame{
 		}
 		return chckbxSali;
 	}
+
 	private JCheckBox getChckbxPersembe() {
 		if (chckbxPersembe == null) {
 			chckbxPersembe = new JCheckBox("Perşembe");
@@ -136,6 +144,7 @@ public class DaysFrame extends JFrame{
 		}
 		return chckbxPersembe;
 	}
+
 	private JCheckBox getChckbxCarsamba() {
 		if (chckbxCarsamba == null) {
 			chckbxCarsamba = new JCheckBox("Çarşamba");
@@ -143,6 +152,7 @@ public class DaysFrame extends JFrame{
 		}
 		return chckbxCarsamba;
 	}
+
 	private JCheckBox getChckbxCumartesi() {
 		if (chckbxCumartesi == null) {
 			chckbxCumartesi = new JCheckBox("Cumartesi");
@@ -150,6 +160,7 @@ public class DaysFrame extends JFrame{
 		}
 		return chckbxCumartesi;
 	}
+
 	private JCheckBox getChckbxCuma() {
 		if (chckbxCuma == null) {
 			chckbxCuma = new JCheckBox("Cuma");
@@ -157,11 +168,29 @@ public class DaysFrame extends JFrame{
 		}
 		return chckbxCuma;
 	}
+
 	private JCheckBox getChckbxPazar() {
 		if (chckbxPazar == null) {
 			chckbxPazar = new JCheckBox("Pazar");
 			chckbxPazar.setBounds(141, 196, 113, 25);
 		}
 		return chckbxPazar;
+	}
+
+	private JLabel getLblKursGnIsmi() {
+		if (lblKursGnIsmi == null) {
+			lblKursGnIsmi = new JLabel("Kurs gün İsmi");
+			lblKursGnIsmi.setBounds(25, 327, 136, 16);
+		}
+		return lblKursGnIsmi;
+	}
+
+	private JTextField getTxtDaysName() {
+		if (txtDaysName == null) {
+			txtDaysName = new JTextField();
+			txtDaysName.setBounds(184, 324, 161, 22);
+			txtDaysName.setColumns(10);
+		}
+		return txtDaysName;
 	}
 }

@@ -2,9 +2,11 @@ package com.hokumus.course.model.management;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -15,14 +17,16 @@ import com.hokumus.course.model.utils.BaseEntity;
 public class Days extends BaseEntity{
 
     private Long id;
-    private int gun1;
+    private String name;
+  
+	private int gun1;
     private int gun2;
     private int gun3;
     private int gun4;
     private int gun5;
     private int gun6;
     private int gun7;
-    private int saat;
+    private KursSaatleri saat;
 
     @Id
     @SequenceGenerator(name = "seq_lessons", allocationSize = 1, sequenceName = "seq_lessons")
@@ -34,6 +38,15 @@ public class Days extends BaseEntity{
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Column(name = "days_name")
+    public String getName() {
+  		return name;
+  	}
+
+  	public void setName(String name) {
+  		this.name = name;
+  	}
 
     @Column(name = "day1")
     public int getGun1() {
@@ -98,18 +111,20 @@ public class Days extends BaseEntity{
         this.gun7 = gun7;
     }
 
+    @Enumerated
+    @JoinColumn(name = "clock_id")
     @Column(name = "saat")
-    public int getSaat() {
+    public KursSaatleri getSaat() {
         return saat;
     }
 
-    public void setSaat(int saat) {
+    public void setSaat(KursSaatleri saat) {
         this.saat = saat;
     }
     
     @Override
     public String toString() {
     	
-    	return gun1+ "";
+    	return name+ "";
     }
 }

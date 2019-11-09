@@ -89,7 +89,7 @@ public class Groups extends BaseEntity {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Days")
+	@JoinColumn(name = "days_id")
 	public Days getDays() {
 		return Days;
 	}
