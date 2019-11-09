@@ -8,9 +8,9 @@ public class Runner {
 	try {
 
  			new LoginFrame().setVisible(true);
-//
+
 //			UserModel temp = new UserModel();
-//			temp.setName("kamil koç");
+//			temp.setName("kamil koï¿½");
 //			temp.setUserName("kkoc");
 //			temp.setPassword("123");
 //			temp.setCellPhone("5067292222");
@@ -28,7 +28,7 @@ public class Runner {
 		try {
 
 //			TeacherModel temp = new TeacherModel();
-//			temp.setName("hüseyin okumuþ");
+//			temp.setName("hï¿½seyin okumuï¿½");
 //			temp.setUserName("hokumus");
 //			temp.setPassword("123");
 //			temp.setCellPhone("5067293333");
@@ -48,7 +48,7 @@ public class Runner {
 //			CourseModel temp = new CourseModel();
 //			temp.setCourseName("Java");
 //			temp.setCourseTime("180 Saat");
-//			temp.setCourseTeacher("Hüseyin Okumuþ");
+//			temp.setCourseTeacher("Hï¿½seyin Okumuï¿½");
 //			temp.setUserName("hokumus");
 //			temp.setCellPhone("050707944444");
 //			temp.setEmail("hokumus@gmail.com");

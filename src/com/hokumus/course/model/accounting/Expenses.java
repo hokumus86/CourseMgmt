@@ -28,9 +28,34 @@ public class Expenses extends BaseEntity{
     private String aciklama;
 	private BigDecimal miktar;
     private Date tarih;
-//    private Teacher ogretmen;
-//    private Employee personel;
-//    private OtherExpense OtherExpense;
+    private Teacher ogretmen;
+    private Employee personel;
+    private OtherExpense OtherExpense;
+    
+    public Teacher getOgretmen() {
+		return ogretmen;
+	}
+
+	public void setOgretmen(Teacher ogretmen) {
+		this.ogretmen = ogretmen;
+	}
+
+	public Employee getPersonel() {
+		return personel;
+	}
+
+	public void setPersonel(Employee personel) {
+		this.personel = personel;
+	}
+
+	public OtherExpense getOtherExpense() {
+		return OtherExpense;
+	}
+
+	public void setOtherExpense(OtherExpense otherExpense) {
+		OtherExpense = otherExpense;
+	}
+
     
 //    @Embedded
 //    public OtherExpense getOtherExpense() {
