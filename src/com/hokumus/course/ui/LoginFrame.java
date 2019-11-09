@@ -102,9 +102,9 @@ public class LoginFrame extends JFrame {
 		}
 
 		if (!isUserNameValid) {
-			JOptionPane.showMessageDialog(LoginFrame.this, "Kullan�c� Bulunamad�");
+			JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı Bulunamadı");
 		} else if (!isPasswordValid) {
-			JOptionPane.showMessageDialog(LoginFrame.this, "�ifre Yanl��");
+			JOptionPane.showMessageDialog(LoginFrame.this, "Şifre Yanlış");
 		}
 	}
 }
