@@ -3,9 +3,16 @@ package com.hokumus.course.ui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
+import com.hokumus.course.dao.LessonsClassDao;
+import com.hokumus.course.model.management.LessonClass;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.awt.event.ActionEvent;
 
 public class LessonClassFrame extends JFrame {
 	private JPanel pnlSinifEkleEkrani;
@@ -94,6 +101,18 @@ public class LessonClassFrame extends JFrame {
 	private JButton getBtnKaydet() {
 		if (btnKaydet == null) {
 			btnKaydet = new JButton("Kaydet");
+			btnKaydet.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					LessonClass lc = new LessonClass();
+					lc.setAdi(txtSinifAdi.getText());
+					lc.setKapasite(Integer.parseInt(txtSinifKapasitesi.getText()));
+					lc.setKod(txtSinifKodu.getText());
+					
+					LessonsClassDao lcdao = new LessonsClassDao();
+					lcdao.save(lc);
+					
+				}
+			});
 			btnKaydet.setBounds(100, 180, 89, 23);
 		}
 		return btnKaydet;

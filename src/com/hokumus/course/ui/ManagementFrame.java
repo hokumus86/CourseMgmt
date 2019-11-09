@@ -228,9 +228,9 @@ public class ManagementFrame extends JFrame {
 			btnKaydetKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LessonClass lc = new LessonClass();
-					lc.setAdi("Lab 2");
+					lc.setAdi("");
 					lc.setKapasite(15);
-					lc.setKod("LAB2");
+					lc.setKod("");
 					lc.setCreaterBy(CourseUtils.loginedUser.getUserName());
 					lc.setCreatedTime(Calendar.getInstance().getTime());
 
@@ -347,14 +347,11 @@ public class ManagementFrame extends JFrame {
 		selectedRowId = Integer.parseInt(tblGrupKurs.getModel().getValueAt(row, 0).toString());
 		txtKursAdi.setText(tblGrupKurs.getModel().getValueAt(row, 1).toString());
 		txtOgrenciSayisi.setText(tblGrupKurs.getModel().getValueAt(row, 2).toString());
-		//dateBasTarihi.setDate(new Date(tblGrupKurs.getModel().getValueAt(row, 3).toString()));
-		//dateBitTarihi.setDate(new Date( tblGrupKurs.getModel().getValueAt(row, 4).toString()));
+		dateBasTarihi.setDate(new Date(tblGrupKurs.getModel().getValueAt(row, 3).toString()));
+		dateBitTarihi.setDate(new Date( tblGrupKurs.getModel().getValueAt(row, 4).toString()));
 		cmbKursGunleri.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 5).toString());
 		txtSinifAdi.setText(tblGrupKurs.getModel().getValueAt(row, 6).toString());
 		cmbTeacher.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 7).toString());
-		
-		
-		
 		
 	}
 

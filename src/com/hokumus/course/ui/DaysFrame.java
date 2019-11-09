@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import com.hokumus.course.dao.DaysDao;
 import com.hokumus.course.model.management.Days;
 
 import javax.swing.JLabel;
@@ -78,6 +79,12 @@ public class DaysFrame extends JFrame{
 	private JComboBox getCmbKursSaatiSec() {
 		if (cmbKursSaatiSec == null) {
 			cmbKursSaatiSec = new JComboBox();
+			cmbKursSaatiSec.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Days gun = new Days();
+					gun.setSaat(cmbKursSaatiSec.getSelectedIndex());
+				}
+			});
 			cmbKursSaatiSec.setBounds(143, 242, 136, 22);
 		}
 		return cmbKursSaatiSec;
@@ -95,6 +102,9 @@ public class DaysFrame extends JFrame{
 					d.setGun5(chckbxCuma.isSelected()==true?1:0);
 					d.setGun6(chckbxCumartesi.isSelected()==true?1:0);
 					d.setGun7(chckbxPazar.isSelected()==true?1:0);
+					
+					DaysDao dd = new DaysDao();
+					dd.save(d);
 				}
 			});
 			btnEkle.setBounds(143, 277, 97, 25);

@@ -6,14 +6,28 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
+
+import com.hokumus.course.dao.CoursesDao;
+import com.hokumus.course.model.accounting.ExpensesType;
+import com.hokumus.course.model.management.Courses;
+import com.hokumus.course.model.management.Durum;
+import com.hokumus.course.utils.CourseUtils;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
+
+import net.bytebuddy.agent.builder.AgentBuilder.CircularityLock.Default;
 
 public class CoursesFrame extends JFrame{
 	private JPanel panel;
 	private JLabel lblKursunAdi;
 	private JTextField txtKursAdi;
 	private JLabel lblBaslamaTarihi;
-	private JTextField txtBaslamaTarihi;
 	private JLabel lblKursFiyati;
 	private JTextField txtKursFiyati;
 	private JLabel lblDurum;
@@ -37,17 +51,20 @@ public class CoursesFrame extends JFrame{
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, "Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(12, 13, 540, 366);
+			panel.setBounds(12, 13, 462, 366);
 			panel.setLayout(null);
 			panel.add(getLblKursunAdi());
 			panel.add(getTxtKursAdi());
 			panel.add(getLblBaslamaTarihi());
-			panel.add(getTxtBaslamaTarihi());
 			panel.add(getLblKursFiyati());
 			panel.add(getTxtKursFiyati());
 			panel.add(getLblDurum());
 			panel.add(getCmbDurum());
 			panel.add(getBtnEkle());
+			
+			JDateChooser dateBaslamaTarihi = new JDateChooser();
+			dateBaslamaTarihi.setBounds(152, 86, 141, 20);
+			panel.add(dateBaslamaTarihi);
 		}
 		return panel;
 	}
@@ -72,14 +89,6 @@ public class CoursesFrame extends JFrame{
 			lblBaslamaTarihi.setBounds(24, 86, 101, 16);
 		}
 		return lblBaslamaTarihi;
-	}
-	private JTextField getTxtBaslamaTarihi() {
-		if (txtBaslamaTarihi == null) {
-			txtBaslamaTarihi = new JTextField();
-			txtBaslamaTarihi.setColumns(10);
-			txtBaslamaTarihi.setBounds(152, 83, 141, 22);
-		}
-		return txtBaslamaTarihi;
 	}
 	private JLabel getLblKursFiyati() {
 		if (lblKursFiyati == null) {
@@ -106,6 +115,15 @@ public class CoursesFrame extends JFrame{
 	private JComboBox getCmbDurum() {
 		if (cmbDurum == null) {
 			cmbDurum = new JComboBox();
+			cmbDurum.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					
+					
+					DefaultComboBoxModel durum = new DefaultComboBoxModel(Durum.values());
+					cmbDurum.setModel(durum);
+				}
+			});
 			cmbDurum.setBounds(152, 184, 141, 22);
 		}
 		return cmbDurum;
@@ -113,6 +131,21 @@ public class CoursesFrame extends JFrame{
 	private JButton getBtnEkle() {
 		if (btnEkle == null) {
 			btnEkle = new JButton("Ekle");
+			btnEkle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					CoursesDao daoc = new CoursesDao();
+					Courses temp = new Courses();
+					temp.setAdi(txtKursAdi.getText());
+					temp.setbaslamaTarihi(Calendar.getInstance().getTime());
+					temp.setCreatedTime(Calendar.getInstance().getTime());
+					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
+					//temp.setDurum(cmbDurum.getActionCommand());
+					temp.setFiyat(new BigDecimal(Integer.parseInt(txtKursFiyati.getText())));
+					daoc.save(temp);
+					
+				}
+			});
 			btnEkle.setBounds(152, 255, 141, 25);
 		}
 		return btnEkle;
