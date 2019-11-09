@@ -6,9 +6,11 @@ import javax.swing.border.TitledBorder;
 
 import com.hokumus.course.dao.DaysDao;
 import com.hokumus.course.model.management.Days;
+import com.hokumus.course.model.management.KursSaatleri;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
@@ -29,17 +31,19 @@ public class DaysFrame extends JFrame{
 	private JCheckBox chckbxPazar;
 	
 	public DaysFrame() {
+	
+		initialize();
+	}
+
+	private void initialize() {
 		getContentPane().setLayout(null);
 		setSize(500, 500);
 		setTitle("Kurs Günleri Ekleme Ekranı");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().add(getPanel());
-		initialize();
-	}
-
-	private void initialize() {
-	
 		
+		DefaultComboBoxModel kurssaatleri = new DefaultComboBoxModel(KursSaatleri.values());
+		cmbKursSaatiSec.setModel(kurssaatleri);
 	}
 	
 	private JPanel getPanel() {

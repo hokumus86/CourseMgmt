@@ -33,6 +33,7 @@ import com.hokumus.course.dao.TeacherDao;
 import com.hokumus.course.model.management.Courses;
 import com.hokumus.course.model.management.Days;
 import com.hokumus.course.model.management.Groups;
+import com.hokumus.course.model.management.KursGunleri;
 import com.hokumus.course.model.management.LessonClass;
 import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.utils.CourseUtils;
@@ -106,6 +107,9 @@ public class ManagementFrame extends JFrame {
 		getContentPane().add(getBtnGrupEkle());
 		getContentPane().add(getBtnSinifEkle());
 		getContentPane().add(getBtnKursEkle());
+		
+		DefaultComboBoxModel kursgunleri = new DefaultComboBoxModel(KursGunleri.values());
+		cmbKursGunleri.setModel(kursgunleri);
 	}
 
 	protected void btnDelete_ActionPerformed() {
