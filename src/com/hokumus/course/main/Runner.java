@@ -1,5 +1,9 @@
 package com.hokumus.course.main;
 
+import java.math.BigDecimal;
+
+import com.hokumus.course.dao.TeacherDao;
+import com.hokumus.course.model.teacher.Teacher;
 import com.hokumus.course.ui.LoginFrame;
 
 public class Runner {
@@ -26,19 +30,15 @@ public class Runner {
 	}
 
 		try {
-
-//			TeacherModel temp = new TeacherModel();
-//			temp.setName("h�seyin okumu�");
-//			temp.setUserName("hokumus");
-//			temp.setPassword("123");
-//			temp.setCellPhone("5067293333");
-//			temp.setEmail("hokumus@gmail.com");
-//			temp.setPermission(UserPermission.MANAGER);
-//			temp.setCreaterBy("hokumus");
-//			temp.setCreatedTime(Calendar.getInstance().getTime());
-//			TeacherModelDao dao = new TeacherModelDao();
+			
+//			Teacher temp = new Teacher();
+//			temp.setAd("Atil");
+//			temp.setSoyad("Erkan");
+//			temp.setMail("aerkan@mail.com");
+//			temp.setTel("05554443322");
+//			TeacherDao dao = new TeacherDao();
 //			dao.save(temp);
-//			dao.update(temp);
+			
 
 		} catch (Exception e) {
 	}

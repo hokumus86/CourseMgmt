@@ -38,6 +38,8 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class AccountingFrame extends JFrame{
 	private JMenuBar menuBar;
@@ -88,7 +90,7 @@ public class AccountingFrame extends JFrame{
 	private JLabel lblSorgulanacakTur;
 	private JComboBox cmb_srgEnum;
 	private JLabel lblTaraf;
-	private JComboBox cmb_taraf;
+	private JComboBox cmb_tarafGider;
 	private JLabel lblTaraf_1;
 	private JComboBox cmb_tarafGelir;
 	private JComboBox cmb_OdemeTuruGelir;
@@ -104,8 +106,8 @@ public class AccountingFrame extends JFrame{
 		setSize(975,526);
 		setJMenuBar(getMenuBar_1());
 		getContentPane().setLayout(null);
-		getContentPane().add(getPnl_GelirKaydi());
 		getContentPane().add(getPnl_GiderKaydi());
+		getContentPane().add(getPnl_GelirKaydi());
 		getContentPane().add(getPnl_OdemeBekleyen());
 		getContentPane().add(getPnl_TamamlananKayitlar());
 		
@@ -171,6 +173,7 @@ public class AccountingFrame extends JFrame{
 			mntmTamamlananKayitlar = new JMenuItem("Tamamlanan Kayitlar");
 			mntmTamamlananKayitlar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					pnl_GiderKaydi.setVisible(false);
 					pnl_OdemeBekleyen.setVisible(false);
 					pnl_GelirKaydi.setVisible(false);
 					pnl_TamamlananKayitlar.setVisible(true);
@@ -194,6 +197,7 @@ public class AccountingFrame extends JFrame{
 			mntmOdemeBekleyenKayitler = new JMenuItem("Odeme Bekleyen Kayitlar");
 			mntmOdemeBekleyenKayitler.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					pnl_GiderKaydi.setVisible(false);
 					pnl_GelirKaydi.setVisible(false);
 					pnl_TamamlananKayitlar.setVisible(false);
 					pnl_OdemeBekleyen.setVisible(true);
@@ -524,7 +528,7 @@ public class AccountingFrame extends JFrame{
 			pnl_GiderKaydi.add(getLblSorgulanacakTur());
 			pnl_GiderKaydi.add(getCmb_srgEnum());
 			pnl_GiderKaydi.add(getLblTaraf());
-			pnl_GiderKaydi.add(getCmb_taraf());
+			pnl_GiderKaydi.add(getCmb_tarafGider());
 		}
 		return pnl_GiderKaydi;
 	}
@@ -553,6 +557,32 @@ public class AccountingFrame extends JFrame{
 	private JComboBox getCmb_OdemeTuruGider() {
 		if (cmb_OdemeTuruGider == null) {
 			cmb_OdemeTuruGider = new JComboBox();
+			cmb_OdemeTuruGider.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					
+					if ((ExpensesType)getCmb_OdemeTuruGider().getSelectedItem() == ExpensesType.OGRETMEN_MAAS) {
+						TeacherDao dao_teacher = new TeacherDao();
+						List<Teacher> liste_teacher = dao_teacher.getAll(new Teacher());
+						Teacher[] data_Teacher = new Teacher[liste_teacher.size()];
+						for (int i = 0; i < data_Teacher.length; i++) {
+							data_Teacher[i] = liste_teacher.get(i);
+						}
+						DefaultComboBoxModel model_teacher = new DefaultComboBoxModel(data_Teacher);
+						cmb_tarafGider.setModel(model_teacher);
+					}
+					else if ((ExpensesType)getCmb_OdemeTuruGider().getSelectedItem() == ExpensesType.PERSONEL_MAAS) {
+						UserModelDao dao_user = new UserModelDao();
+						List<UserModel> liste_user = dao_user.getAll(new UserModel());
+						UserModel[] data_user = new UserModel[liste_user.size()];
+						for (int i = 0; i < data_user.length; i++) {
+							data_user[i] = liste_user.get(i);
+						}
+						DefaultComboBoxModel model_user = new DefaultComboBoxModel(data_user);
+						cmb_tarafGider.setModel(model_user);
+					}
+					
+				}
+			});
 			cmb_OdemeTuruGider.setBounds(129, 23, 202, 22);
 			
 			DefaultComboBoxModel odemeTuruGider = new DefaultComboBoxModel(ExpensesType.values());
@@ -581,24 +611,40 @@ public class AccountingFrame extends JFrame{
 			btn_SorgulaGider.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 										
-					
 					ExpensesDao dao_expenses = new ExpensesDao();
 					List<Expenses> list_expenses = dao_expenses.getAll(new Expenses());
 					
-					String[] columnNames = { "id", "Tanim", "Aciklama", "miktar", "Tarih", "Ogretmen", "Personel", "DigerGiderler"};
-					String [] [] data = new String[list_expenses.size()][columnNames.length];
-					for (int i = 0; i < list_expenses.size(); i++) {
-						data[i][0] = "" + list_expenses.get(i).getId();
-						data[i][1] = "" + list_expenses.get(i).getTanim();
-						data[i][2] = "" + list_expenses.get(i).getAciklama();
-						data[i][3] = "" + list_expenses.get(i).getMiktar();
-						data[i][4] = "" + list_expenses.get(i).getCreatedTime();
-//						data[i][5] = "" + list_expenses.get(i).getOgretmen();
-//						data[i][6] = "" + list_expenses.get(i).getPersonel();
-//						data[i][7] = "" + list_expenses.get(i).getOtherExpense();
+										
+					if ((ExpensesType)cmb_srgEnum.getSelectedItem() == ExpensesType.OGRETMEN_MAAS) {
+						String[] columnNames = { "id", "Tanim", "Aciklama", "miktar", "Tarih", "Ogretmen"};
+						String [] [] data = new String[list_expenses.size()][columnNames.length];
+						for (int i = 0; i < list_expenses.size(); i++) {
+							data[i][0] = "" + list_expenses.get(i).getId();
+							data[i][1] = "" + list_expenses.get(i).getTanim();
+							data[i][2] = "" + list_expenses.get(i).getAciklama();
+							data[i][3] = "" + list_expenses.get(i).getMiktar();
+							data[i][4] = "" + list_expenses.get(i).getCreatedTime();
+							data[i][5] = "" + list_expenses.get(i).getOgretmen();
+						}
+						DefaultTableModel model_ogretmen = new DefaultTableModel(data, columnNames);
+						table_gider.setModel(model_ogretmen);
 					}
-					DefaultTableModel model = new DefaultTableModel(data, columnNames);
-					tbl_sorgula.setModel(model);
+					else if ((ExpensesType)cmb_srgEnum.getSelectedItem() == ExpensesType.PERSONEL_MAAS) {
+						String[] columnNames = { "id", "Tanim", "Aciklama", "miktar", "Tarih", "Personel"};
+						String [] [] data = new String[list_expenses.size()][columnNames.length];
+						
+						for (int i = 0; i < list_expenses.size(); i++) {
+							data[i][0] = "" + list_expenses.get(i).getId();
+							data[i][1] = "" + list_expenses.get(i).getTanim();
+							data[i][2] = "" + list_expenses.get(i).getAciklama();
+							data[i][3] = "" + list_expenses.get(i).getMiktar();
+							data[i][4] = "" + list_expenses.get(i).getCreatedTime();
+							data[i][5] = "" + list_expenses.get(i).getPersonel();
+						}
+						DefaultTableModel model_personel = new DefaultTableModel(data, columnNames);
+						table_gider.setModel(model_personel);
+					}
+					
 				}
 			});
 			btn_SorgulaGider.setBounds(719, 84, 161, 26);
@@ -670,35 +716,14 @@ public class AccountingFrame extends JFrame{
 		}
 		return lblTaraf;
 	}
-	private JComboBox getCmb_taraf() {
-		if (cmb_taraf == null) {
-			cmb_taraf = new JComboBox();
-			cmb_taraf.setBounds(464, 54, 202, 22);
-			
-			if (getCmb_OdemeTuruGider().getSelectedItem().equals("OGRETMEN_MAAS")) {
-				TeacherDao dao_teacher = new TeacherDao();
-				List<Teacher> liste_teacher = dao_teacher.getAll(new Teacher());
-				Teacher[] data_Teacher = new Teacher[liste_teacher.size()];
-				for (int i = 0; i < data_Teacher.length; i++) {
-					data_Teacher[i] = liste_teacher.get(i);
-				}
-				DefaultComboBoxModel model_teacher = new DefaultComboBoxModel(data_Teacher);
-				cmb_taraf.setModel(model_teacher);
-			}
-			else if (getCmb_OdemeTuruGider().getSelectedItem().equals("PERSONEL_MAAS")) {
-				UserModelDao dao_user = new UserModelDao();
-				List<UserModel> liste_user = dao_user.getAll(new UserModel());
-				UserModel[] data_user = new UserModel[liste_user.size()];
-				for (int i = 0; i < data_user.length; i++) {
-					data_user[i] = liste_user.get(i);
-				}
-				DefaultComboBoxModel model_user = new DefaultComboBoxModel(data_user);
-				cmb_taraf.setModel(model_user);
-			}
+	private JComboBox getCmb_tarafGider() {
+		if (cmb_tarafGider == null) {
+			cmb_tarafGider = new JComboBox();
+			cmb_tarafGider.setBounds(464, 54, 202, 22);
 			
 			
 		}
-		return cmb_taraf;
+		return cmb_tarafGider;
 	}
 	private JLabel getLblTaraf_1() {
 		if (lblTaraf_1 == null) {
@@ -712,27 +737,6 @@ public class AccountingFrame extends JFrame{
 			cmb_tarafGelir = new JComboBox();
 			cmb_tarafGelir.setBounds(120, 102, 202, 22);
 			
-			if ((IncomeType)getCmb_OdemeTuruGelir().getSelectedItem() == IncomeType.OGRENCI_ODEME) {
-				StudentDao dao_student = new StudentDao();
-				List<Student> liste_student = dao_student.getAll(new Student());
-				Student[] data_student = new Student[liste_student.size()];
-				for (int i = 0; i < data_student.length; i++) {
-					data_student[i] = liste_student.get(i);
-				}
-				DefaultComboBoxModel model_teacher = new DefaultComboBoxModel(data_student);
-				cmb_taraf.setModel(model_teacher);
-			}
-//			else if (getCmb_OdemeTuruGider().getSelectedItem().equals("FIRMA_ODEME")) {
-//				UserModelDao dao_user = new UserModelDao();
-//				List<UserModel> liste_user = dao_user.getAll(new UserModel());
-//				UserModel[] data_user = new UserModel[liste_user.size()];
-//				for (int i = 0; i < data_user.length; i++) {
-//					data_user[i] = liste_user.get(i);
-//				}
-//				DefaultComboBoxModel model_user = new DefaultComboBoxModel(data_user);
-//				cmb_taraf.setModel(model_user);
-//			}
-			
 		}
 		
 		
@@ -741,6 +745,32 @@ public class AccountingFrame extends JFrame{
 	private JComboBox getCmb_OdemeTuruGelir() {
 		if (cmb_OdemeTuruGelir == null) {
 			cmb_OdemeTuruGelir = new JComboBox();
+			cmb_OdemeTuruGelir.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					
+					if ((IncomeType)getCmb_OdemeTuruGelir().getSelectedItem() == IncomeType.OGRENCI_ODEME) {
+						StudentDao dao_student = new StudentDao();
+						List<Student> liste_student = dao_student.getAll(new Student());
+						Student[] data_student = new Student[liste_student.size()];
+						for (int i = 0; i < data_student.length; i++) {
+							data_student[i] = liste_student.get(i);
+						}
+						DefaultComboBoxModel model_teacher = new DefaultComboBoxModel(data_student);
+						cmb_tarafGider.setModel(model_teacher);
+					}
+					else if ((IncomeType)getCmb_OdemeTuruGider().getSelectedItem() == IncomeType.FIRMA_ODEME) {
+						UserModelDao dao_user = new UserModelDao();
+						List<UserModel> liste_user = dao_user.getAll(new UserModel());
+						UserModel[] data_user = new UserModel[liste_user.size()];
+						for (int i = 0; i < data_user.length; i++) {
+							data_user[i] = liste_user.get(i);
+						}
+						DefaultComboBoxModel model_user = new DefaultComboBoxModel(data_user);
+						cmb_tarafGider.setModel(model_user);
+					}
+					
+				}
+			});
 			cmb_OdemeTuruGelir.setBounds(120, 76, 202, 22);
 			
 			DefaultComboBoxModel odemeTuru = new DefaultComboBoxModel(IncomeType.values());
