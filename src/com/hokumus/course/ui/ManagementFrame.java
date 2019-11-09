@@ -65,7 +65,6 @@ public class ManagementFrame extends JFrame {
 	private JButton btnGrupHepsiniGetir;
 	private JButton btnGrupEkle;
 	private JButton btnSinifEkle;
-	private JButton btnKursEkle;
 	private JButton btnAddTeacher;
 	private JButton btnAddDays;
 	private JDateChooser dateBasTarihi;
@@ -112,7 +111,6 @@ public class ManagementFrame extends JFrame {
 		cmbKursGunleri.setModel(cmodel);
 		getContentPane().add(getBtnGrupEkle());
 		getContentPane().add(getBtnSinifEkle());
-		getContentPane().add(getBtnKursEkle());
 		
 		DaysDao daodays = new  DaysDao();
 		List<Days> gunler = daodays.getAll(new Days());
@@ -190,7 +188,7 @@ public class ManagementFrame extends JFrame {
 	private JLabel getLblBasTarihi() {
 		if (lblBasTarihi == null) {
 			lblBasTarihi = new JLabel("Başlama Tarihi :");
-			lblBasTarihi.setBounds(348, 116, 103, 14);
+			lblBasTarihi.setBounds(348, 83, 103, 14);
 		}
 		return lblBasTarihi;
 	}
@@ -198,7 +196,7 @@ public class ManagementFrame extends JFrame {
 	private JLabel getLblSinifAdi() {
 		if (lblSinifAdi == null) {
 			lblSinifAdi = new JLabel("Sınıf Adı :");
-			lblSinifAdi.setBounds(348, 66, 103, 14);
+			lblSinifAdi.setBounds(348, 33, 103, 14);
 		}
 		return lblSinifAdi;
 	}
@@ -206,7 +204,7 @@ public class ManagementFrame extends JFrame {
 	private JLabel getLblKursGunleri() {
 		if (lblKursGunleri == null) {
 			lblKursGunleri = new JLabel("Kurs Günleri :");
-			lblKursGunleri.setBounds(348, 91, 103, 14);
+			lblKursGunleri.setBounds(348, 58, 103, 14);
 		}
 		return lblKursGunleri;
 	}
@@ -232,7 +230,7 @@ public class ManagementFrame extends JFrame {
 		if (txtSinifAdi == null) {
 			txtSinifAdi = new JTextField();
 			txtSinifAdi.setColumns(10);
-			txtSinifAdi.setBounds(461, 63, 133, 20);
+			txtSinifAdi.setBounds(461, 30, 133, 20);
 		}
 		return txtSinifAdi;
 	}
@@ -240,7 +238,7 @@ public class ManagementFrame extends JFrame {
 	private JLabel getLblBitTarihi() {
 		if (lblBitTarihi == null) {
 			lblBitTarihi = new JLabel("Bitiş Tarihi :");
-			lblBitTarihi.setBounds(348, 141, 103, 14);
+			lblBitTarihi.setBounds(348, 108, 103, 14);
 		}
 		return lblBitTarihi;
 	}
@@ -319,7 +317,7 @@ public class ManagementFrame extends JFrame {
 	private JComboBox getCmbKursGunleri() {
 		if (cmbKursGunleri == null) {
 			cmbKursGunleri = new JComboBox();
-			cmbKursGunleri.setBounds(461, 85, 133, 20);
+			cmbKursGunleri.setBounds(461, 52, 133, 20);
 
 		}
 		return cmbKursGunleri;
@@ -428,19 +426,6 @@ public class ManagementFrame extends JFrame {
 		return btnSinifEkle;
 	}
 
-	private JButton getBtnKursEkle() {
-		if (btnKursEkle == null) {
-			btnKursEkle = new JButton("Kurs Ekle");
-			btnKursEkle.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					new CoursesFrame().setVisible(true);
-				}
-			});
-			btnKursEkle.setBounds(301, 34, 126, 25);
-		}
-		return btnKursEkle;
-	}
-
 	private JButton getBtnAddTeacher() {
 		if (btnAddTeacher == null) {
 			btnAddTeacher = new JButton("+");
@@ -467,21 +452,21 @@ public class ManagementFrame extends JFrame {
 					new DaysFrame().setVisible(true);
 				}
 			});
-			btnAddDays.setBounds(607, 83, 52, 25);
+			btnAddDays.setBounds(607, 50, 52, 25);
 		}
 		return btnAddDays;
 	}
 	private JDateChooser getDateBasTarihi() {
 		if (dateBasTarihi == null) {
 			dateBasTarihi = new JDateChooser();
-			dateBasTarihi.setBounds(461, 116, 131, 22);
+			dateBasTarihi.setBounds(461, 83, 131, 22);
 		}
 		return dateBasTarihi;
 	}
 	private JDateChooser getDateBitTarihi() {
 		if (dateBitTarihi == null) {
 			dateBitTarihi = new JDateChooser();
-			dateBitTarihi.setBounds(461, 141, 133, 22);
+			dateBitTarihi.setBounds(461, 108, 133, 22);
 		}
 		return dateBitTarihi;
 	}
@@ -507,6 +492,11 @@ public class ManagementFrame extends JFrame {
 	private JButton getBtnAddCourses() {
 		if (btnAddCourses == null) {
 			btnAddCourses = new JButton("+");
+			btnAddCourses.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new CoursesFrame().setVisible(true);
+				}
+			});
 			btnAddCourses.setBounds(285, 31, 51, 25);
 		}
 		return btnAddCourses;
