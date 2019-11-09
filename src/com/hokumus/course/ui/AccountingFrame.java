@@ -91,6 +91,7 @@ public class AccountingFrame extends JFrame{
 	private JComboBox cmb_taraf;
 	private JLabel lblTaraf_1;
 	private JComboBox cmb_tarafGelir;
+	private JComboBox cmb_OdemeTuruGelir;
 	
 	public AccountingFrame() {
 		initialize ();
@@ -234,12 +235,6 @@ public class AccountingFrame extends JFrame{
 			lblNewLabel_2.setBounds(44, 79, 72, 16);
 			pnl_GelirKaydi.add(lblNewLabel_2);
 			
-			JComboBox cmbOdemeTuru = new JComboBox();
-			cmbOdemeTuru.setBounds(120, 76, 202, 22);
-			DefaultComboBoxModel odemeTuru = new DefaultComboBoxModel(IncomeType.values());
-			cmbOdemeTuru.setModel(odemeTuru);
-			pnl_GelirKaydi.add(cmbOdemeTuru);
-			
 			JButton btnYeniKayit = new JButton("Yeni Kayit");
 			btnYeniKayit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -256,6 +251,7 @@ public class AccountingFrame extends JFrame{
 			pnl_GelirKaydi.add(btnYeniKayit);
 			pnl_GelirKaydi.add(getLblTaraf_1());
 			pnl_GelirKaydi.add(getCmb_tarafGelir());
+			pnl_GelirKaydi.add(getCmb_OdemeTuruGelir());
 		}
 		return pnl_GelirKaydi;
 	}
@@ -597,9 +593,9 @@ public class AccountingFrame extends JFrame{
 						data[i][2] = "" + list_expenses.get(i).getAciklama();
 						data[i][3] = "" + list_expenses.get(i).getMiktar();
 						data[i][4] = "" + list_expenses.get(i).getCreatedTime();
-						data[i][5] = "" + list_expenses.get(i).getOgretmen();
-						data[i][6] = "" + list_expenses.get(i).getPersonel();
-						data[i][7] = "" + list_expenses.get(i).getOtherExpense();
+//						data[i][5] = "" + list_expenses.get(i).getOgretmen();
+//						data[i][6] = "" + list_expenses.get(i).getPersonel();
+//						data[i][7] = "" + list_expenses.get(i).getOtherExpense();
 					}
 					DefaultTableModel model = new DefaultTableModel(data, columnNames);
 					tbl_sorgula.setModel(model);
@@ -716,30 +712,40 @@ public class AccountingFrame extends JFrame{
 			cmb_tarafGelir = new JComboBox();
 			cmb_tarafGelir.setBounds(120, 102, 202, 22);
 			
-			if (getCmb_OdemeTuruGider().getSelectedItem().equals("OGRETMEN_MAAS")) {
-				TeacherDao dao_teacher = new TeacherDao();
-				List<Teacher> liste_teacher = dao_teacher.getAll(new Teacher());
-				Teacher[] data_Teacher = new Teacher[liste_teacher.size()];
-				for (int i = 0; i < data_Teacher.length; i++) {
-					data_Teacher[i] = liste_teacher.get(i);
+			if (getCmb_OdemeTuruGelir().getSelectedItem().equals("OGRENCI_ODEME")) {
+				StudentDao dao_student = new StudentDao();
+				List<Student> liste_student = dao_student.getAll(new Student());
+				Student[] data_student = new Student[liste_student.size()];
+				for (int i = 0; i < data_student.length; i++) {
+					data_student[i] = liste_student.get(i);
 				}
-				DefaultComboBoxModel model_teacher = new DefaultComboBoxModel(data_Teacher);
+				DefaultComboBoxModel model_teacher = new DefaultComboBoxModel(data_student);
 				cmb_taraf.setModel(model_teacher);
 			}
-			else if (getCmb_OdemeTuruGider().getSelectedItem().equals("PERSONEL_MAAS")) {
-				UserModelDao dao_user = new UserModelDao();
-				List<UserModel> liste_user = dao_user.getAll(new UserModel());
-				UserModel[] data_user = new UserModel[liste_user.size()];
-				for (int i = 0; i < data_user.length; i++) {
-					data_user[i] = liste_user.get(i);
-				}
-				DefaultComboBoxModel model_user = new DefaultComboBoxModel(data_user);
-				cmb_taraf.setModel(model_user);
-			}
+//			else if (getCmb_OdemeTuruGider().getSelectedItem().equals("FIRMA_ODEME")) {
+//				UserModelDao dao_user = new UserModelDao();
+//				List<UserModel> liste_user = dao_user.getAll(new UserModel());
+//				UserModel[] data_user = new UserModel[liste_user.size()];
+//				for (int i = 0; i < data_user.length; i++) {
+//					data_user[i] = liste_user.get(i);
+//				}
+//				DefaultComboBoxModel model_user = new DefaultComboBoxModel(data_user);
+//				cmb_taraf.setModel(model_user);
+//			}
 			
 		}
 		
 		
 		return cmb_tarafGelir;
+	}
+	private JComboBox getCmb_OdemeTuruGelir() {
+		if (cmb_OdemeTuruGelir == null) {
+			cmb_OdemeTuruGelir = new JComboBox();
+			cmb_OdemeTuruGelir.setBounds(120, 76, 202, 22);
+			
+			DefaultComboBoxModel odemeTuru = new DefaultComboBoxModel(IncomeType.values());
+			cmb_OdemeTuruGelir.setModel(odemeTuru);
+		}
+		return cmb_OdemeTuruGelir;
 	}
 }
