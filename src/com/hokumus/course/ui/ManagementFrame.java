@@ -115,7 +115,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		fillCoursesCombo();
 	}
 
-	private void fillTeacherCombo() {
+	private void fillTeacherCombo()  {
 		TeacherDao dao = new TeacherDao();
 		List<Teacher> liste = dao.getAll(new Teacher());
 		Teacher[] data = new Teacher[liste.size()];
