@@ -91,14 +91,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		getContentPane().add(getPnlGrupKursEklemeEkrani());
 		setVisible(false);
 
-		TeacherDao dao = new TeacherDao();
-		List<Teacher> liste = dao.getAll(new Teacher());
-		Teacher[] data = new Teacher[liste.size()];
-		for (int i = 0; i < data.length; i++) {
-			data[i] = liste.get(i);
-		}
-		DefaultComboBoxModel model = new DefaultComboBoxModel(data);
-		cmbTeacher.setModel(model);
+		fillTeacherCombo();
 
 		DaysDao ddao = new DaysDao();
 		List<Days> dliste = ddao.getAll(new Days());
@@ -120,6 +113,17 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		cmbKursGunleri.setModel(kursgunleri);
 		
 		fillCoursesCombo();
+	}
+
+	private void fillTeacherCombo() {
+		TeacherDao dao = new TeacherDao();
+		List<Teacher> liste = dao.getAll(new Teacher());
+		Teacher[] data = new Teacher[liste.size()];
+		for (int i = 0; i < data.length; i++) {
+			data[i] = liste.get(i);
+		}
+		DefaultComboBoxModel model = new DefaultComboBoxModel(data);
+		cmbTeacher.setModel(model);
 	}
 
 	private void fillCoursesCombo() {
