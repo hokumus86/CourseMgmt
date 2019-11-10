@@ -452,7 +452,7 @@ public class ManagementFrame extends JFrame {
 					new DaysFrame().setVisible(true);
 				}
 			});
-			btnAddDays.setBounds(607, 50, 52, 25);
+			btnAddDays.setBounds(606, 53, 52, 25);
 		}
 		return btnAddDays;
 	}
