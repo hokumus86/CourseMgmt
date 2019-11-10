@@ -50,7 +50,7 @@ public class AddTeacherFrame extends JFrame{
 
 	private void initialize() {
 		setTitle("Öğretmen Ekleme Ekranı");
-		setSize(523,532);
+		setSize(586,532);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLabel());
