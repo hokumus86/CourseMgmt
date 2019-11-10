@@ -70,5 +70,10 @@ public class Courses extends BaseEntity{
 
 	public void setDurum(String durum) {
 		this.durum = durum;
-	}    
+	} 
+	@Override
+	public String toString() {
+		
+		return adi;
+	}
 }

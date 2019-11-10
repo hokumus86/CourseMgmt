@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -13,12 +14,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.dao.CoursesDao;
 import com.hokumus.course.model.management.Courses;
 import com.hokumus.course.model.management.Durum;
+import com.hokumus.course.ui.utils.CallBackType;
+import com.hokumus.course.ui.utils.ICallBackFrame;
 import com.hokumus.course.utils.CourseUtils;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class CoursesFrame extends JFrame {
 	private JPanel panel;
@@ -30,8 +36,13 @@ public class CoursesFrame extends JFrame {
 	private JLabel lblDurum;
 	private JComboBox cmbDurum;
 	private JButton btnEkle;
+	private JPanel pnlCourseList;
+	private JScrollPane scrollCourseList;
+	private JTable tblCourseList;
+	private ICallBackFrame frame;
 
-	public CoursesFrame() {	
+	public CoursesFrame(ICallBackFrame frame) {	
+		this.frame = frame;
 		initialize();
 	}
 	
@@ -39,11 +50,13 @@ public class CoursesFrame extends JFrame {
 	private void initialize() {
 		getContentPane().setLayout(null);
 		setTitle("Kurs Ekleme Ekranı");
-		setSize(499, 446);
+		setSize(499, 603);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().add(getPanel());
 		DefaultComboBoxModel durum = new DefaultComboBoxModel(Durum.values());
 		cmbDurum.setModel(durum);
+		getContentPane().add(getPnlCourseList());
+		fillTableCoursesLists();
 
 	}
 
@@ -52,7 +65,7 @@ public class CoursesFrame extends JFrame {
 			panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, "Kurs Ekleme Ekran\u0131", TitledBorder.LEADING, TitledBorder.TOP,
 					null, null));
-			panel.setBounds(12, 13, 462, 366);
+			panel.setBounds(12, 13, 462, 296);
 			panel.setLayout(null);
 			panel.add(getLblKursunAdi());
 			panel.add(getTxtKursAdi());
@@ -140,14 +153,57 @@ public class CoursesFrame extends JFrame {
 					temp.setbaslamaTarihi(Calendar.getInstance().getTime());
 					temp.setCreatedTime(Calendar.getInstance().getTime());
 					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
-					// temp.setDurum(cmbDurum.getActionCommand());
+					temp.setDurum(((Durum)cmbDurum.getSelectedItem()).name());
 					temp.setFiyat(new BigDecimal(Integer.parseInt(txtKursFiyati.getText())));
 					daoc.save(temp);
+					fillTableCoursesLists();
+					frame.callBack(CallBackType.One);
 
 				}
 			});
 			btnEkle.setBounds(152, 255, 141, 25);
 		}
 		return btnEkle;
+	}
+	private JPanel getPnlCourseList() {
+		if (pnlCourseList == null) {
+			pnlCourseList = new JPanel();
+			pnlCourseList.setBorder(new TitledBorder(null, "Kurs Listesi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			pnlCourseList.setBounds(12, 322, 467, 213);
+			pnlCourseList.setLayout(null);
+			pnlCourseList.add(getScrollCourseList());
+		}
+		return pnlCourseList;
+	}
+	private JScrollPane getScrollCourseList() {
+		if (scrollCourseList == null) {
+			scrollCourseList = new JScrollPane();
+			scrollCourseList.setBounds(12, 26, 443, 174);
+			scrollCourseList.setViewportView(getTblCourseList());
+		}
+		return scrollCourseList;
+	}
+	private JTable getTblCourseList() {
+		if (tblCourseList == null) {
+			tblCourseList = new JTable();
+		}
+		return tblCourseList;
+	}
+	
+	private void fillTableCoursesLists() {
+		CoursesDao dao = new CoursesDao();
+		List<Courses> liste = dao.getAll(new Courses());
+		String[] columnNames = {"id", "Adı","Başlama Tarihi", "Fiyatı", "Durum"};
+		String [][] data = new String[liste.size()][columnNames.length];
+		for (int i = 0; i < liste.size(); i++) {
+			data[i][0] = liste.get(i).getId().toString();
+			data[i][1] = liste.get(i).getAdi();
+			data[i][2] = liste.get(i).getbaslamaTarihi().toString();
+			data[i][3] = liste.get(i).getFiyat().toString();
+			data[i][4] = liste.get(i).getDurum();
+			
+		}
+		DefaultTableModel model = new DefaultTableModel(data,columnNames);
+		tblCourseList.setModel(model);
 	}
 }

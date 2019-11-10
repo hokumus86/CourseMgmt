@@ -37,12 +37,14 @@ import com.hokumus.course.model.management.Groups;
 import com.hokumus.course.model.management.KursGunleri;
 import com.hokumus.course.model.management.LessonClass;
 import com.hokumus.course.model.teacher.Teacher;
+import com.hokumus.course.ui.utils.CallBackType;
+import com.hokumus.course.ui.utils.ICallBackFrame;
 import com.hokumus.course.utils.CourseUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class ManagementFrame extends JFrame {
+public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private int selectedRowId;
 	private JPanel pnlGrupKursEklemeEkrani;
 	private JLabel lblKursAdi;
@@ -63,7 +65,6 @@ public class ManagementFrame extends JFrame {
 	private JScrollPane scrollGrupKurs;
 	private JTable tblGrupKurs;
 	private JButton btnGrupHepsiniGetir;
-	private JButton btnGrupEkle;
 	private JButton btnSinifEkle;
 	private JButton btnAddTeacher;
 	private JButton btnAddDays;
@@ -81,7 +82,6 @@ public class ManagementFrame extends JFrame {
 			}
 		});
 		initialize();
-		pnlGrupKursEklemeEkrani.setVisible(false);
 	}
 
 	private void initialize() {
@@ -109,8 +109,6 @@ public class ManagementFrame extends JFrame {
 
 		DefaultComboBoxModel cmodel = new DefaultComboBoxModel(ddata);
 		cmbKursGunleri.setModel(cmodel);
-		getContentPane().add(getBtnGrupEkle());
-		getContentPane().add(getBtnSinifEkle());
 		
 		DaysDao daodays = new  DaysDao();
 		List<Days> gunler = daodays.getAll(new Days());
@@ -121,9 +119,16 @@ public class ManagementFrame extends JFrame {
 		DefaultComboBoxModel kursgunleri = new DefaultComboBoxModel(g);
 		cmbKursGunleri.setModel(kursgunleri);
 		
-		String [] dataCourses = {"JAVA","Linux","Hacking"};
-		DefaultComboBoxModel modelCourses = new DefaultComboBoxModel(dataCourses);
+		fillCoursesCombo();
+	}
+
+	private void fillCoursesCombo() {
+		CoursesDao dao = new CoursesDao();
+		List<Courses> liste = dao.getAll(new Courses());
+		Object[] c = (Object[])liste.toArray();
+		DefaultComboBoxModel modelCourses = new DefaultComboBoxModel(c);
 		getCmbCourseSelect().setModel(modelCourses);
+		
 	}
 
 	protected void btnDelete_ActionPerformed() {
@@ -164,6 +169,7 @@ public class ManagementFrame extends JFrame {
 			pnlGrupKursEklemeEkrani.add(getLabel());
 			pnlGrupKursEklemeEkrani.add(getCmbCourseSelect());
 			pnlGrupKursEklemeEkrani.add(getBtnAddCourses());
+			pnlGrupKursEklemeEkrani.add(getBtnSinifEkle());
 
 		}
 		return pnlGrupKursEklemeEkrani;
@@ -230,7 +236,7 @@ public class ManagementFrame extends JFrame {
 		if (txtSinifAdi == null) {
 			txtSinifAdi = new JTextField();
 			txtSinifAdi.setColumns(10);
-			txtSinifAdi.setBounds(461, 30, 133, 20);
+			txtSinifAdi.setBounds(461, 28, 133, 22);
 		}
 		return txtSinifAdi;
 	}
@@ -248,35 +254,17 @@ public class ManagementFrame extends JFrame {
 			btnKaydetKurs = new JButton("Kaydet");
 			btnKaydetKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					LessonClass lc = new LessonClass();
-					lc.setAdi("");
-					lc.setKapasite(15);
-					lc.setKod("");
-					lc.setCreaterBy(CourseUtils.loginedUser.getUserName());
-					lc.setCreatedTime(Calendar.getInstance().getTime());
-
-					LessonsClassDao lcdao = new LessonsClassDao();
-					lcdao.save(lc);
 
 					
 
-					CoursesDao daoc = new CoursesDao();
-					Courses temp = new Courses();
-					temp.setAdi(txtKursAdi.getText());
-					temp.setbaslamaTarihi(Calendar.getInstance().getTime());
-					temp.setCreatedTime(Calendar.getInstance().getTime());
-					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
-					temp.setDurum("Aktif");
-					temp.setFiyat(new BigDecimal(Integer.parseInt("5000")));
-					daoc.save(temp);
-
+					
 					Groups g = new Groups();
 					g.setAdi("Java 44");
 					g.setBaslamaTarihi(Calendar.getInstance().getTime());
 					g.setBitisTarihi(Calendar.getInstance().getTime());
-					g.setCourses(temp);
+					//g.setCourses(temp);
 					g.setDays((Days)cmbKursGunleri.getSelectedItem());
-					g.setLessonClass(lc);
+					//g.setLessonClass(lc);
 					g.setOgrenciSayisi(Integer.parseInt(txtOgrenciSayisi.getText()));
 					g.setTeacher((Teacher) cmbTeacher.getSelectedItem());
 					GroupsDao dao = new GroupsDao();
@@ -317,7 +305,7 @@ public class ManagementFrame extends JFrame {
 	private JComboBox getCmbKursGunleri() {
 		if (cmbKursGunleri == null) {
 			cmbKursGunleri = new JComboBox();
-			cmbKursGunleri.setBounds(461, 52, 133, 20);
+			cmbKursGunleri.setBounds(463, 59, 133, 22);
 
 		}
 		return cmbKursGunleri;
@@ -400,28 +388,15 @@ public class ManagementFrame extends JFrame {
 
 	}
 
-	private JButton getBtnGrupEkle() {
-		if (btnGrupEkle == null) {
-			btnGrupEkle = new JButton("Kurs Grubu Ekle");
-			btnGrupEkle.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					pnlGrupKursEklemeEkrani.setVisible(true);
-				}
-			});
-			btnGrupEkle.setBounds(25, 34, 126, 25);
-		}
-		return btnGrupEkle;
-	}
-
 	private JButton getBtnSinifEkle() {
 		if (btnSinifEkle == null) {
-			btnSinifEkle = new JButton("Sınıf Ekle");
+			btnSinifEkle = new JButton("+");
+			btnSinifEkle.setBounds(606, 28, 43, 19);
 			btnSinifEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new LessonClassFrame().setVisible(true);
 				}
 			});
-			btnSinifEkle.setBounds(163, 34, 126, 25);
 		}
 		return btnSinifEkle;
 	}
@@ -452,7 +427,7 @@ public class ManagementFrame extends JFrame {
 					new DaysFrame().setVisible(true);
 				}
 			});
-			btnAddDays.setBounds(606, 53, 52, 25);
+			btnAddDays.setBounds(606, 56, 43, 19);
 		}
 		return btnAddDays;
 	}
@@ -494,11 +469,19 @@ public class ManagementFrame extends JFrame {
 			btnAddCourses = new JButton("+");
 			btnAddCourses.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new CoursesFrame().setVisible(true);
+					new CoursesFrame(ManagementFrame.this).setVisible(true);
 				}
 			});
 			btnAddCourses.setBounds(285, 31, 51, 25);
 		}
 		return btnAddCourses;
+	}
+
+	@Override
+	public void callBack(CallBackType callback) {
+		if(callback == CallBackType.One) {
+			fillCoursesCombo();
+		}
+		
 	}
 }
