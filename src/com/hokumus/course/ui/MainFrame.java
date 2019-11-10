@@ -24,7 +24,8 @@ public class MainFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				new LoginFrame().setVisible(true);
+				new LoginFrame().setVisible(false);
+				setDefaultCloseOperation(LoginFrame.EXIT_ON_CLOSE);
 			}
 		});
 

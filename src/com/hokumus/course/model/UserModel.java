@@ -89,5 +89,10 @@ public class UserModel extends BaseEntity {
 	public void setPermission(UserPermission permission) {
 		this.permission = permission;
 	}
+	
+	 @Override
+	    public String toString() {
+	        return name +" " ;
+	    }
 
 }

@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.dao.TeacherDao;
 import com.hokumus.course.model.teacher.Teacher;
+import com.hokumus.course.ui.utils.CallBackType;
+import com.hokumus.course.ui.utils.ICallBackFrame;
 import com.hokumus.course.utils.CourseUtils;
 
 import javax.swing.JButton;
@@ -43,8 +45,10 @@ public class AddTeacherFrame extends JFrame{
 	private JScrollPane scrollPane;
 	private JButton btnOgrHepsiniGetir;
 	private JTable tblTeacher;
+	private ICallBackFrame frame;
 
-	public AddTeacherFrame() {
+	public AddTeacherFrame(ICallBackFrame frame) {
+		this.frame = frame;
 		initialize();
 	}
 
@@ -142,6 +146,8 @@ public class AddTeacherFrame extends JFrame{
 					temp.setCreaterBy(CourseUtils.loginedUser.getUserName());
 					dao.save(temp);
 					
+					frame.callBack(CallBackType.Two);
+					
 				}
 			});
 			btnKaydet.setBounds(135, 225, 89, 23);
@@ -219,6 +225,7 @@ public class AddTeacherFrame extends JFrame{
 	private JLabel getLabel_6() {
 		if (label_6 == null) {
 			label_6 = new JLabel("Kayıt Tarihi :");
+			label_6.setEnabled(false);
 			label_6.setBounds(298, 135, 103, 14);
 		}
 		return label_6;
@@ -226,6 +233,8 @@ public class AddTeacherFrame extends JFrame{
 	private JTextField getTxtKayitTarihi() {
 		if (txtKayitTarihi == null) {
 			txtKayitTarihi = new JTextField();
+			txtKayitTarihi.setEditable(false);
+			txtKayitTarihi.setEnabled(false);
 			txtKayitTarihi.setColumns(10);
 			txtKayitTarihi.setBounds(411, 132, 133, 20);
 		}

@@ -113,6 +113,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		cmbKursGunleri.setModel(kursgunleri);
 		
 		fillCoursesCombo();
+		fillTeacherCombo();
 	}
 
 	private void fillTeacherCombo()  {
@@ -419,7 +420,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	}
 
 	protected void btnAddTeacher_Action_Performed() {
-		new AddTeacherFrame().setVisible(true);
+		new AddTeacherFrame(ManagementFrame.this).setVisible(true);
 
 	}
 
@@ -485,6 +486,9 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	public void callBack(CallBackType callback) {
 		if(callback == CallBackType.One) {
 			fillCoursesCombo();
+		}
+		else if (callback == CallBackType.Two) {
+			fillTeacherCombo();
 		}
 		
 	}
