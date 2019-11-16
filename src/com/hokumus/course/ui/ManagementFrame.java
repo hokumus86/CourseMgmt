@@ -70,7 +70,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JButton btnAddDays;
 	private JDateChooser dateBasTarihi;
 	private JDateChooser dateBitTarihi;
-	private JLabel label;
+	private JLabel lblKursAd;
 	private JComboBox cmbCourseSelect;
 	private JButton btnAddCourses;
 
@@ -171,7 +171,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 			pnlGrupKursEklemeEkrani.add(getBtnAddDays());
 			pnlGrupKursEklemeEkrani.add(getDateBasTarihi());
 			pnlGrupKursEklemeEkrani.add(getDateBitTarihi());
-			pnlGrupKursEklemeEkrani.add(getLabel());
+			pnlGrupKursEklemeEkrani.add(getLblKursAd());
 			pnlGrupKursEklemeEkrani.add(getCmbCourseSelect());
 			pnlGrupKursEklemeEkrani.add(getBtnAddCourses());
 			pnlGrupKursEklemeEkrani.add(getBtnSinifEkle());
@@ -183,6 +183,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JLabel getLblKursAdi() {
 		if (lblKursAdi == null) {
 			lblKursAdi = new JLabel("Kurs Adı :");
+			lblKursAdi.setEnabled(false);
 			lblKursAdi.setBounds(10, 63, 133, 14);
 		}
 		return lblKursAdi;
@@ -231,6 +232,8 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JTextField getTxtKursAdi() {
 		if (txtKursAdi == null) {
 			txtKursAdi = new JTextField();
+			txtKursAdi.setEditable(false);
+			txtKursAdi.setEnabled(false);
 			txtKursAdi.setColumns(10);
 			txtKursAdi.setBounds(153, 60, 133, 20);
 		}
@@ -450,12 +453,12 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		}
 		return dateBitTarihi;
 	}
-	private JLabel getLabel() {
-		if (label == null) {
-			label = new JLabel("Kurs Öğretmeni :");
-			label.setBounds(10, 36, 133, 14);
+	private JLabel getLblKursAd() {
+		if (lblKursAd == null) {
+			lblKursAd = new JLabel("Kurs Adı:");
+			lblKursAd.setBounds(10, 36, 133, 14);
 		}
-		return label;
+		return lblKursAd;
 	}
 	private JComboBox getCmbCourseSelect() {
 		if (cmbCourseSelect == null) {
