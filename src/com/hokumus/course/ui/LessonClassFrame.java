@@ -6,6 +6,8 @@ import javax.swing.border.TitledBorder;
 
 import com.hokumus.course.dao.LessonsClassDao;
 import com.hokumus.course.model.management.LessonClass;
+import com.hokumus.course.ui.utils.CallBackType;
+import com.hokumus.course.ui.utils.ICallBackFrame;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -23,19 +25,20 @@ public class LessonClassFrame extends JFrame {
 	private JLabel lblSinifKodu;
 	private JLabel lblSinifKapasitesi;
 	private JButton btnKaydet;
+	private ICallBackFrame frame;
 
-	public LessonClassFrame() {
-		setTitle("Sınıf Ekleme Ekranı");
-		setSize(399, 404);
-		getContentPane().setLayout(null);
-		getContentPane().add(getPnlSinifEkleEkrani());
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	public LessonClassFrame (ICallBackFrame frame) {
+		this.frame = frame;
 		initialize();
 		
 	}
 
 	private void initialize() {
-
+		setTitle("Sınıf Ekleme Ekranı");
+		setSize(399, 404);
+		getContentPane().setLayout(null);
+		getContentPane().add(getPnlSinifEkleEkrani());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	private JPanel getPnlSinifEkleEkrani() {
 		if (pnlSinifEkleEkrani == null) {
@@ -56,7 +59,7 @@ public class LessonClassFrame extends JFrame {
 	private JTextField getTxtSinifAdi() {
 		if (txtSinifAdi == null) {
 			txtSinifAdi = new JTextField();
-			txtSinifAdi.setBounds(137, 39, 123, 20);
+			txtSinifAdi.setBounds(139, 39, 123, 20);
 			txtSinifAdi.setColumns(10);
 		}
 		return txtSinifAdi;
@@ -65,7 +68,7 @@ public class LessonClassFrame extends JFrame {
 		if (txtSinifKodu == null) {
 			txtSinifKodu = new JTextField();
 			txtSinifKodu.setColumns(10);
-			txtSinifKodu.setBounds(137, 70, 123, 20);
+			txtSinifKodu.setBounds(139, 70, 123, 20);
 		}
 		return txtSinifKodu;
 	}
@@ -73,7 +76,7 @@ public class LessonClassFrame extends JFrame {
 		if (txtSinifKapasitesi == null) {
 			txtSinifKapasitesi = new JTextField();
 			txtSinifKapasitesi.setColumns(10);
-			txtSinifKapasitesi.setBounds(137, 101, 123, 20);
+			txtSinifKapasitesi.setBounds(139, 101, 123, 20);
 		}
 		return txtSinifKapasitesi;
 	}
@@ -106,14 +109,14 @@ public class LessonClassFrame extends JFrame {
 					LessonClass lc = new LessonClass();
 					lc.setAdi(txtSinifAdi.getText());
 					lc.setKapasite(Integer.parseInt(txtSinifKapasitesi.getText()));
-					lc.setKod(txtSinifKodu.getText());
-					
+					lc.setKod(txtSinifKodu.getText());					
 					LessonsClassDao lcdao = new LessonsClassDao();
 					lcdao.save(lc);
+				//	frame.callBack(CallBackType.Two);
 					
 				}
 			});
-			btnKaydet.setBounds(100, 180, 89, 23);
+			btnKaydet.setBounds(139, 150, 89, 23);
 		}
 		return btnKaydet;
 	}

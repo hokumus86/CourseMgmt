@@ -163,7 +163,7 @@ public class AddTeacherFrame extends JFrame{
 					Teacher temp = new Teacher();
 					temp.setAd(txtOgrAdi.getText());
 					temp.setSoyad(txtOgrSoyadi.getText());
-					temp.setAdres(txtpOgrAdres.getText());
+					temp.setAdres(txtpOgrAdres.getText().toString());
 					temp.setTel(txtTelefonNo.getText());
 					temp.setMail(txtEmail.getText());
 //					temp.setUcret(txtOgrUcreti.getText());
@@ -313,7 +313,7 @@ public class AddTeacherFrame extends JFrame{
 			data[i][4] = "" + liste.get(i).getTel();
 			data[i][5] = "" + liste.get(i).getMail();
 			data[i][6] = "" + liste.get(i).getUcret();
-			data[i][7] = "" + liste.get(i).getKayitTarihi();
+			data[i][7] = "" + (liste.get(i).getKayitTarihi());
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		tblTeacher.setModel(model);

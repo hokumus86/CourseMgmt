@@ -54,7 +54,6 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JLabel lblKursGunleri;
 	private JLabel lblrenciSays;
 	private JTextField txtKursAdi;
-	private JTextField txtSinifAdi;
 	private JLabel lblBitTarihi;
 	private JButton btnKaydetKurs;
 	private JButton btnGuncelleKurs;
@@ -73,6 +72,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JLabel lblKursAd;
 	private JComboBox cmbCourseSelect;
 	private JButton btnAddCourses;
+	private JComboBox cmbSinifAdi;
 
 	public ManagementFrame() {
 		addWindowListener(new WindowAdapter() {
@@ -127,6 +127,16 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		cmbTeacher.setModel(model);
 	}
 
+	private void fillLessonCombo() {
+		LessonsClassDao lsdao = new LessonsClassDao();
+		List<LessonClass> liste = lsdao.getAll(new LessonClass());
+		Object[] c = (Object[])liste.toArray();
+		DefaultComboBoxModel modelLesson = new DefaultComboBoxModel(c);
+		getCmbSinifAdi().setModel(modelLesson);
+		
+		fillLessonCombo();
+	}
+	
 	private void fillCoursesCombo() {
 		CoursesDao dao = new CoursesDao();
 		List<Courses> liste = dao.getAll(new Courses());
@@ -157,7 +167,6 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 			pnlGrupKursEklemeEkrani.add(getLblKursGunleri());
 			pnlGrupKursEklemeEkrani.add(getLblrenciSays());
 			pnlGrupKursEklemeEkrani.add(getTxtKursAdi());
-			pnlGrupKursEklemeEkrani.add(getTxtSinifAdi());
 			pnlGrupKursEklemeEkrani.add(getLblBitTarihi());
 			pnlGrupKursEklemeEkrani.add(getBtnKaydetKurs());
 			pnlGrupKursEklemeEkrani.add(getBtnGuncelleKurs());
@@ -175,6 +184,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 			pnlGrupKursEklemeEkrani.add(getCmbCourseSelect());
 			pnlGrupKursEklemeEkrani.add(getBtnAddCourses());
 			pnlGrupKursEklemeEkrani.add(getBtnSinifEkle());
+			pnlGrupKursEklemeEkrani.add(getCmbSinifAdi());
 
 		}
 		return pnlGrupKursEklemeEkrani;
@@ -235,18 +245,9 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 			txtKursAdi.setEditable(false);
 			txtKursAdi.setEnabled(false);
 			txtKursAdi.setColumns(10);
-			txtKursAdi.setBounds(153, 60, 133, 20);
+			txtKursAdi.setBounds(153, 60, 122, 20);
 		}
 		return txtKursAdi;
-	}
-
-	private JTextField getTxtSinifAdi() {
-		if (txtSinifAdi == null) {
-			txtSinifAdi = new JTextField();
-			txtSinifAdi.setColumns(10);
-			txtSinifAdi.setBounds(461, 28, 133, 22);
-		}
-		return txtSinifAdi;
 	}
 
 	private JLabel getLblBitTarihi() {
@@ -263,11 +264,8 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 			btnKaydetKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					
-
-					
 					Groups g = new Groups();
-					g.setAdi("Java 44");
+					g.setAdi(cmbCourseSelect.getSelectedItem().toString());
 					g.setBaslamaTarihi(Calendar.getInstance().getTime());
 					g.setBitisTarihi(Calendar.getInstance().getTime());
 					//g.setCourses(temp);
@@ -305,7 +303,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		if (txtOgrenciSayisi == null) {
 			txtOgrenciSayisi = new JTextField();
 			txtOgrenciSayisi.setColumns(10);
-			txtOgrenciSayisi.setBounds(153, 110, 133, 20);
+			txtOgrenciSayisi.setBounds(153, 110, 122, 20);
 		}
 		return txtOgrenciSayisi;
 	}
@@ -313,7 +311,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JComboBox getCmbKursGunleri() {
 		if (cmbKursGunleri == null) {
 			cmbKursGunleri = new JComboBox();
-			cmbKursGunleri.setBounds(463, 59, 133, 22);
+			cmbKursGunleri.setBounds(461, 56, 122, 22);
 
 		}
 		return cmbKursGunleri;
@@ -322,7 +320,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JComboBox getCmbTeacher() {
 		if (cmbTeacher == null) {
 			cmbTeacher = new JComboBox();
-			cmbTeacher.setBounds(153, 83, 131, 24);
+			cmbTeacher.setBounds(153, 83, 122, 24);
 		}
 		return cmbTeacher;
 	}
@@ -357,7 +355,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 		dateBasTarihi.setDate(new Date(tblGrupKurs.getModel().getValueAt(row, 3).toString()));
 		dateBitTarihi.setDate(new Date( tblGrupKurs.getModel().getValueAt(row, 4).toString()));
 		cmbKursGunleri.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 5).toString());
-		txtSinifAdi.setText(tblGrupKurs.getModel().getValueAt(row, 6).toString());
+		cmbSinifAdi.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 6).toString());
 		cmbTeacher.setSelectedItem(tblGrupKurs.getModel().getValueAt(row, 7).toString());
 		
 	}
@@ -399,10 +397,10 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 	private JButton getBtnSinifEkle() {
 		if (btnSinifEkle == null) {
 			btnSinifEkle = new JButton("+");
-			btnSinifEkle.setBounds(606, 28, 43, 19);
+			btnSinifEkle.setBounds(596, 28, 43, 19);
 			btnSinifEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new LessonClassFrame().setVisible(true);
+					new LessonClassFrame(null).setVisible(true);
 				}
 			});
 		}
@@ -417,7 +415,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 					btnAddTeacher_Action_Performed();
 				}
 			});
-			btnAddTeacher.setBounds(285, 83, 51, 25);
+			btnAddTeacher.setBounds(285, 83, 43, 19);
 		}
 		return btnAddTeacher;
 	}
@@ -435,21 +433,21 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 					new DaysFrame().setVisible(true);
 				}
 			});
-			btnAddDays.setBounds(606, 56, 43, 19);
+			btnAddDays.setBounds(596, 56, 43, 19);
 		}
 		return btnAddDays;
 	}
 	private JDateChooser getDateBasTarihi() {
 		if (dateBasTarihi == null) {
 			dateBasTarihi = new JDateChooser();
-			dateBasTarihi.setBounds(461, 83, 131, 22);
+			dateBasTarihi.setBounds(461, 83, 122, 22);
 		}
 		return dateBasTarihi;
 	}
 	private JDateChooser getDateBitTarihi() {
 		if (dateBitTarihi == null) {
 			dateBitTarihi = new JDateChooser();
-			dateBitTarihi.setBounds(461, 108, 133, 22);
+			dateBitTarihi.setBounds(461, 108, 122, 22);
 		}
 		return dateBitTarihi;
 	}
@@ -468,7 +466,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 					JOptionPane.showMessageDialog(ManagementFrame.this, cmbCourseSelect.getSelectedItem().toString());
 				}
 			});
-			cmbCourseSelect.setBounds(153, 31, 131, 24);
+			cmbCourseSelect.setBounds(153, 31, 122, 24);
 		}
 		return cmbCourseSelect;
 	}
@@ -480,7 +478,7 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 					new CoursesFrame(ManagementFrame.this).setVisible(true);
 				}
 			});
-			btnAddCourses.setBounds(285, 31, 51, 25);
+			btnAddCourses.setBounds(285, 31, 43, 20);
 		}
 		return btnAddCourses;
 	}
@@ -494,5 +492,16 @@ public class ManagementFrame extends JFrame implements ICallBackFrame{
 			fillTeacherCombo();
 		}
 		
+		else if (callback == CallBackType.Four) {
+			fillLessonCombo();
+		}
+		
+	}
+	private JComboBox getCmbSinifAdi() {
+		if (cmbSinifAdi == null) {
+			cmbSinifAdi = new JComboBox();
+			cmbSinifAdi.setBounds(461, 28, 122, 22);
+		}
+		return cmbSinifAdi;
 	}
 }

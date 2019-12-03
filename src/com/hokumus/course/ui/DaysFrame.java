@@ -3,10 +3,15 @@ package com.hokumus.course.ui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
+import com.hokumus.course.dao.CoursesDao;
 import com.hokumus.course.dao.DaysDao;
+import com.hokumus.course.model.management.Courses;
 import com.hokumus.course.model.management.Days;
 import com.hokumus.course.model.management.KursSaatleri;
+import com.hokumus.course.ui.utils.CallBackType;
+import com.hokumus.course.ui.utils.ICallBackFrame;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -14,6 +19,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
@@ -32,6 +38,7 @@ public class DaysFrame extends JFrame {
 	private JCheckBox chckbxPazar;
 	private JLabel lblKursGnIsmi;
 	private JTextField txtDaysName;
+	private ICallBackFrame frame;
 
 	public DaysFrame() {
 
@@ -53,7 +60,7 @@ public class DaysFrame extends JFrame {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBorder(
-					new TitledBorder(null, "Kurs G\u00FCnleri", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+					new TitledBorder(null, "Kurs Günleri", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			panel.setBounds(12, 13, 380, 409);
 			panel.setLayout(null);
 			panel.add(getLblKursGunuSec());
@@ -103,6 +110,7 @@ public class DaysFrame extends JFrame {
 			btnEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Days d = new Days();
+					Days temp= new Days();
 					d.setGun1(chckbxPazartesi.isSelected() == true ? 1 : 0);
 					d.setGun2(chckbxSali.isSelected() == true ? 1 : 0);
 					d.setGun3(chckbxCarsamba.isSelected() == true ? 1 : 0);
@@ -113,7 +121,8 @@ public class DaysFrame extends JFrame {
 					d.setName(txtDaysName.getText());
 					d.setSaat(((KursSaatleri) cmbKursSaatiSec.getSelectedItem()));
 					DaysDao dd = new DaysDao();
-					dd.save(d);
+					dd.save(temp);
+					
 				}
 			});
 			btnEkle.setBounds(143, 277, 97, 25);
